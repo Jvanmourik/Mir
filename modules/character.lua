@@ -23,8 +23,8 @@ local function character(...)
   ----------------------------------------------
 
   function self:update(dt)
-    -- translate self.x by 100 pixels/second
-    self.x = self.x + 100 * dt
+    -- rotate clockwise at 1/4 rounds per second
+    self.rotation = self.rotation + 0.5 * math.pi * dt
   end
 
 

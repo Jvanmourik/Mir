@@ -13,10 +13,9 @@ local function graphic(w, h)
   -- methods
   ----------------------------------------------
 
-  function self:draw(x, y)
-    local r = 0
-    local ox = 0 --self.width * 0.5
-    local oy = 0 --self.height * 0.5
+  function self:draw(x, y, r)
+    local ox = self.width * 0.5
+    local oy = self.height * 0.5
     local atlas = lg.newImage("assets/images/heart.png")
     local quad = lg.newQuad(0, 0, self.width, self.height, atlas:getDimensions())
     lg.draw(atlas, quad, x, y, r, 1, 1, ox, oy)

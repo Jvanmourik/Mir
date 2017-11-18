@@ -18,7 +18,9 @@ local function scene(...)
   function self:draw()
     for key, child in pairs(self:getAllChildren()) do
       if child.graphic then
-        child.graphic:draw(child:getWX(), child:getWY())
+        local x, y = child:getWorldCoords()
+        local r = child:getWorldRotation()
+        child.graphic:draw(x, y, r)
       end
     end
   end

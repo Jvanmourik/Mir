@@ -1,4 +1,4 @@
-local function node(x, y)
+local function node(x, y, r)
   local self = {}
 
   ----------------------------------------------
@@ -9,33 +9,15 @@ local function node(x, y)
 
   self.parent = nil
   self.children = {}
-  self.components = {}
 
   self.x = x or 0
   self.y = y or 0
+  self.rotation = r or 0
 
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
-
-  -- get x world coordinate
-  function self:getWX()
-    local wx = self.x
-    for key, parent in pairs(self:getAllParents()) do
-      wx = wx + parent.x
-    end
-    return wx
-  end
-
-  -- get y world coordinate
-  function self:getWY()
-    local wy = self.y
-    for key, parent in pairs(self:getAllParents()) do
-      wy = wy + parent.y
-    end
-    return wy
-  end
 
   -- get all parents recursively
   function self:getAllParents()
@@ -53,6 +35,28 @@ local function node(x, y)
     child.parent = self
   end
 
+  -- get coordinates in world space
+  function self:getWorldCoords()
+    if self.parent then
+      local px, py = self.parent:getWorldCoords()
+      local pr = self.parent:getWorldRotation()
+      local c,s = math.cos(pr), math.sin(pr)
+    	local x, y = self.x * c - self.y * s, self.x * s + self.y * c
+    	return x + px, y + py
+    else
+      return self.x, self.y
+    end
+  end
+
+  -- get rotation in world space
+  function self:getWorldRotation()
+    if self.parent then
+      return self.rotation + self.parent:getWorldRotation()
+    else
+      return self.rotation
+    end
+  end
+
 
   ----------------------------------------------
   -- private methods
@@ -63,7 +67,7 @@ local function node(x, y)
     local parents = {}
     if node.parent then
       parents[#parents + 1] = node.parent
-      combineTables(parents, getAllParentsFrom(node.parent))
+      table.combine(parents, getAllParentsFrom(node.parent))
     end
     return parents
   end
@@ -74,17 +78,10 @@ local function node(x, y)
     for key, child in pairs(node.children) do
       children[#children + 1] = child
       if #child.children > 0 then
-        combineTables(children, getAllChildrenFrom(child))
+        table.combine(children, getAllChildrenFrom(child))
       end
     end
     return children
-  end
-
-  -- helper method to combine two tables into one
-  function combineTables(t1, t2)
-    for key, value in pairs(t2) do
-      t1[#t1 + 1] = value
-    end
   end
 
 
