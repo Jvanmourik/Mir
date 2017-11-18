@@ -1,24 +1,24 @@
-local function graphic(w, h)
-  local self = {}
-
-  ----------------------------------------------
-  -- attributes
-  ----------------------------------------------
-
-  self.width = w or 10
-  self.height = h or 10
-
+local function graphic(self, atlas, w, h)
+  local self = self
+  local atlas = atlas
+  local w, h = w, h
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
 
   function self:draw(x, y, r)
-    local ox = self.width * 0.5
-    local oy = self.height * 0.5
-    local atlas = lg.newImage("assets/images/heart.png")
-    local quad = lg.newQuad(0, 0, self.width, self.height, atlas:getDimensions())
-    lg.draw(atlas, quad, x, y, r, 1, 1, ox, oy)
+    -- the quad to draw on screen
+    local quad = lg.newQuad(0, 0, w, h, atlas:getDimensions())
+
+    -- origin offset
+    local ox, oy = self.anchorX * w, self.anchorY * h
+
+    -- scale
+    local sx, sy = self.width / w, self.height / h
+
+    -- draw graphic
+    lg.draw(atlas, quad, x, y, r, sx, sy, ox, oy)
   end
 
 

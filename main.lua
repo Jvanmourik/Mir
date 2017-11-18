@@ -14,6 +14,9 @@ function love.load()
   -- load extensions
   require "extensions"
 
+  -- load libraries
+  vector = require "lib/vector"
+
   -- load modules
   local Scene = require "modules/scene"
   local Character = require "modules/character"
@@ -22,19 +25,20 @@ function love.load()
   scene = Scene(0, 0)
 
   -- populate scene
-  p = Character(400, 300)
+  local w, h, r, ax, ay = 16, 14, 0, 0.5, 0.5
+  p = Character(400, 300, w, h, 0, ax, ay)
   scene:addChild(p)
 
-  c = Character(0, 14)
+  c = Character(0, 14, w, h, 0, ax, ay)
   p:addChild(c)
 
-  gc = Character(0, 14)
+  gc = Character(0, 14, w, h, 0, ax, ay)
   c:addChild(gc)
 
-  ggc = Character(0, 14)
+  ggc = Character(0, 14, w, h, 0, ax, ay)
   gc:addChild(ggc)
 
-  gggc = Character(0, 14)
+  gggc = Character(0, 14, 2*w, 2*h, 0, ax, ay)
   ggc:addChild(gggc)
 end
 
@@ -51,7 +55,16 @@ function love.draw()
   lg.print("gc.rotation = " .. gc.rotation, 10, 70)
   lg.print("p:getWorldRotation() = " .. p:getWorldRotation(), 10, 90)
   lg.print("gc:getWorldRotation() = " .. gc:getWorldRotation(), 10, 110)
+  lg.print("vector.length(p.x, p.y) = " .. vector.length(p.x, p.y), 10, 130)
+  local x, y = vector.normalize(p.x, p.y)
+  lg.print("vector.normalize(p.x, p.y) = (" .. x .. ", " .. y .. ")", 10, 150)
 
   -- draw scene
   scene:draw()
+
+  -- draw red dot
+  lg.setColor(255, 0, 0, 255)
+  lg.setPointSize(2)
+  lg.points(400, 300)
+  lg.setColor(255, 255, 255, 255)
 end

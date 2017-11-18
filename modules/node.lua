@@ -1,4 +1,4 @@
-local function node(x, y, r)
+local function node(x, y, w, h, r, ax, ay)
   local self = {}
 
   ----------------------------------------------
@@ -10,9 +10,10 @@ local function node(x, y, r)
   self.parent = nil
   self.children = {}
 
-  self.x = x or 0
-  self.y = y or 0
+  self.x, self.y = x or 0, y or 0
+  self.width, self.height = w or 0, h or 0
   self.rotation = r or 0
+  self.anchorX, self.anchorY = ax or 0, ay or 0
 
 
   ----------------------------------------------
@@ -40,7 +41,7 @@ local function node(x, y, r)
     if self.parent then
       local px, py = self.parent:getWorldCoords()
       local pr = self.parent:getWorldRotation()
-      local c,s = math.cos(pr), math.sin(pr)
+      local c, s = math.cos(pr), math.sin(pr)
     	local x, y = self.x * c - self.y * s, self.x * s + self.y * c
     	return x + px, y + py
     else

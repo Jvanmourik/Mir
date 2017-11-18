@@ -8,14 +8,18 @@ local function character(...)
   -- components
   ----------------------------------------------
 
-  self.graphic = Graphic(16, 14)
+  -- graphic component to render the sprite
+  local atlas = lg.newImage("assets/images/heart.png") -- TODO: this atlas needs to come from a template file
+  local sw, sh = 16, 14 --[[TODO: this sprite width and height needs to come from a template file]]
+  self.graphic = Graphic(self, atlas, sw, sh)
 
 
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
-  self.health = 31
+  --self.width = w or 16
+  --self.height = h or 14
 
 
   ----------------------------------------------
