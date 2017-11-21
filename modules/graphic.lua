@@ -1,21 +1,27 @@
-local function graphic(self, atlas, w, h)
-  local self = self
-  local atlas = atlas
-  local w, h = w, h
+local function graphic(node, atlas, quad, l)
+  local self = {}
+
+  ----------------------------------------------
+  -- attributes
+  ----------------------------------------------
+
+  self.visible = true
+  self.layer = l or 0
+
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
 
   function self:draw(x, y, r)
-    -- the quad to draw on screen
-    local quad = lg.newQuad(0, 0, w, h, atlas:getDimensions())
+    -- texture dimensions
+    local sw, sh = quad:getTextureDimensions()
 
     -- origin offset
-    local ox, oy = self.anchorX * w, self.anchorY * h
+    local ox, oy = node.anchorX * sw, node.anchorY * sh
 
     -- scale
-    local sx, sy = self.width / w, self.height / h
+    local sx, sy = node.width / sw, node.height / sh
 
     -- draw graphic
     lg.draw(atlas, quad, x, y, r, sx, sy, ox, oy)

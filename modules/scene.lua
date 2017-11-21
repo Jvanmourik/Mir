@@ -1,14 +1,23 @@
 local Node = require "modules/node"
 
 local function scene(...)
-  local self = Node(...)
+  local self = {}
+
+  ----------------------------------------------
+  -- components
+  ----------------------------------------------
+
+  -- root node of the node graph
+  self.rootNode = Node(...)
+
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
 
   function self:update(dt)
-    for key, child in pairs(self:getAllChildren()) do
+    -- update all nodes
+    for _, child in pairs(self.rootNode:getAllChildren()) do
       if child.active then
         child:update(dt)
       end
@@ -16,12 +25,27 @@ local function scene(...)
   end
 
   function self:draw()
-    for key, child in pairs(self:getAllChildren()) do
+    -- TODO: sort drawableNodes only when node.layer gets set
+    --       instead of every frame
+
+    -- get all drawable nodes
+    local drawableNodes = {}
+    for _, child in pairs(self.rootNode:getAllChildren()) do
       if child.graphic then
-        local x, y = child:getWorldCoords()
-        local r = child:getWorldRotation()
-        child.graphic:draw(x, y, r)
+        drawableNodes[#drawableNodes + 1] = child
       end
+    end
+
+    -- sort all drawable nodes by layer
+    table.sort(drawableNodes, function (a,b)
+      return a.graphic.layer < b.graphic.layer
+    end)
+
+    -- draw all drawable nodes
+    for _, node in pairs(drawableNodes) do
+      local x, y = node:getWorldCoords()
+      local r = node:getWorldRotation()
+      node.graphic:draw(x, y, r)
     end
   end
 
