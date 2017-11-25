@@ -28,12 +28,10 @@ function love.load()
   scene = Scene(0, 0)
 
   -- populate scene
-  c1 = Character(0, 0)
-  c1.graphic.layer = 1
+  local w, h = lg.getDimensions()
+  local c1 = Character(w * 0.5, h * 0.5)
+  c1.anchorX, c1.anchorY = 0.5, 0.5
   scene.rootNode:addChild(c1)
-
-  c2 = Character(20, 0)
-  scene.rootNode:addChild(c2)
 end
 
 function love.update(dt)
