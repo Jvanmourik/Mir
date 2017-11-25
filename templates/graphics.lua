@@ -10,7 +10,7 @@ frames["kramer/walk-2"] = quad(25, 0, 20, 33, 100, 33)
 frames["kramer/walk-3"] = quad(50, 0, 20, 33, 100, 33)
 frames["kramer/walk-4"] = quad(75, 0, 20, 33, 100, 33)
 
--- makes referencing a specific frame easier
+-- makes referencing specific frames easier
 return {
   kramer = {
     walk = {
