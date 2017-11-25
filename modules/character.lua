@@ -1,29 +1,32 @@
 local Node = require "modules/node"
-local Graphic = require "modules/graphic"
+local SpriteRenderer = require "modules/spriteRenderer"
+local Animator = require "modules/animator"
 
-local function character(x, y, w, h, r, ax, ay, l)
-  local self = Node(x, y, w, h, r, ax, ay)
+local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
+  local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
 
-  local atlas = lg.newImage("assets/images/atlas.png")
-  local graphics = require "templates/graphics"
-  local frame = graphics.kramer.walk.frames[1]
-  local _, _, fw, fh = frame:getViewport()
+  local assets = require "templates/assets"
+  local sprite = assets.kramer.graphics.walk.frames[1]
+  local _, _, spriteWidth, spriteHeight = sprite:getViewport()
 
 
   ----------------------------------------------
   -- components
   ----------------------------------------------
 
-  -- graphic component to render the sprite
-  self.graphic = Graphic(self, atlas, frame, l)
+  -- sprite renderer component to render the sprite
+  self.spriteRenderer = SpriteRenderer(self, sprite, layer)
+
+  -- animator component to animate the sprite
+  self.animator = Animator(self, assets.kramer.animations, "walk")
 
 
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
-  self.width = w or fw
-  self.height = h or fh
+  self.width = w or spriteWidth
+  self.height = h or spriteHeight
 
 
   ----------------------------------------------

@@ -19,6 +19,15 @@ local function scene(...)
     -- update all nodes
     for _, child in pairs(self.rootNode:getAllChildren()) do
       if child.active then
+        -- TODO: add in a component system to call the component update method
+        --       without having to manually add in every component in here
+
+        -- update animator component
+        if child.animator then
+          child.animator:update(dt)
+        end
+
+        -- update node
         child:update(dt)
       end
     end
@@ -31,21 +40,21 @@ local function scene(...)
     -- get all drawable nodes
     local drawableNodes = {}
     for _, child in pairs(self.rootNode:getAllChildren()) do
-      if child.graphic then
+      if child.spriteRenderer then
         drawableNodes[#drawableNodes + 1] = child
       end
     end
 
     -- sort all drawable nodes by layer
     table.sort(drawableNodes, function (a,b)
-      return a.graphic.layer < b.graphic.layer
+      return a.layer < b.layer
     end)
 
     -- draw all drawable nodes
     for _, node in pairs(drawableNodes) do
       local x, y = node:getWorldCoords()
       local r = node:getWorldRotation()
-      node.graphic:draw(x, y, r)
+      node.spriteRenderer:draw(x, y, r)
     end
   end
 

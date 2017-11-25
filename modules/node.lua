@@ -1,4 +1,4 @@
-local function node(x, y, w, h, r, ax, ay)
+local function node(x, y, w, h, r, sx, sy, ax, ay)
   local self = {}
 
   ----------------------------------------------
@@ -13,6 +13,7 @@ local function node(x, y, w, h, r, ax, ay)
   self.x, self.y = x or 0, y or 0
   self.width, self.height = w or 0, h or 0
   self.rotation = r or 0
+  self.scaleX, self.scaleY = sx or 1, sy or 1
   self.anchorX, self.anchorY = ax or 0, ay or 0
 
 
