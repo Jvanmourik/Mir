@@ -30,13 +30,7 @@ function love.load()
   -- populate scene
   local w, h = lg.getDimensions()
   local c = Character(w * 0.5, h * 0.5)
-
-  c.scaleX, c.scaleY = 3, 3
-  c.anchorX, c.anchorY = 0.5, 0.5
-
   scene.rootNode:addChild(c)
-
-  c.animator:setAnimation("moonwalk")
 end
 
 function love.update(dt)
