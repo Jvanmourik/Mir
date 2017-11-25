@@ -16,8 +16,6 @@ local function graphic(node, atlas, frame, l)
   function self:draw(x, y, r)
     -- frame dimensions
     local _, _, fw, fh = frame:getViewport()
-    print(fw)
-    print(node.width)
 
     -- origin offset
     local ox, oy = node.anchorX * fw, node.anchorY * fh
