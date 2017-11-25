@@ -5,9 +5,9 @@ local function character(x, y, w, h, r, ax, ay, l)
   local self = Node(x, y, w, h, r, ax, ay)
 
   local atlas = lg.newImage("assets/images/atlas.png")
-  local quads = require "templates/graphics"
   local quad = quads.pikachu
-  local sw, sh = quad:getTextureDimensions()
+  local graphics = require "templates/graphics"
+  local _, _, fw, fh = frame:getViewport()
 
 
   ----------------------------------------------
@@ -15,15 +15,15 @@ local function character(x, y, w, h, r, ax, ay, l)
   ----------------------------------------------
 
   -- graphic component to render the sprite
-  self.graphic = Graphic(self, atlas, quad, l)
+  self.graphic = Graphic(self, atlas, frame, l)
 
 
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
-  self.width = w or sw
-  self.height = h or sh
+  self.width = w or fw
+  self.height = h or fh
 
 
   ----------------------------------------------

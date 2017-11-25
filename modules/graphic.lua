@@ -1,4 +1,4 @@
-local function graphic(node, atlas, quad, l)
+local function graphic(node, atlas, frame, l)
   local self = {}
 
   ----------------------------------------------
@@ -14,17 +14,19 @@ local function graphic(node, atlas, quad, l)
   ----------------------------------------------
 
   function self:draw(x, y, r)
-    -- texture dimensions
-    local sw, sh = quad:getTextureDimensions()
+    -- frame dimensions
+    local _, _, fw, fh = frame:getViewport()
+    print(fw)
+    print(node.width)
 
     -- origin offset
-    local ox, oy = node.anchorX * sw, node.anchorY * sh
+    local ox, oy = node.anchorX * fw, node.anchorY * fh
 
     -- scale
-    local sx, sy = node.width / sw, node.height / sh
+    local sx, sy = node.width / fw, node.height / fh
 
     -- draw graphic
-    lg.draw(atlas, quad, x, y, r, sx, sy, ox, oy)
+    lg.draw(atlas, frame, x, y, r, sx, sy, ox, oy)
   end
 
 
