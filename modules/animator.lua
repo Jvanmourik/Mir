@@ -32,37 +32,45 @@ local function animator(node, animations, animationName, startingFrame)
           if currentFrame > #frames then currentFrame = 1 end
       end
 
+      -- update the sprite
       node.sprite = frames[currentFrame]
     end
   end
 
+  -- start animating
   function self:start(startingFrame)
-    if not isAnimating then
-      local startingFrame = startingFrame or currentFrame
-      local frames = animation.frames
+    local startingFrame = startingFrame or currentFrame
+    local frames = animation.frames
 
-      -- make sure that the given frame is in range
-      if startingFrame > #frames then
-        currentFrame = #frames
-      else
-        currentFrame = startingFrame
-      end
-
-      isAnimating = true
+    -- make sure that the given frame is in range
+    if startingFrame > #frames then
+      currentFrame = #frames
+    else
+      currentFrame = startingFrame
     end
+
+    -- update the sprite
+    node.sprite = frames[currentFrame]
+
+    isAnimating = true
   end
 
+  -- pause animating
   function self:pause()
-    if isAnimating then
-      isAnimating = false
-    end
+    isAnimating = false
   end
 
+  -- stop animating
   function self:stop()
-    if isAnimating then
-      currentFrame = 1
-      isAnimating = false
-    end
+    local frames = animation.frames
+
+    -- reset current frame
+    currentFrame = 1
+
+    -- update the sprite
+    node.sprite = frames[currentFrame]
+
+    isAnimating = false
   end
 
   function self:setAnimation(animationName)
