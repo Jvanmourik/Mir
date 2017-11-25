@@ -5,7 +5,9 @@ local q = love.graphics.newQuad
 local quads = {}
 
 -- populate the newly created table with quads
-quads["assets/images/squirtle.png"] = q(0, 0, 38, 39, 46, 83)
-quads["assets/images/pikachu.png"] = q(0, 39, 46, 44, 46, 83)
+quads["kramer/walk-1"] = q(0, 0, 20, 33, 100, 33)
+quads["kramer/walk-2"] = q(25, 0, 20, 33, 100, 33)
+quads["kramer/walk-3"] = q(50, 0, 20, 33, 100, 33)
+quads["kramer/walk-4"] = q(75, 0, 20, 33, 100, 33)
 
 return quads
