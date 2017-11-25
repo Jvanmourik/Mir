@@ -1,8 +1,8 @@
-local function animator(node, animations, animation, frame)
+local function animator(node, animations, animationName, startingFrame)
   local self = {}
 
-  local animation = animations[animation]
-  local currentFrame = frame or 1
+  local animation = animations[animationName]
+  local currentFrame = startingFrame or 1
   local frameTime = 0
 
   local isAnimating = true
@@ -36,16 +36,16 @@ local function animator(node, animations, animation, frame)
     end
   end
 
-  function self:start(atFrame)
+  function self:start(startingFrame)
     if not isAnimating then
-      local atFrame = atFrame or currentFrame
+      local startingFrame = startingFrame or currentFrame
       local frames = animation.frames
 
       -- make sure that the given frame is in range
-      if atFrame > #frames then
+      if startingFrame > #frames then
         currentFrame = #frames
       else
-        currentFrame = atFrame
+        currentFrame = startingFrame
       end
 
       isAnimating = true
@@ -63,6 +63,10 @@ local function animator(node, animations, animation, frame)
       currentFrame = 1
       isAnimating = false
     end
+  end
+
+  function self:setAnimation(animationName)
+    animation = animations[animationName]
   end
 
 

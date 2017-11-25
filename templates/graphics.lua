@@ -20,6 +20,14 @@ return {
         frames["kramer/walk-3"],
         frames["kramer/walk-4"]
       }
+    },
+    moonwalk = {
+      frames = {
+        frames["kramer/walk-4"],
+        frames["kramer/walk-3"],
+        frames["kramer/walk-2"],
+        frames["kramer/walk-1"]
+      }
     }
   }
 }

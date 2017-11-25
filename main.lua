@@ -35,6 +35,8 @@ function love.load()
   c.anchorX, c.anchorY = 0.5, 0.5
 
   scene.rootNode:addChild(c)
+
+  c.animator:setAnimation("moonwalk")
 end
 
 function love.update(dt)
