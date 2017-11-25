@@ -5,8 +5,8 @@ local function character(x, y, w, h, r, ax, ay, l)
   local self = Node(x, y, w, h, r, ax, ay)
 
   local atlas = lg.newImage("assets/images/atlas.png")
-  local quad = quads.pikachu
   local graphics = require "templates/graphics"
+  local frame = graphics.kramer.walk.frames[1]
   local _, _, fw, fh = frame:getViewport()
 
 
