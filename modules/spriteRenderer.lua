@@ -1,7 +1,7 @@
-local function spriteRenderer(node, sprite, layer)
+local function spriteRenderer(node, sprite, layer, image)
   local self = {}
 
-  local atlas = lg.newImage("assets/images/atlas.png")
+
 
 
   ----------------------------------------------
@@ -30,7 +30,7 @@ local function spriteRenderer(node, sprite, layer)
     local scaleY = node.height / spriteHeight
 
     -- draw sprite
-    lg.draw(atlas, node.sprite, x, y, r,
+    lg.draw(image, node.sprite, x, y, r,
       node.scaleX * scaleX, node.scaleY * scaleY, originX, originY)
   end
 

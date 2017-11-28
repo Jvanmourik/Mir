@@ -1,5 +1,5 @@
 local Node = require "modules/node"
-
+Character = require "modules/character"
 local function scene(...)
   local self = {}
 

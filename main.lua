@@ -10,6 +10,7 @@ function love.load()
 	ls = love.system
 	lw = love.window
 	lf = love.filesystem
+  kut = 4
 
   -- set background color
   lg.setBackgroundColor(222, 222, 222)
@@ -23,6 +24,7 @@ function love.load()
   -- load modules
   local Scene = require "modules/scene"
   local Character = require "modules/character"
+	local Redenemy = require "modules/redenemy"
 
   -- create scene
   scene = Scene(0, 0)
@@ -31,6 +33,8 @@ function love.load()
   local w, h = lg.getDimensions()
   local c = Character(w * 0.5, h * 0.5)
   scene.rootNode:addChild(c)
+	local re = Redenemy(100, 100)
+	scene.rootNode:addChild(re)
 end
 
 function love.update(dt)
