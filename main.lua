@@ -10,7 +10,7 @@ function love.load()
 	ls = love.system
 	lw = love.window
 	lf = love.filesystem
-
+Hallo = 5
   -- set background color
   lg.setBackgroundColor(222, 222, 222)
 
