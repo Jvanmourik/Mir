@@ -10,8 +10,7 @@ function love.load()
 	ls = love.system
 	lw = love.window
 	lf = love.filesystem
-	Test28 = "Fuck dit is kut"
-	
+
   -- set background color
   lg.setBackgroundColor(222, 222, 222)
 
