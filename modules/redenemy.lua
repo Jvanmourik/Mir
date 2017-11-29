@@ -1,9 +1,10 @@
 local Node = require "modules/node"
 local SpriteRenderer = require "modules/spriteRenderer"
 local Animator = require "modules/animator"
-local Character = require "modules/character"
+local AI = require "modules/ai"
 
 local function redenemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
+  name = "redenemy"
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
   local assets = require "templates/assets"
   local sprite = assets.redenemysprite.graphics.shrink.frames[1]
@@ -20,6 +21,8 @@ local function redenemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   -- animator component to animate the sprite
   self.animator = Animator(self, assets.redenemysprite.animations, "shrink")
 
+  self.ai = AI(self)
+  rootNode = Node()
 
   ----------------------------------------------
   -- attributes
@@ -27,15 +30,21 @@ local function redenemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   self.width = w or spriteWidth
   self.height = h or spriteHeight
-
   ----------------------------------------------
   -- methods
   ----------------------------------------------
 
   function self:update(dt)
-
+    self.ai:follow(self:findNode(character))
   end
 
+  function self:findNode(name)
+    for _, child in pairs(rootNode:getAllChildren()) do
+      if child.name == name then
+        return child
+      end
+    end
+  end
 
   ----------------------------------------------
   return self

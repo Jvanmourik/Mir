@@ -16,7 +16,6 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
   self.scaleX, self.scaleY = sx or 1, sy or 1
   self.anchorX, self.anchorY = ax or 0, ay or 0
 
-
   ----------------------------------------------
   -- methods
   ----------------------------------------------
