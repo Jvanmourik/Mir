@@ -37,7 +37,6 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
         return child
       end
     end
-    return nil
   end
 
   -- add child to self.children
