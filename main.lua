@@ -23,17 +23,21 @@ function love.load()
   -- load modules
   local Scene = require "modules/scene"
   local Character = require "modules/character"
-	local Redenemy = require "modules/redenemy"
+	local Enemy = require "modules/enemy"
 
   -- create scene
   scene = Scene(0, 0)
 
   -- populate scene
   local w, h = lg.getDimensions()
+
   local c = Character(w * 0.5, h * 0.5)
+  c.name = "character"
   scene.rootNode:addChild(c)
-	local re = Redenemy(100, 100)
-	scene.rootNode:addChild(re)
+
+	local e = Enemy(100, 100)
+	scene.rootNode:addChild(e)
+
 end
 
 function love.update(dt)
