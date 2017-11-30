@@ -10,6 +10,7 @@ function love.load()
 	ls = love.system
 	lw = love.window
 	lf = love.filesystem
+  lp = love.physics
 
   -- set background color
   lg.setBackgroundColor(222, 222, 222)
@@ -23,6 +24,9 @@ function love.load()
   -- load modules
   local Scene = require "modules/scene"
   local Character = require "modules/character"
+
+  -- create a world for physic bodies to exist in
+  physicsWorld = lp.newWorld()
 
   -- create scene
   scene = Scene(0, 0)
