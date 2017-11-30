@@ -7,7 +7,6 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
   local assets = require "templates/assets"
   local sprite = assets.redenemysprite.graphics.shrink.frames[1]
-  local _, _, spriteWidth, spriteHeight = sprite:getViewport()
   local atlas = lg.newImage("assets/images/redenemy.png")
 
   ----------------------------------------------
@@ -28,6 +27,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   -- attributes
   ----------------------------------------------
 
+  local _, _, spriteWidth, spriteHeight = sprite:getViewport()
   self.width = w or spriteWidth
   self.height = h or spriteHeight
 
