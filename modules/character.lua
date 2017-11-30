@@ -6,9 +6,8 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
   local assets = require "templates/assets"
   local sprite = assets.kramer.graphics.walk.frames[1]
-  local _, _, spriteWidth, spriteHeight = sprite:getViewport()
   local atlas = lg.newImage("assets/images/atlas.png")
-  
+
   ----------------------------------------------
   -- components
   ----------------------------------------------
@@ -24,6 +23,7 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   -- attributes
   ----------------------------------------------
 
+  local _, _, spriteWidth, spriteHeight = sprite:getViewport()
   self.width = w or spriteWidth
   self.height = h or spriteHeight
 
@@ -34,16 +34,16 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   function self:update(dt)
     if(love.keyboard.isDown("a")) then
-      self.x = self.x - 5
+      self.x = self.x - 100 * dt
     end
     if(love.keyboard.isDown("d")) then
-      self.x = self.x + 5
+      self.x = self.x + 100 * dt
     end
     if(love.keyboard.isDown("w")) then
-      self.y = self.y - 5
+      self.y = self.y - 100 * dt
     end
     if(love.keyboard.isDown("s")) then
-      self.y = self.y + 5
+      self.y = self.y + 100 * dt
     end
   end
 
