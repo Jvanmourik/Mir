@@ -3,12 +3,12 @@ local SpriteRenderer = require "modules/spriteRenderer"
 local Animator = require "modules/animator"
 
 local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
-  name = "character"
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
   local assets = require "templates/assets"
   local sprite = assets.kramer.graphics.walk.frames[1]
   local _, _, spriteWidth, spriteHeight = sprite:getViewport()
   local atlas = lg.newImage("assets/images/atlas.png")
+  
   ----------------------------------------------
   -- components
   ----------------------------------------------
