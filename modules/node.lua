@@ -30,6 +30,16 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
     return getAllChildrenFrom(self)
   end
 
+  -- get child by name
+  function self:getChild(name)
+    for _, child in pairs(self:getAllChildren()) do
+      if child.name == name then
+        return child
+      end
+    end
+    return nil
+  end
+
   -- add child to self.children
   function self:addChild(child)
     self.children[#self.children + 1] = child
@@ -76,7 +86,7 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
   -- helper method to get all children from given node recursively
   function getAllChildrenFrom(node)
     local children = {}
-    for key, child in pairs(node.children) do
+    for _, child in pairs(node.children) do
       children[#children + 1] = child
       if #child.children > 0 then
         table.combine(children, getAllChildrenFrom(child))
