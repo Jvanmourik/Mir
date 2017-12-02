@@ -20,29 +20,35 @@ function love.load()
 
   -- load libraries
   vector = require "lib/vector"
+  debugWorldDraw = require("lib/debugWorldDraw")
 
   -- load modules
   local Scene = require "modules/scene"
   local Character = require "modules/character"
 
   -- create a world for physic bodies to exist in
-  physicsWorld = lp.newWorld()
+  world = lp.newWorld()
 
   -- create scene
   scene = Scene(0, 0)
 
   -- populate scene
-  local w, h = lg.getDimensions()
-  local c = Character(w * 0.5, h * 0.5)
+  c = Character(100, 100)
+  c.anchorX, c.anchorY = 1, 1
   scene.rootNode:addChild(c)
 end
 
 function love.update(dt)
   -- update scene
   scene:update(dt)
+  c.collider:update(dt)
+  world:update(dt)
 end
 
 function love.draw()
   -- draw scene
   scene:draw()
+
+  local w, h = lg.getDimensions()
+  debugWorldDraw(world,0,0,w,h)
 end
