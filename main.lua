@@ -10,7 +10,7 @@ function love.load()
 	ls = love.system
 	lw = love.window
 	lf = love.filesystem
-  
+
   -- set background color
   lg.setBackgroundColor(222, 222, 222)
 
@@ -23,6 +23,10 @@ function love.load()
   -- load modules
   local Scene = require "modules/scene"
   local Character = require "modules/character"
+	require "modules/world"
+
+  -- load world
+	loadworld()
 
   -- create scene
   scene = Scene(0, 0)
@@ -41,4 +45,7 @@ end
 function love.draw()
   -- draw scene
   scene:draw()
+
+	-- draw world
+	drawworld()
 end
