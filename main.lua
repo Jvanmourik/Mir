@@ -41,7 +41,6 @@ end
 function love.update(dt)
   -- update scene
   scene:update(dt)
-  c.collider:update(dt)
   world:update(dt)
 end
 

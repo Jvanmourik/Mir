@@ -1,7 +1,4 @@
 local Node = require "modules/node"
-local SpriteRenderer = require "modules/spriteRenderer"
-local Animator = require "modules/animator"
-local Collider = require "modules/collider"
 
 local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
@@ -23,13 +20,17 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   -- sprite renderer component to render the sprite
-  self.spriteRenderer = SpriteRenderer(self, sprite, layer)
+  self:addComponent("spriteRenderer",
+  { sprite = sprite,
+    layer = layer })
 
   -- animator component to animate the sprite
-  self.animator = Animator(self, assets.kramer.animations, "walk")
+  self:addComponent("animator",
+  { animations = assets.kramer.animations,
+    animationName = "walk" })
 
   -- collider component to collide with other collision objects
-  self.collider = Collider(self)
+  self:addComponent("collider")
 
 
   ----------------------------------------------
