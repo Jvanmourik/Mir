@@ -34,7 +34,18 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   function self:update(dt)
-
+    if(lk.isDown("a")) then
+      self.x = self.x - 100 * dt
+    end
+    if(lk.isDown("d")) then
+      self.x = self.x + 100 * dt
+    end
+    if(lk.isDown("w")) then
+      self.y = self.y - 100 * dt
+    end
+    if(lk.isDown("s")) then
+      self.y = self.y + 100 * dt
+    end
   end
 
 
