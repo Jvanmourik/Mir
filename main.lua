@@ -20,20 +20,24 @@ function love.load()
   -- load libraries
   vector = require "lib/vector"
 
+  -- load templates
+  --assets = require "templates/assets"
+  graphics = require "templates/graphics"
+  animations = require "templates/animations"
+
   -- load modules
   local Scene = require "modules/scene"
+	local Tilemap = require "modules/tilemap"
   local Character = require "modules/character"
-	require "modules/world"
-
-  -- load world
-	loadworld()
 
   -- create scene
   scene = Scene(0, 0)
 
   -- populate scene
-  local w, h = lg.getDimensions()
-  local c = Character(w * 0.5, h * 0.5)
+  local t = Tilemap()
+  scene.rootNode:addChild(t)
+
+  local c = Character(100, 100)
   scene.rootNode:addChild(c)
 end
 
@@ -45,7 +49,4 @@ end
 function love.draw()
   -- draw scene
   scene:draw()
-
-	-- draw world
-	drawworld()
 end

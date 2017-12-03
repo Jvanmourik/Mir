@@ -1,8 +1,5 @@
-local function spriteRenderer(node, sprite, layer)
+local function spriteRenderer(node, atlas, sprite, layer)
   local self = {}
-
-  local atlas = lg.newImage("assets/images/atlas.png")
-
 
   ----------------------------------------------
   -- attributes

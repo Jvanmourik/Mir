@@ -1,12 +1,11 @@
 local Node = require "modules/node"
 local SpriteRenderer = require "modules/spriteRenderer"
-local Animator = require "modules/animator"
 
-local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
-  local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
+local function tile(x, y, tileset, tile, layer)
+  local self = Node(x, y)
 
-  local atlas = lg.newImage("assets/images/atlas.png")
-  local sprite = graphics.kramer.walk.frames[1]
+  local atlas = lg.newImage("assets/images/countrysideTEST.png")
+  local sprite = tileset[tile]
   local _, _, spriteWidth, spriteHeight = sprite:getViewport()
 
 
@@ -16,9 +15,6 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   -- sprite renderer component to render the sprite
   self.spriteRenderer = SpriteRenderer(self, atlas, sprite, layer)
-
-  -- animator component to animate the sprite
-  self.animator = Animator(self, animations.kramer, "walk")
 
 
   ----------------------------------------------
@@ -42,4 +38,4 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   return self
 end
 
-return character
+return tile
