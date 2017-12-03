@@ -42,19 +42,9 @@ local function tilemap()
   ----------------------------------------------
   -- methods
   ----------------------------------------------
+
   function self:update(dt)
 
-  end
-
-  function self:draw()
-    for row = 1, #tilemap do
-      for column = 1, #tilemap[row] do
-        local tile = tilemap[row][column]
-        local x = (column - 1) * w
-        local y = (row - 1) * h
-        lg.draw(atlas, tileset[tile], x, y)
-      end
-    end
   end
 
 
