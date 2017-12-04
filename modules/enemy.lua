@@ -30,8 +30,9 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local _, _, spriteWidth, spriteHeight = sprite:getViewport()
   self.width = w or spriteWidth
   self.height = h or spriteHeight
-
+  self.speed = 2
   self.target = scene.rootNode:getChild("character")
+  self.traveling = false
 
 
   ----------------------------------------------
@@ -39,7 +40,16 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   function self:update(dt)
-    self.agent:follow(self.target)
+  if(self.traveling == false) then
+    dirX, dirY = self.agent:direction(self.target)
+  elseif(self.agent:insideScreen(self)) then
+      self.agent:follow(self.target)
+  else
+    self.traveling = false
+  end
+    if(self.agent:area(250, self.target) and self.traveling == false) then
+    self.traveling = true
+  end
   end
 
 
