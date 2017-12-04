@@ -36,7 +36,7 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   ----------------------------------------------
 
-  local hitbox = Node(10, 0, 25, 10, math.pi * 0.1)
+  local hitbox = Node(10, 0, 25, 10, math.pi * 0)
   hitbox.anchorX, hitbox.anchorY = 0, 0.5
   hitbox:addComponent("collider")
   hitbox.collider.body:setActive(false)
@@ -83,7 +83,7 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   function self:lookAt(x, y)
     local dx, dy = x - self.x, y - self.y
-    self.dirX, self.dirY = vector.normalize(dx, dy)
+    self.rotation = vector.angle(1, 0, dx, dy)
   end
 
 
