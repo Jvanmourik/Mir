@@ -3,14 +3,22 @@ local function collider(node, bodyType)
 
   local bodyType = bodyType or "dynamic"
 
+  local previousX, previousY
+
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
-  self.body = lp.newBody(world, node.x + node.width * (0.5 - node.anchorX),
-    node.y + node.height * (0.5 - node.anchorY), bodyType)
+  local x = node.x + node.width * (0.5 - node.anchorX)
+  local y = node.y + node.height * (0.5 - node.anchorY)
+
+  self.body = lp.newBody(world, x, y, bodyType)
+  self.body:setSleepingAllowed(false)
+
   self.shape = lp.newRectangleShape(node.width, node.height)
+
   self.fixture = lp.newFixture(self.body, self.shape)
+  self.fixture:setSensor(true)
 
 
   ----------------------------------------------
@@ -18,8 +26,18 @@ local function collider(node, bodyType)
   ----------------------------------------------
 
   function self:update(dt)
-    self.body:setPosition(node.x + node.width * (0.5 - 1),
-      node.y + node.height * (0.5 - 1))
+    local x, y = node:getWorldCoords()
+    local r = node:getWorldRotation()
+    local offsetX = node.width * (0.5 - node.anchorX)
+    local offsetY = node.height * (0.5 - node.anchorY)
+
+    -- change offset based on rotation
+    local c, s = math.cos(r), math.sin(r)
+    offsetX, offsetY = offsetX * c - offsetY * s, offsetX * s + offsetY * c
+
+    -- set position and rotation of the physic body
+    self.body:setPosition(x + offsetX, y + offsetY)
+    self.body:setAngle(r)
   end
 
 

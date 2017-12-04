@@ -1,8 +1,7 @@
 local Node = require "modules/node"
 
-local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
+local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
-  local hitbox = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
 
   local assets = require "templates/assets"
   local sprite = assets.kramer.graphics.walk.frames[1]
@@ -35,55 +34,22 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
 
   ----------------------------------------------
-
-  local hitbox = Node(10, 0, 25, 10, math.pi * 0.1)
-  hitbox.anchorX, hitbox.anchorY = 0, 0.5
-  hitbox:addComponent("collider")
-  hitbox.collider.body:setActive(false)
-  self:addChild(hitbox)
-
-
-  ----------------------------------------------
   -- methods
   ----------------------------------------------
 
   function self:update(dt)
-    -- character movement
-    if(lk.isDown("a")) then
+    if(lk.isDown("left")) then
       self.x = self.x - 100 * dt
     end
-    if(lk.isDown("d")) then
+    if(lk.isDown("right")) then
       self.x = self.x + 100 * dt
     end
-    if(lk.isDown("w")) then
+    if(lk.isDown("up")) then
       self.y = self.y - 100 * dt
     end
-    if(lk.isDown("s")) then
+    if(lk.isDown("down")) then
       self.y = self.y + 100 * dt
     end
-
-    -- character attack
-    if(lm.isDown(1)) then
-      hitbox.collider.body:setActive(true)
-    else
-      hitbox.collider.body:setActive(false)
-    end
-
-    -- make character look at direction
-    self:lookAt(lm.getPosition())
-  end
-
-  function self:beginContact(f, contact)
-    print("beginContact")
-  end
-
-  function self:endContact(f, contact)
-    print("endContact")
-  end
-
-  function self:lookAt(x, y)
-    local dx, dy = x - self.x, y - self.y
-    self.dirX, self.dirY = vector.normalize(dx, dy)
   end
 
 
@@ -91,4 +57,4 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   return self
 end
 
-return character
+return enemy

@@ -21,7 +21,9 @@ local function scene(...)
       if child.active then
 
         -- update node
-        child:update(dt)
+        if child.update then
+          child:update(dt)
+        end
 
         -- update all node components
         for _, component in pairs(child.components) do
