@@ -82,6 +82,12 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
     self.components[#self.components + 1] = c
   end
 
+  -- rotate the node to make it look at a position
+  function self:lookAt(x, y)
+    local dx, dy = x - self.x, y - self.y
+    self.rotation = vector.angle(0, 1, dx, dy)
+  end
+
 
   ----------------------------------------------
   -- private methods

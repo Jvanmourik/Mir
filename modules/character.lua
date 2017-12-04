@@ -81,11 +81,6 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     print("endContact")
   end
 
-  function self:lookAt(x, y)
-    local dx, dy = x - self.x, y - self.y
-    self.rotation = vector.angle(1, 0, dx, dy)
-  end
-
 
   ----------------------------------------------
   return self
