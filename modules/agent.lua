@@ -21,9 +21,9 @@ local function agent(node)
     local deltaX = target.x - node.x
     local deltaY = target.y - node.y
     if(vector.length(deltaX, deltaY) > 20) then
-    local dirX, dirY = vector.normalize(deltaX, deltaY)
-    node.x = node.x + dirX * node.speed
-    node.y = node.y + dirY * node.speed
+      local dirX, dirY = vector.normalize(deltaX, deltaY)
+      node.x = node.x + dirX * node.speed
+      node.y = node.y + dirY * node.speed
   end
     --[[if(node.x > target.x and node.x > target.x + 25) then
       node.x = node.x - node.x * angle
@@ -50,7 +50,7 @@ local function agent(node)
     node.x = node.x - dirX * node.speed
     node.y = node.y - dirY * node.speed
   --end
-end
+  end
 
   function self:charge(target, dirX, dirY, length)
     node.x = node.x + dirX * node.speed * length
@@ -65,30 +65,31 @@ end
     end
     return false
   end
+
   function self:insideScreen(target)
     if(target.x + target.width <= screenwidth and target.x >= 0 and target.y + target.height <= screenheight and target.y >= 0) then
-    return true
-  end
-  return false
+      return true
+    end
+      return false
   end
 
   function self:patrolling(startx, endx, starty, endy)
     if(pd == false) then
-    deltaX = endx - startx
-    deltaY = endy - starty
-else
-   deltaX = startx - endx
-   deltaY = starty - endy
-end
-if(node.x >= endx and node.y >= endy) then
-  pd = true
-elseif(node.x <= startx and node.y <= starty) then
-  pd = false
-end
-    local dirX, dirY = vector.normalize(deltaX, deltaY)
-    node.x = node.x + dirX * node.speed
-    node.y = node.y + dirY * node.speed
-  end
+      deltaX = endx - startx
+      deltaY = endy - starty
+    else
+      deltaX = startx - endx
+      deltaY = starty - endy
+    end
+    if(node.x >= endx and node.y >= endy) then
+      pd = true
+    elseif(node.x <= startx and node.y <= starty) then
+      pd = false
+    end
+      local dirX, dirY = vector.normalize(deltaX, deltaY)
+      node.x = node.x + dirX * node.speed
+      node.y = node.y + dirY * node.speed
+    end
   ----------------------------------------------
   return self
 end
