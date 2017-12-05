@@ -23,6 +23,7 @@ function love.load()
   -- load modules
   local Scene = require "modules/scene"
   local Character = require "modules/character"
+  local Audio = require "modules/audio"
 
   -- create scene
   scene = Scene(0, 0)
