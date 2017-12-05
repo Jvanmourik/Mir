@@ -51,7 +51,15 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     if(self.agent:area(250, self.target) and self.traveling == false) then
     self.traveling = true
   end]]
-  self.agent:patrolling(startX , 100, startY, -200)
+
+  --self.agent:patrolling(startX , 500, startY, startY)
+
+  --self.agent:follow(self.target)
+  if(self.agent:area(200, self.target) == false) then
+  self.agent:patrolling(startX, 250, startY, startY)
+  elseif(self.agent:insideScreen(self)) then
+    self.agent:follow(self.target)
+  end
   end
 
 

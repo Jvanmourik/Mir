@@ -79,9 +79,9 @@ else
    deltaX = startx - endx
    deltaY = starty - endy
 end
-if(node.x >= endx or node.y >= endy) then
+if(node.x >= endx and node.y >= endy) then
   pd = true
-elseif(node.x <= startx or node.y <= endy) then
+elseif(node.x <= startx and node.y <= starty) then
   pd = false
 end
     local dirX, dirY = vector.normalize(deltaX, deltaY)
