@@ -41,25 +41,26 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   function self:update(dt)
-  --[[if(self.traveling == false) then
+  if(self.traveling == false) then
     dirX, dirY = self.agent:direction(self.target)
   elseif(self.agent:insideScreen(self)) then
-      self.agent:charge(self.target)
+      self.agent:charge(self.target, dirX, dirY)
   else
     self.traveling = false
   end
     if(self.agent:area(250, self.target) and self.traveling == false) then
     self.traveling = true
-  end]]
+  end
 
   --self.agent:patrolling(startX , 500, startY, startY)
 
   --self.agent:follow(self.target)
-  if(self.agent:area(200, self.target) == false) then
+
+  --[[if(self.agent:area(200, self.target) == false) then
   self.agent:patrolling(startX, 250, startY, startY)
   elseif(self.agent:insideScreen(self)) then
     self.agent:follow(self.target)
-  end
+  end]]
   end
 
 
