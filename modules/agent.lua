@@ -13,7 +13,8 @@ local function agent(node)
     local deltaX = target.x - node.x
     local deltaY = target.y - node.y
     local dirX, dirY = vector.normalize(deltaX, deltaY)
-    return dirX, dirY
+    local length = vector.length(deltaX, deltaY)
+    return dirX, dirY, length
   end
 
   function self:follow(target)
@@ -51,9 +52,9 @@ local function agent(node)
   --end
 end
 
-  function self:charge(target, dirX, dirY)
-    node.x = node.x + dirX * node.speed * 5
-    node.y = node.y + dirY * node.speed * 5
+  function self:charge(target, dirX, dirY, length)
+    node.x = node.x + dirX * node.speed * length
+    node.y = node.y + dirY * node.speed * length
   end
 
   function self:area(radius, target)
