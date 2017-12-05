@@ -2,6 +2,7 @@ local function agent(node)
   local self = {}
   screenwidth = 800
   screenheight= 600
+  pd = false
   ----------------------------------------------
   -- methods
   ----------------------------------------------
@@ -68,6 +69,24 @@ end
     return true
   end
   return false
+  end
+
+  function self:patrolling(startx, endx, starty, endy)
+    if(pd == false) then
+    deltaX = endx - startx
+    deltaY = endy - starty
+else
+   deltaX = startx - endx
+   deltaY = starty - endy
+end
+if(node.x >= endx or node.y >= endy) then
+  pd = true
+elseif(node.x <= startx or node.y <= endy) then
+  pd = false
+end
+    local dirX, dirY = vector.normalize(deltaX, deltaY)
+    node.x = node.x + dirX * node.speed
+    node.y = node.y + dirY * node.speed
   end
   ----------------------------------------------
   return self
