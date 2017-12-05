@@ -43,12 +43,12 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   function self:update(dt)
   if(self.traveling == false) then
     dirX, dirY, length = self.agent:direction(self.target)
-  elseif() then
+  else
       self.agent:charge(self.target, dirX, dirY, length)
   else
     self.traveling = false
   end
-    if(self.agent:area(250, self.target) and self.traveling == false) then
+  if(self.agent:area(250, self.target) and self.traveling == false) then
     self.traveling = true
   end
 
