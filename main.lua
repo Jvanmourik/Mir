@@ -38,6 +38,9 @@ function love.load()
 	local e = Enemy(100, 100)
 	scene.rootNode:addChild(e)
 
+	local f = Enemy(300, 300)
+	scene.rootNode:addChild(f)
+
 end
 
 function love.update(dt)

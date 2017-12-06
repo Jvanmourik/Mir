@@ -1,8 +1,10 @@
 local function agent(node)
   local self = {}
-  screenwidth = 800
-  screenheight= 600
-  pd = false
+  local screenwidth = 800
+  local screenheight= 600
+  local pbool = false
+  local cbool = false
+  local ctimer = 60
   ----------------------------------------------
   -- methods
   ----------------------------------------------
@@ -52,9 +54,22 @@ local function agent(node)
   --end
   end
 
-  function self:charge(target, dirX, dirY, length)
-    node.x = node.x + dirX * node.speed * length
-    node.y = node.y + dirY * node.speed * length
+  function self:charge(target)
+    if(cbool == false) then
+      dirX, dirY, length = self:direction(target)
+      cbool = true
+    end
+    if(length >= 0) then
+      node.x = node.x + dirX * node.speed * 5
+      node.y = node.y + dirY * node.speed * 5
+      length = length - vector.length(dirX, dirY) * node.speed * 5
+    else
+      ctimer = ctimer - 1
+      if(ctimer <= 0) then
+        cbool = false
+        ctimer = 60
+      end
+    end
   end
 
   function self:area(radius, target)
@@ -74,7 +89,7 @@ local function agent(node)
   end
 
   function self:patrolling(startx, endx, starty, endy)
-    if(pd == false) then
+    if(pbool == false) then
       deltaX = endx - startx
       deltaY = endy - starty
     else
@@ -82,9 +97,9 @@ local function agent(node)
       deltaY = starty - endy
     end
     if(node.x >= endx and node.y >= endy) then
-      pd = true
+      pbool = true
     elseif(node.x <= startx and node.y <= starty) then
-      pd = false
+      pbool = false
     end
       local dirX, dirY = vector.normalize(deltaX, deltaY)
       node.x = node.x + dirX * node.speed
