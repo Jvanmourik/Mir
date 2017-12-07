@@ -19,16 +19,19 @@ local function scene(...)
     -- update all nodes
     for _, child in pairs(self.rootNode:getAllChildren()) do
       if child.active then
-        -- TODO: add in a component system to call the component update method
-        --       without having to manually add in every component in here
-
-        -- update animator component
-        if child.animator then
-          child.animator:update(dt)
+        
+        -- update node
+        if child.update then
+          child:update(dt)
         end
 
-        -- update node
-        child:update(dt)
+        -- update all node components
+        for _, component in pairs(child.components) do
+          if component.update then
+            component:update(dt)
+          end
+        end
+
       end
     end
   end
