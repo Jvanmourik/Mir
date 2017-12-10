@@ -34,8 +34,24 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   function self:update(dt)
-
+    touch = {x=self.x,y=self.y} 
+    for i, id in ipairs(love.touch.getTouches()) do
+      touch.x, touch.y = love.touch.getPosition(id)
+    end
+    if(love.keyboard.isDown("a") or touch.x < self.x) then
+      self.x = self.x - 100 * dt
+    end
+    if(love.keyboard.isDown("d") or touch.x > self.x) then
+      self.x = self.x + 100 * dt
+    end
+    if(love.keyboard.isDown("w") or touch.y < self.y) then
+      self.y = self.y - 100 * dt
+    end
+    if(love.keyboard.isDown("s") or touch.y > self.y) then
+      self.y = self.y + 100 * dt
+    end
   end
+
 
 
   ----------------------------------------------
