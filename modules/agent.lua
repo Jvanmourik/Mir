@@ -5,6 +5,8 @@ local function agent(node)
   local pbool = false
   local cbool = false
   local ctimer = 60
+  local dirX, dirY, length
+  local deltaX, deltaY
   ----------------------------------------------
   -- methods
   ----------------------------------------------
@@ -92,15 +94,22 @@ local function agent(node)
     if(pbool == false) then
       deltaX = endx - startx
       deltaY = endy - starty
+      length = vector.length(endx - node.x, endy - node.y)
     else
       deltaX = startx - endx
       deltaY = starty - endy
+      length = vector.length(startx - node.x, starty - node.y)
     end
-    if(node.x >= endx and node.y >= endy) then
+    if(length <= 0 and pbool == false) then
+      pbool = true
+    elseif(length <= 0 and pbool) then
+      pbool = false
+    end
+    --[[if(node.x >= endx and node.y >= endy) then
       pbool = true
     elseif(node.x <= startx and node.y <= starty) then
       pbool = false
-    end
+    end]]
       local dirX, dirY = vector.normalize(deltaX, deltaY)
       node.x = node.x + dirX * node.speed
       node.y = node.y + dirY * node.speed

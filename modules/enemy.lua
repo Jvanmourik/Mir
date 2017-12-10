@@ -33,19 +33,19 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   self.speed = 2
   self.target = scene.rootNode:getChild("character")
   self.traveling = false
-  startX = self.x
-  startY = self.y
+  local startX = self.x
+  local startY = self.y
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
 
   function self:update(dt)
-    if(self.agent:area(250, self.target)) then
+    --[[if(self.agent:area(250, self.target)) then
       self.agent:charge(self.target)
-    end
+    end]]
 
-  --self.agent:patrolling(startX , 500, startY, startY)
+  self.agent:patrolling(startX , 200, startY, startY)
 
   --self.agent:follow(self.target)
 
