@@ -13,7 +13,7 @@ function love.load()
   lp = love.physics
 
   -- set background color
-  lg.setBackgroundColor(222, 222, 222)
+  lg.setBackgroundColor(255, 255, 255)
 
   -- load extensions
   require "extensions"
@@ -36,11 +36,9 @@ function love.load()
 
   -- populate scene
   c = Character(0, 0)
-  c.anchorX, c.anchorY = 0.0, 0.0
   scene.rootNode:addChild(c)
 
   e = Enemy(200, 100)
-  c.anchorX, c.anchorY = 0.5, 0.5
   scene.rootNode:addChild(e)
 end
 
@@ -55,13 +53,13 @@ function love.draw()
   scene:draw()
 
   local w, h = lg.getDimensions()
-  debugWorldDraw(world,0,0,w,h)
+  --debugWorldDraw(world,0,0,w,h)
 end
 
 -- gets called when two physic objects start colliding
 function beginContact(f1, f2, contact)
   for _, node in pairs(scene.rootNode:getAllChildren()) do
-    if node.collider.fixture == f1 then
+    if node.collider and node.collider.fixture == f1 then
       if node.beginContact then
         node:beginContact(f2, contact)
       end
@@ -73,7 +71,7 @@ end
 -- gets called when two physic objects stop colliding
 function endContact(f1, f2, contact)
   for _, node in pairs(scene.rootNode:getAllChildren()) do
-    if node.collider.fixture == f1 then
+    if node.collider and node.collider.fixture == f1 then
       if node.endContact then
         node:endContact(f2, contact)
       end
