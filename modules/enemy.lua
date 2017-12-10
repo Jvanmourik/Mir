@@ -4,19 +4,15 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
 
   local assets = require "templates/assets"
-  local sprite = assets.character.unarmed.idle.frame
-  local _, _, spriteWidth, spriteHeight = sprite:getViewport()
 
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
-  self.width = w or spriteWidth
-  self.height = h or spriteHeight
   self.scaleX = 0.25
   self.scaleY = 0.25
-  self.anchorX = 0.5
-  self.anchorY = 0.5
+
+  self.health = 1
 
 
   ----------------------------------------------
@@ -26,7 +22,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   -- sprite renderer component to render the sprite
   self:addComponent("spriteRenderer",
   { atlas = "character.png",
-    sprite = sprite,
+    sprite = assets.character.unarmed.idle,
     layer = layer })
 
   -- animator component to animate the sprite
@@ -43,22 +39,24 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   function self:update(dt)
-    if(lk.isDown("left")) then
-      self.x = self.x - 250 * dt
-    end
-    if(lk.isDown("right")) then
-      self.x = self.x + 250 * dt
-    end
-    if(lk.isDown("up")) then
-      self.y = self.y - 250 * dt
-    end
-    if(lk.isDown("down")) then
-      self.y = self.y + 250 * dt
-    end
-
-    -- make enemy look at character
+    -- make enemy look at character in a certain range
     local c = scene.rootNode:getChild("character")
-    self:lookAt(c.x, c.y)
+    if vector.length(self.x - c.x, self.y - c.y) < 200 then
+      self:lookAt(c.x, c.y)
+    end
+  end
+
+  function self:damage(amount)
+    local amount = amount or 1
+    self.health = self.health - amount
+    if self.health <= 0 then
+      self:kill()
+    end
+  end
+
+  function self:kill()
+    --print(self.health)
+    self:setActive(false)
   end
 
 

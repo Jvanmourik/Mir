@@ -10,6 +10,7 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
   ----------------------------------------------
 
   self.active = true
+  self.toBeRemoved = false
 
   self.parent = nil
   self.children = {}
@@ -89,6 +90,10 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
       self.collider = c
     end
     self.components[#self.components + 1] = c
+  end
+
+  function self:setActive(bool)
+    self.toBeRemoved = true
   end
 
   -- rotate the node to make it look at a position

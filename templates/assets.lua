@@ -7,8 +7,8 @@ return {
     unarmed = {
       idle = {
         frame = quad(218, 389, 252, 180, 538, 744),
-        anchorX = 0.7,
-        anchorY = 0.47
+        anchorX = 0.5,
+        anchorY = 0.46
       }
     },
     sword_shield = {

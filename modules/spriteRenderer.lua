@@ -1,4 +1,4 @@
-local function spriteRenderer(node, file, sprite, layer)
+local function spriteRenderer(node, file, asset, layer)
   local self = {}
 
   local file = file or "atlas.png"
@@ -9,9 +9,9 @@ local function spriteRenderer(node, file, sprite, layer)
   -- attributes
   ----------------------------------------------
 
-  node.sprite = sprite
   node.visible = true
   node.layer = layer or 0
+
 
 
   ----------------------------------------------
@@ -35,6 +35,18 @@ local function spriteRenderer(node, file, sprite, layer)
       node.scaleX * scaleX, node.scaleY * scaleY, originX, originY)
   end
 
+  function self:setSprite(asset)
+    local sprite = asset.frame
+    local _, _, spriteWidth, spriteHeight = sprite:getViewport()
+    local anchorX, anchorY = asset.anchorPoint
+
+    node.sprite = sprite
+    node.width = spriteWidth
+    node.height = spriteHeight
+    node.anchorX, node.anchorY = asset.anchorX, asset.anchorY
+  end
+
+  self:setSprite(asset)
 
   ----------------------------------------------
   return self

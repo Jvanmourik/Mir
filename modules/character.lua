@@ -3,6 +3,8 @@ local Node = require "modules/node"
 local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
 
+  local assets = require "templates/assets"
+
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
@@ -33,18 +35,13 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   local graphic = Node()
 
-  local assets = require "templates/assets"
-  local character = assets.character
-  local sprite = character.sword_shield.idle.frame
-  local _, _, spriteWidth, spriteHeight = sprite:getViewport()
-
-  graphic.width = spriteWidth/4
-  graphic.height = spriteHeight/4
+  graphic.scaleX = 0.25
+  graphic.scaleY = 0.25
 
   -- sprite renderer component to render the sprite
   graphic:addComponent("spriteRenderer",
   { atlas = "character.png",
-    sprite = sprite,
+    sprite = assets.character.sword_shield.idle,
     layer = layer })
 
   self:addChild(graphic)
@@ -60,6 +57,14 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   self:addChild(hitbox)
 
+  function hitbox:beginContact(f, contact)
+    local collider = f:getUserData()
+    collider:damage()
+  end
+
+  function hitbox:endContact(f, contact)
+    print("endContact")
+  end
 
   ----------------------------------------------
   -- methods
@@ -82,40 +87,15 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
     -- character attack
     if(lm.isDown(1)) then
-      local asset = character.sword_shield.stab
-      local sprite = asset.frame
-      local _, _, spriteWidth, spriteHeight = sprite:getViewport()
-      local anchorX, anchorY = asset.anchorPoint
+      -- change sprite
+      graphic.spriteRenderer:setSprite(assets.character.sword_shield.stab)
 
-      graphic.sprite = sprite
-      graphic.width = spriteWidth/4
-      graphic.height = spriteHeight/4
-      graphic.anchorX, graphic.anchorY = asset.anchorX, asset.anchorY
-
+      -- enable hitbox
       hitbox.collider.body:setActive(true)
-    else
-      local asset = character.sword_shield.idle
-      local sprite = asset.frame
-      local _, _, spriteWidth, spriteHeight = sprite:getViewport()
-
-      graphic.sprite = sprite
-      graphic.width = spriteWidth/4
-      graphic.height = spriteHeight/4
-      graphic.anchorX, graphic.anchorY = asset.anchorX, asset.anchorY
-
-      hitbox.collider.body:setActive(false)
     end
 
     -- make character look at direction
     self:lookAt(lm.getPosition())
-  end
-
-  function self:beginContact(f, contact)
-    print("beginContact")
-  end
-
-  function self:endContact(f, contact)
-    print("endContact")
   end
 
 
