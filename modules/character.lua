@@ -5,15 +5,15 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local hitbox = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
 
   local assets = require "templates/assets"
-  local sprite = assets.kramer.graphics.walk.frames[1]
+  local sprite = assets.character.graphics.swordShield
   local _, _, spriteWidth, spriteHeight = sprite:getViewport()
 
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
-  self.width = w or spriteWidth
-  self.height = h or spriteHeight
+  self.width = w or spriteWidth/4
+  self.height = h or spriteHeight/4
 
 
   ----------------------------------------------
@@ -22,13 +22,14 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   -- sprite renderer component to render the sprite
   self:addComponent("spriteRenderer",
-  { sprite = sprite,
+  { atlas = "character-sword-shield.png",
+    sprite = sprite,
     layer = layer })
 
   -- animator component to animate the sprite
-  self:addComponent("animator",
+  --[[self:addComponent("animator",
   { animations = assets.kramer.animations,
-    animationName = "walk" })
+    animationName = "walk" })]]
 
   -- collider component to collide with other collision objects
   self:addComponent("collider")
@@ -36,8 +37,8 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   ----------------------------------------------
 
-  local hitbox = Node(10, 0, 25, 10, math.pi * 0)
-  hitbox.anchorX, hitbox.anchorY = 0, 0.5
+  local hitbox = Node(0, 50, 25, 75, math.pi * 0)
+  hitbox.anchorX, hitbox.anchorY = 0.5, 0
   hitbox:addComponent("collider")
   hitbox.collider.body:setActive(false)
   self:addChild(hitbox)
@@ -50,16 +51,16 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   function self:update(dt)
     -- character movement
     if(lk.isDown("a")) then
-      self.x = self.x - 100 * dt
+      self.x = self.x - 250 * dt
     end
     if(lk.isDown("d")) then
-      self.x = self.x + 100 * dt
+      self.x = self.x + 250 * dt
     end
     if(lk.isDown("w")) then
-      self.y = self.y - 100 * dt
+      self.y = self.y - 250 * dt
     end
     if(lk.isDown("s")) then
-      self.y = self.y + 100 * dt
+      self.y = self.y + 250 * dt
     end
 
     -- character attack

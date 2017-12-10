@@ -35,8 +35,8 @@ function love.load()
   scene = Scene(0, 0)
 
   -- populate scene
-  c = Character(100, 100)
-  c.anchorX, c.anchorY = 0.5, 0.5
+  c = Character(0, 0)
+  c.anchorX, c.anchorY = 0.0, 0.0
   scene.rootNode:addChild(c)
 
   e = Enemy(200, 100)
