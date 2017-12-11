@@ -88,13 +88,16 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
     -- character attack
     if lm.isDown(1) and not graphic.animator:isPlaying("sword-shield-stab") then
+      -- enable hitbox
+      hitbox.collider.body:setActive(true)
+
       -- change animation
       graphic.animator:play("sword-shield-stab", 1, function()
         graphic.animator:play("sword-shield-idle", 0)
+        hitbox.collider.body:setActive(false)
       end)
 
-      -- enable hitbox
-      hitbox.collider.body:setActive(true)
+
     end
 
     -- make character look at direction
