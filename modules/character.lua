@@ -24,9 +24,9 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   self:addComponent("collider")
 
   -- animator component to animate the sprite
-  --[[self:addComponent("animator",
-  { animations = assets.kramer.animations,
-    animationName = "walk" })]]
+  self:addComponent("animator",
+  { animations = assets.character.animations,
+    animationName = "sword-shield-idle" })
 
 
   ----------------------------------------------
@@ -89,6 +89,8 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     if(lm.isDown(1)) then
       -- change sprite
       graphic.spriteRenderer:setSprite(assets.character.sword_shield.stab)
+
+      --animator:play("sword-shield-stab", 1, function () print("klaar") end)
 
       -- enable hitbox
       hitbox.collider.body:setActive(true)
