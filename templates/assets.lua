@@ -1,10 +1,10 @@
 -- declare shorthand newQuad
 local quad = love.graphics.newQuad
 
--- stores all possible animations
-local animations = {}
+-- makes referencing specific animations easier
+local character = {}
 
--- makes referencing specific frames easier
+-- stores all assets
 local assets = {
   character = {
     unarmed = {
@@ -47,12 +47,13 @@ local assets = {
         interval = 0.25
       }
     },
-    animations = animations
+    animations = character
   }
 }
 
-animations["unarmed-idle"] = assets.character.unarmed.idle
-animations["sword-shield-idle"] = assets.character.sword_shield.idle
-animations["sword-shield-stab"] = assets.character.sword_shield.stab
+-- populate the newly created tables with animation references
+character["unarmed-idle"] = assets.character.unarmed.idle
+character["sword-shield-idle"] = assets.character.sword_shield.idle
+character["sword-shield-stab"] = assets.character.sword_shield.stab
 
 return assets
