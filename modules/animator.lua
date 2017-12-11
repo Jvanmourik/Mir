@@ -61,7 +61,7 @@ local function animator(node, animations)
     _callback = callback
 
     -- update the sprite
-    node.sprite = animation.frames[currentFrame]
+    node.spriteRenderer:setSprite(animation, currentFrame)
 
     isAnimating = true
   end
@@ -77,9 +77,13 @@ local function animator(node, animations)
     currentFrame = 1
 
     -- update the sprite
-    node.sprite = animation.frames[currentFrame]
+    node.spriteRenderer:setSprite(animation, currentFrame)
 
     isAnimating = false
+  end
+
+  function self:isPlaying()
+    return isAnimating
   end
 
 
