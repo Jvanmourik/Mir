@@ -83,7 +83,7 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
       c = SpriteRenderer(self, options.atlas, options.sprite, options.layer)
       self.spriteRenderer = c
     elseif type == "animator" then
-      c = Animator(self, options.animations, options.animationName)
+      c = Animator(self, options.animations)
       self.animator = c
     elseif type == "collider" then
       c = Collider(self, options.bodyType)

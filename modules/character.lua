@@ -24,8 +24,6 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   self:addComponent("collider")
 
 
-
-
   ----------------------------------------------
   -- child nodes
   ----------------------------------------------
@@ -43,10 +41,8 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   -- animator component to animate the sprite
   graphic:addComponent("animator",
-  { animations = assets.character.animations,
-    animationName = "sword-shield-idle" })
-
-  graphic.animator:play("sword-shield-idle")
+  { animations = assets.character.animations })
+  graphic.animator:play("sword-shield-idle", 0)
 
   self:addChild(graphic)
 
