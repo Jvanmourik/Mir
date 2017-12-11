@@ -73,21 +73,21 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   function self:update(dt)
     -- character movement
-    if(lk.isDown("a")) then
+    if lk.isDown("a") then
       self.x = self.x - 250 * dt
     end
-    if(lk.isDown("d")) then
+    if lk.isDown("d") then
       self.x = self.x + 250 * dt
     end
-    if(lk.isDown("w")) then
+    if lk.isDown("w") then
       self.y = self.y - 250 * dt
     end
-    if(lk.isDown("s")) then
+    if lk.isDown("s") then
       self.y = self.y + 250 * dt
     end
 
     -- character attack
-    if(lm.isDown(1)) then
+    if lm.isDown(1) and not graphic.animator:isPlaying("sword-shield-stab") then
       -- change animation
       graphic.animator:play("sword-shield-stab", 1, function()
         graphic.animator:play("sword-shield-idle", 0)
