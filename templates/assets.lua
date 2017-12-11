@@ -1,10 +1,11 @@
 -- declare shorthand newQuad
 local quad = love.graphics.newQuad
 
+-- stores all possible animations
 local animations = {}
 
 -- makes referencing specific frames easier
-assets = {
+local assets = {
   character = {
     unarmed = {
       idle = {
