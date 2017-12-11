@@ -1,7 +1,7 @@
-local function animator(node, animations, animationName)
+local function animator(node, animations)
   local self = {}
 
-  local animation = animations[animationName]
+  local animation
   local currentFrame = 1
   local frameTime = 0
 
@@ -42,7 +42,6 @@ local function animator(node, animations, animationName)
 
       -- update the sprite
       node.spriteRenderer:setSprite(animation, currentFrame)
-
     end
   end
 
@@ -54,12 +53,18 @@ local function animator(node, animations, animationName)
     -- set animation
     animation = animations[animationName]
 
+<<<<<<< HEAD
     -- set amount of times to play, 0 = infinite loop
     if amount == 0 then isLooping = true else isLooping = false end --TODO: refactor
     iterationCount = amount or 1
 
     -- set callback
     _callback = callback
+=======
+     -- set amount of times to play, 0 = infinite loop
+    isLooping = (amount == 0) and true or false
+    altp = amount or 1
+>>>>>>> fb0314c6d23e2fe9eb803c154da122865daf94b1
 
     -- update the sprite
     node.sprite = animation.frames[currentFrame]
