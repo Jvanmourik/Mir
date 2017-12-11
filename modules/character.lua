@@ -91,10 +91,10 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
     -- character attack
     if(lm.isDown(1)) then
-      -- change sprite
-      --graphic.spriteRenderer:setSprite(assets.character.sword_shield.stab)
-
-      graphic.animator:play("sword-shield-stab", 1, function () print("klaar") end)
+      -- change animation
+      graphic.animator:play("sword-shield-stab", 1, function()
+        graphic.animator:play("sword-shield-idle", 0)
+      end)
 
       -- enable hitbox
       hitbox.collider.body:setActive(true)

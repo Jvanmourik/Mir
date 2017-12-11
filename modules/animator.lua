@@ -7,7 +7,8 @@ local function animator(node, animations, animationName)
 
   local isAnimating = false
   local isLooping = false
-  local altp = 0 -- Amount of times Left To Play animation
+  local iterationCount = 0
+  local _callback
 
   ----------------------------------------------
   -- methods
@@ -28,11 +29,13 @@ local function animator(node, animations, animationName)
         if currentFrame > #frames then
           if isLooping then
             currentFrame = 1
-          elseif altp > 1 then
-            altp = altp - 1
+          elseif iterationCount > 1 then
+            iterationCount = iterationCount - 1
             currentFrame = 1
           else
             self:stop()
+            if _callback then _callback() end
+            return
           end
         end
       end
@@ -53,7 +56,10 @@ local function animator(node, animations, animationName)
 
     -- set amount of times to play, 0 = infinite loop
     if amount == 0 then isLooping = true else isLooping = false end --TODO: refactor
-    altp = amount or 1
+    iterationCount = amount or 1
+
+    -- set callback
+    _callback = callback
 
     -- update the sprite
     node.sprite = animation.frames[currentFrame]
