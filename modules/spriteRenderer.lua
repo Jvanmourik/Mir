@@ -35,8 +35,9 @@ local function spriteRenderer(node, file, asset, layer)
       node.scaleX * scaleX, node.scaleY * scaleY, originX, originY)
   end
 
-  function self:setSprite(asset)
-    local sprite = asset.frames[1]
+  function self:setSprite(asset, frame)
+    local frame = frame or 1
+    local sprite = asset.frames[frame]
     local _, _, spriteWidth, spriteHeight = sprite:getViewport()
     local anchorX, anchorY = asset.anchorPoint
 

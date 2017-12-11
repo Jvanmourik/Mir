@@ -32,7 +32,7 @@ local function animator(node, animations, animationName)
 
       print(currentFrame)
       -- update the sprite
-      node.sprite = frames[currentFrame]
+      node.spriteRenderer:setSprite(animation, currentFrame)
 
     end
   end
