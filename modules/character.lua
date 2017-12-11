@@ -23,10 +23,7 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   -- collider component to collide with other collision objects
   self:addComponent("collider")
 
-  -- animator component to animate the sprite
-  self:addComponent("animator",
-  { animations = assets.character.animations,
-    animationName = "sword-shield-idle" })
+
 
 
   ----------------------------------------------
@@ -43,6 +40,13 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   { atlas = "character.png",
     sprite = assets.character.sword_shield.idle,
     layer = layer })
+
+  -- animator component to animate the sprite
+  graphic:addComponent("animator",
+  { animations = assets.character.animations,
+    animationName = "sword-shield-idle" })
+
+  graphic.animator:play("sword-shield-idle")
 
   self:addChild(graphic)
 

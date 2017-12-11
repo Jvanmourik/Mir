@@ -49,11 +49,12 @@ function love.update(dt)
 end
 
 function love.draw()
+
   -- draw scene
   scene:draw()
 
   local w, h = lg.getDimensions()
-  debugWorldDraw(world,0,0,w,h)
+  --debugWorldDraw(world,0,0,w,h)
 end
 
 -- gets called when two physic objects start colliding

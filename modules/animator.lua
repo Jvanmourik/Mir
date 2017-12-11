@@ -5,7 +5,7 @@ local function animator(node, animations, animationName)
   local currentFrame = 1
   local frameTime = 0
 
-  local isAnimating = true
+  local isAnimating = false
 
 
   ----------------------------------------------
@@ -30,17 +30,17 @@ local function animator(node, animations, animationName)
           if currentFrame > #frames then currentFrame = 1 end
       end
 
+      print(currentFrame)
       -- update the sprite
       node.sprite = frames[currentFrame]
 
-      print("updateAnimator")
     end
   end
 
   -- play animation
   function self:play(animationName, amount, callback)
     animation = animations[animationName]
-
+    print("play")
     -- update the sprite
     node.sprite = animation.frames[currentFrame]
 
