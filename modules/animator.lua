@@ -6,12 +6,8 @@ local function animator(node, animations, animationName)
   local frameTime = 0
 
   local isAnimating = false
-
-
-  ----------------------------------------------
-  -- attributes
-  ----------------------------------------------
-
+  local isLooping = false
+  local altp = 0 -- Amount of times Left To Play animation
 
   ----------------------------------------------
   -- methods
@@ -23,11 +19,22 @@ local function animator(node, animations, animationName)
       local interval = animation.interval
 
       -- frame timer
-      frameTime = frameTime + dt;
+      frameTime = frameTime + dt
       if frameTime >= interval then
-          frameTime = frameTime - interval;
-          currentFrame = currentFrame + 1
-          if currentFrame > #frames then currentFrame = 1 end
+        frameTime = frameTime - interval;
+        currentFrame = currentFrame + 1
+
+        -- if sequence ends
+        if currentFrame > #frames then
+          if isLooping then
+            currentFrame = 1
+          elseif altp > 1 then
+            altp = altp - 1
+            currentFrame = 1
+          else
+            self:stop()
+          end
+        end
       end
 
       -- update the sprite
@@ -38,7 +45,15 @@ local function animator(node, animations, animationName)
 
   -- play animation
   function self:play(animationName, amount, callback)
+    -- reset current frame
+    currentFrame = 1
+
+    -- set animation
     animation = animations[animationName]
+
+    -- set amount of times to play, 0 = infinite loop
+    if amount == 0 then isLooping = true else isLooping = false end --TODO: refactor
+    altp = amount or 1
 
     -- update the sprite
     node.sprite = animation.frames[currentFrame]
@@ -53,13 +68,11 @@ local function animator(node, animations, animationName)
 
   -- stop animation
   function self:stop()
-    local frames = animation.frames
-
     -- reset current frame
     currentFrame = 1
 
     -- update the sprite
-    node.sprite = frames[currentFrame]
+    node.sprite = animation.frames[currentFrame]
 
     isAnimating = false
   end
