@@ -30,7 +30,6 @@ local function animator(node, animations, animationName)
           if currentFrame > #frames then currentFrame = 1 end
       end
 
-      print(currentFrame)
       -- update the sprite
       node.spriteRenderer:setSprite(animation, currentFrame)
 
@@ -40,7 +39,7 @@ local function animator(node, animations, animationName)
   -- play animation
   function self:play(animationName, amount, callback)
     animation = animations[animationName]
-    print("play")
+
     -- update the sprite
     node.sprite = animation.frames[currentFrame]
 
