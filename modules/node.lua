@@ -1,3 +1,7 @@
+local SpriteRenderer = require "modules/spriteRenderer"
+local Animator = require "modules/animator"
+local Collider = require "modules/collider"
+
 local function node(x, y, w, h, r, sx, sy, ax, ay)
   local self = {}
 
@@ -11,6 +15,7 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
 
   self.parent = nil
   self.children = {}
+  self.components = {}
 
   self.x, self.y = x or 0, y or 0
   self.width, self.height = w or 0, h or 0
@@ -39,6 +44,23 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
     child.parent = self
   end
 
+  -- add component to self.components and self.<type>
+  function self:addComponent(type, options)
+    local options = options or {}
+    local c
+    if type == "spriteRenderer" then
+      c = SpriteRenderer(self, options.sprite, options.layer)
+      self.spriteRenderer = c
+    elseif type == "animator" then
+      c = Animator(self, options.animations, options.animationName)
+      self.animator = c
+    elseif type == "collider" then
+      c = Collider(self, options.bodyType)
+      self.collider = c
+    end
+    self.components[#self.components + 1] = c
+  end
+
   -- get coordinates in world space
   function self:getWorldCoords()
     if self.parent then
@@ -59,6 +81,12 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
     else
       return self.rotation
     end
+  end
+
+  -- rotate the node to make it look at a position
+  function self:lookAt(x, y)
+    local dx, dy = x - self.x, y - self.y
+    self.rotation = vector.angle(0, 1, dx, dy)
   end
 
 

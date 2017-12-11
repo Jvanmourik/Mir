@@ -7,14 +7,6 @@ local function animator(node, animations, animationName, startingFrame)
 
   local isAnimating = true
 
-
-  ----------------------------------------------
-  -- attributes
-  ----------------------------------------------
-
-
-
-
   ----------------------------------------------
   -- methods
   ----------------------------------------------

@@ -1,6 +1,4 @@
 local Node = require "modules/node"
-local SpriteRenderer = require "modules/spriteRenderer"
-local Animator = require "modules/animator"
 
 local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
@@ -9,24 +7,39 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local sprite = assets.kramer.graphics.walk.frames[1]
   local _, _, spriteWidth, spriteHeight = sprite:getViewport()
 
-
-  ----------------------------------------------
-  -- components
-  ----------------------------------------------
-
-  -- sprite renderer component to render the sprite
-  self.spriteRenderer = SpriteRenderer(self, sprite, layer)
-
-  -- animator component to animate the sprite
-  self.animator = Animator(self, assets.kramer.animations, "walk")
-
-
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
   self.width = w or spriteWidth
   self.height = h or spriteHeight
+
+
+  ----------------------------------------------
+  -- components
+  ----------------------------------------------
+
+  -- sprite renderer component to render the sprite
+  self:addComponent("spriteRenderer",
+  { sprite = sprite,
+    layer = layer })
+
+  -- animator component to animate the sprite
+  self:addComponent("animator",
+  { animations = assets.kramer.animations,
+    animationName = "walk" })
+
+  -- collider component to collide with other collision objects
+  self:addComponent("collider")
+
+
+  ----------------------------------------------
+
+  local hitbox = Node(10, 0, 25, 10, math.pi * 0)
+  hitbox.anchorX, hitbox.anchorY = 0, 0.5
+  hitbox:addComponent("collider")
+  hitbox.collider.body:setActive(false)
+  self:addChild(hitbox)
 
 
   ----------------------------------------------
@@ -38,18 +51,36 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     for i, id in ipairs(love.touch.getTouches()) do
       touch.x, touch.y = love.touch.getPosition(id)
     end
-    if(love.keyboard.isDown("a") or touch.x < self.x) then
+    if(lk.isDown("a") or touch.x < self.x) then
       self.x = self.x - 100 * dt
     end
-    if(love.keyboard.isDown("d") or touch.x > self.x) then
+    if(lk.isDown("d") or touch.x > self.x) then
       self.x = self.x + 100 * dt
     end
-    if(love.keyboard.isDown("w") or touch.y < self.y) then
+    if(lk.isDown("w") or touch.y < self.y) then
       self.y = self.y - 100 * dt
     end
-    if(love.keyboard.isDown("s") or touch.y > self.y) then
+    if(lk.isDown("s") or touch.y > self.y) then
       self.y = self.y + 100 * dt
     end
+
+    -- character attack
+    if(lm.isDown(1)) then
+      hitbox.collider.body:setActive(true)
+    else
+      hitbox.collider.body:setActive(false)
+    end
+
+    -- make character look at direction
+    self:lookAt(lm.getPosition())
+  end
+
+  function self:beginContact(f, contact)
+    print("beginContact")
+  end
+
+  function self:endContact(f, contact)
+    print("endContact")
   end
 
 
