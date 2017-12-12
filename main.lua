@@ -29,7 +29,8 @@ function love.load()
   local Scene = require "modules/scene"
 	local Tilemap = require "modules/tilemap"
   local Character = require "modules/character"
-
+	require "modules/map-functions"
+	loadMap()
   -- create scene
   scene = Scene(0, 0)
 
@@ -48,5 +49,6 @@ end
 
 function love.draw()
   -- draw scene
-  scene:draw()
+  drawMap()
+	scene:draw()
 end

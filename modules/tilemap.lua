@@ -15,15 +15,15 @@ local function tilemap()
 
   -- the actual world, can be as big as you want
   local tilemap = {
-    {3,1,1},
-    {1,2,3,1},
-    {1,1,1}
+  --  {3,1,1},
+  --  {1,2,3,1},
+  --  {1,1,1}
   }
 
   local heightmap = {
-    {0,0,0},
-    {0,1,0,0},
-    {0,0,0}
+  --  {0,0,0},
+  --  {0,1,0,0},
+  --  {0,0,0}
   }
 
   -- create a node for each tilemap entry
