@@ -63,7 +63,7 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   end
 
   function hitbox:endContact(f, contact)
-    print("endContact")
+    --print("endContact")
   end
 
 
@@ -73,21 +73,21 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   function self:update(dt)
     -- character movement
-    if lk.isDown("a") then
+    if input:isDown('a') then
       self.x = self.x - 250 * dt
     end
-    if lk.isDown("d") then
+    if input:isDown('d') then
       self.x = self.x + 250 * dt
     end
-    if lk.isDown("w") then
+    if input:isDown('w') then
       self.y = self.y - 250 * dt
     end
-    if lk.isDown("s") then
+    if input:isDown('s') then
       self.y = self.y + 250 * dt
     end
 
     -- character attack
-    if lm.isDown(1) and not graphic.animator:isPlaying("sword-shield-stab") then
+    if input:isPressed(1) and not graphic.animator:isPlaying("sword-shield-stab") then
       -- enable hitbox
       hitbox.collider.body:setActive(true)
 
@@ -96,8 +96,6 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
         graphic.animator:play("sword-shield-idle", 0)
         hitbox.collider.body:setActive(false)
       end)
-
-
     end
 
     -- make character look at direction

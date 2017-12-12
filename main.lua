@@ -20,12 +20,16 @@ function love.load()
 
   -- load libraries
   vector = require "lib/vector"
-  debugWorldDraw = require("lib/debugWorldDraw")
+  debugWorldDraw = require "lib/debugWorldDraw"
 
   -- load modules
+	local Input = require "modules/input"
   local Scene = require "modules/scene"
   local Character = require "modules/character"
   local Enemy = require "modules/enemy"
+
+	-- create input handler
+	input = Input()
 
   -- create a world for physic bodies to exist in
   world = lp.newWorld()
@@ -45,6 +49,8 @@ end
 function love.update(dt)
   -- update scene
   scene:update(dt)
+
+	-- update physic bodies
   world:update(dt)
 end
 
