@@ -10,8 +10,8 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   self.name = "character"
-  self.width = 40
-  self.height = 50
+  self.width = 80
+  self.height = 100
   self.anchorX = 0.5
   self.anchorY = 0.5
 
@@ -30,9 +30,6 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   local graphic = Node()
 
-  graphic.scaleX = 0.25
-  graphic.scaleY = 0.25
-
   -- sprite renderer component to render the sprite
   graphic:addComponent("spriteRenderer",
   { atlas = "character.png",
@@ -49,7 +46,7 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   ----------------------------------------------
 
-  local hitbox = Node(-10, 50, 25, 75, math.pi * 0)
+  local hitbox = Node(-20, 100, 50, 150, math.pi * 0)
 
   hitbox.anchorX, hitbox.anchorY = 0.5, 0
   hitbox:addComponent("collider")
@@ -59,7 +56,9 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   function hitbox:beginContact(f, contact)
     local collider = f:getUserData()
-    collider:damage()
+    if collider.name == "enemy" then
+      collider:damage()
+    end
   end
 
   function hitbox:endContact(f, contact)
@@ -74,16 +73,16 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   function self:update(dt)
     -- character movement
     if input:isDown('a') then
-      self.x = self.x - 250 * dt
+      self.x = self.x - 500 * dt
     end
     if input:isDown('d') then
-      self.x = self.x + 250 * dt
+      self.x = self.x + 500 * dt
     end
     if input:isDown('w') then
-      self.y = self.y - 250 * dt
+      self.y = self.y - 500 * dt
     end
     if input:isDown('s') then
-      self.y = self.y + 250 * dt
+      self.y = self.y + 500 * dt
     end
 
     -- character attack

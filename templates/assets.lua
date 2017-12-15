@@ -10,41 +10,34 @@ local assets = {
     unarmed = {
       idle = {
         frames = {
-          quad(218, 389, 252, 180, 538, 744),
-          quad(218, 389, 252, 180, 538, 744),
-          quad(218, 389, 252, 180, 538, 744),
-          quad(218, 389, 252, 180, 538, 744),
-          quad(218, 389, 252, 180, 538, 744)
+          quad(0, 377, 176, 90, 705, 467)
         },
         anchorX = 0.5,
         anchorY = 0.46,
-        sequence = {1, 2, 3, 3, 3, 4, 5},
+        sequence = {1},
         interval = 0.25
       }
     },
     sword_shield = {
       idle = {
         frames = {
-          quad(218, 0, 320, 389, 538, 744),
-          quad(218, 0, 320, 389, 538, 744),
-          quad(218, 0, 320, 389, 538, 744),
-          quad(218, 0, 320, 389, 538, 744)
+          quad(0, 0, 232, 372, 705, 467)
         },
-        anchorX = 0.7,
-        anchorY = 0.47,
-        sequence = {1, 2, 3, 4},
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1},
         interval = 0.25
       },
       stab = {
         frames = {
-          quad(0, 0, 218, 744, 538, 744),
-          quad(0, 0, 218, 744, 538, 744),
-          quad(0, 0, 218, 744, 538, 744)
+          quad(0, 0, 232, 372, 705, 467),
+          quad(237, 0, 232, 372, 705, 467),
+          quad(473, 0, 232, 372, 705, 467),
         },
-        anchorX = 0.35,
+        anchorX = 0.49,
         anchorY = 0.36,
-        sequence = {1, 2, 3},
-        interval = 0.25
+        sequence = {1, 2, 2, 3, 3, 3, 3, 2, 1},
+        interval = 0.075
       }
     },
     animations = character
