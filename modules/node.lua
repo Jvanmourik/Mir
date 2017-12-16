@@ -38,6 +38,15 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
     return getAllChildrenFrom(self)
   end
 
+  -- get child by name
+  function self:getChild(name)
+    for _, child in pairs(self:getAllChildren()) do
+      if child.name == name then
+        return child
+      end
+    end
+  end
+
   -- add child to self.children
   function self:addChild(child)
     self.children[#self.children + 1] = child

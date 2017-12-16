@@ -40,7 +40,7 @@ function love.load()
   scene.rootNode:addChild(c)
 
   e = Enemy(200, 100)
-  c.anchorX, c.anchorY = 0.5, 0.5
+  e.anchorX, e.anchorY = 0.5, 0.5
   scene.rootNode:addChild(e)
 end
 
