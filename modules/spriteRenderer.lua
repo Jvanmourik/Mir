@@ -24,13 +24,8 @@ local function spriteRenderer(node, sprite, layer)
     local originX = node.anchorX * spriteWidth
     local originY = node.anchorY * spriteHeight
 
-    -- scale
-    local scaleX = node.width / spriteWidth
-    local scaleY = node.height / spriteHeight
-
     -- draw sprite
-    lg.draw(atlas, node.sprite, x, y, r,
-      node.scaleX * scaleX, node.scaleY * scaleY, originX, originY)
+    lg.draw(atlas, node.sprite, x, y, r, scale, scale, originX, originY)
   end
 
 

@@ -12,6 +12,10 @@ function love.load()
 	lf = love.filesystem
  lp = love.physics
 
+  --set scale
+  scale = love.window.getPixelScale( )
+  love.graphics.scale(scale, scale)
+  
   -- set background color
   lg.setBackgroundColor(222, 222, 222)
 
@@ -20,12 +24,17 @@ function love.load()
 
   -- load libraries
   vector = require "lib/vector"
+  suit = require "lib/suit"
 
   -- load modules
   local Scene = require "modules/scene"
   local Character = require "modules/character"
   local Audio = require "modules/audio"
   local Enemy = require "modules/enemy"
+  local Gui = require "modules/gui"
+  
+  -- create gui
+  gui = Gui()
 
   -- create a world for physic bodies to exist in
   world = lp.newWorld()
@@ -45,6 +54,9 @@ function love.load()
 end
 
 function love.update(dt)
+  -- update GUI
+  gui:update(dt)
+
   -- update scene
   scene:update(dt)
 
@@ -53,8 +65,13 @@ function love.update(dt)
 end
 
 function love.draw()
-  -- draw scene
-  scene:draw()
+  if gameState == 0 then
+    -- draw GUI
+    suit.draw()
+  else
+    -- draw scene
+    scene:draw()
+  end
 end
 
 -- gets called when two physic objects start colliding

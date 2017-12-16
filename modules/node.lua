@@ -9,8 +9,6 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
   -- attributes
   ----------------------------------------------
 
-  scale = love.window.getPixelScale( )
-
   self.active = true
 
   self.parent = nil
@@ -20,7 +18,6 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
   self.x, self.y = x or 0, y or 0
   self.width, self.height = w or 0, h or 0
   self.rotation = r or 0
-  self.scaleX, self.scaleY = scale, scale
   self.anchorX, self.anchorY = ax or 0, ay or 0
 
 
