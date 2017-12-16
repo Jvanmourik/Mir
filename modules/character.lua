@@ -15,6 +15,8 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   self.anchorX = 0.5
   self.anchorY = 0.5
 
+  self.speed = 400
+
 
   ----------------------------------------------
   -- components
@@ -74,38 +76,67 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   function self:update(dt)
-    -- character movement
-    if input:isDown('a') then
-      self.x = self.x - 500 * dt
-    end
-    if input:isDown('d') then
-      self.x = self.x + 500 * dt
-    end
-    if input:isDown('w') then
-      self.y = self.y - 500 * dt
-    end
-    if input:isDown('s') then
-      self.y = self.y + 500 * dt
-    end
+    if #input.gamepads > 0 then
+      local gamepad = input.gamepads[1]
+      local leftX = gamepad:getAxis('leftx')
+      local leftY = gamepad:getAxis('lefty')
+      local rightX = gamepad:getAxis('rightx')
+      local rightY = gamepad:getAxis('righty')
 
-    if input.gamepads[1]:isPressed('a') then
-      print(true)
+      -- character movement
+      if vector.length(leftX, leftY) > 0.1 then
+        local dirX, dirY = vector.normalize(leftX, leftY)
+        self.x = self.x + self.speed * dt * leftX
+        self.y = self.y + self.speed * dt * leftY
+      end
+
+      -- make character look at direction
+      if vector.length(rightX, rightY) > 0.3 then
+        local dirX, dirY = vector.normalize(rightX, rightY)
+        self.rotation = vector.angle(0, 1, dirX, dirY)
+      end
+
+      -- character attack
+      if gamepad:isPressed('rightshoulder') and not graphic.animator:isPlaying("sword-shield-stab") then
+        -- enable hitbox
+        hitbox.collider.body:setActive(true)
+
+        -- change animation
+        graphic.animator:play("sword-shield-stab", 1, function()
+          graphic.animator:play("sword-shield-idle", 0)
+          hitbox.collider.body:setActive(false)
+        end)
+      end
+    else
+      -- character movement
+      if input:isDown('a') then
+        self.x = self.x - self.speed * dt
+      end
+      if input:isDown('d') then
+        self.x = self.x + self.speed * dt
+      end
+      if input:isDown('w') then
+        self.y = self.y - self.speed * dt
+      end
+      if input:isDown('s') then
+        self.y = self.y + self.speed * dt
+      end
+
+      -- make character look at direction
+      self:lookAt(lm.getPosition())
+
+      -- character attack
+      if input:isPressed(1) and not graphic.animator:isPlaying("sword-shield-stab") then
+        -- enable hitbox
+        hitbox.collider.body:setActive(true)
+
+        -- change animation
+        graphic.animator:play("sword-shield-stab", 1, function()
+          graphic.animator:play("sword-shield-idle", 0)
+          hitbox.collider.body:setActive(false)
+        end)
+      end
     end
-
-    -- character attack
-    if input:isPressed(1) and not graphic.animator:isPlaying("sword-shield-stab") then
-      -- enable hitbox
-      hitbox.collider.body:setActive(true)
-
-      -- change animation
-      graphic.animator:play("sword-shield-stab", 1, function()
-        graphic.animator:play("sword-shield-idle", 0)
-        hitbox.collider.body:setActive(false)
-      end)
-    end
-
-    -- make character look at direction
-    self:lookAt(lm.getPosition())
   end
 
 
