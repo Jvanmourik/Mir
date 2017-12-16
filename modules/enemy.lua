@@ -10,6 +10,8 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   self.name = "enemy"
+  self.scaleX = 0.5
+  self.scaleY = 0.5
 
   self.health = 1
 

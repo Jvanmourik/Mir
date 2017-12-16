@@ -10,9 +10,9 @@ local assets = {
     unarmed = {
       idle = {
         frames = {
-          quad(0, 377, 176, 90, 705, 467)
+          quad(0, 377, 126, 90, 705, 467)
         },
-        anchorX = 0.5,
+        anchorX = 0.50,
         anchorY = 0.46,
         sequence = {1},
         interval = 0.25

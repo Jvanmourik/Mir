@@ -4,6 +4,7 @@ function love.load()
 	li = love.image
 	la = love.audio
 	lm = love.mouse
+	lj = love.joystick
 	lk = love.keyboard
 	lt = love.timer
 	le = love.event
@@ -28,6 +29,10 @@ function love.load()
   local Character = require "modules/character"
   local Enemy = require "modules/enemy"
 
+	-- load controller mappings
+	local mappings = require 'mappings'
+	lj.loadGamepadMappings(mappings)
+
 	-- create input handler
 	input = Input()
 
@@ -44,6 +49,29 @@ function love.load()
 
   e = Enemy(200, 100)
   scene.rootNode:addChild(e)
+
+	--[[local joysticks = love.joystick.getJoysticks()
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'a', 'button', 2, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'b', 'button', 3, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'x', 'button', 1, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'y', 'button', 4, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'back', 'button', 9, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'guide', 'button', 13, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'start', 'button', 10, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'leftstick', 'button', 11, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'rightstick', 'button', 12, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'leftshoulder', 'button', 5, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'rightshoulder', 'button', 6, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'dpup', 'hat', 1, 'u')
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'dpdown', 'hat', 1, 'd')
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'dpleft', 'hat', 1, 'l')
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'dpright', 'hat', 1, 'r')
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'leftx', 'axis', 1, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'lefty', 'axis', 2, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'rightx', 'axis', 3, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'righty', 'axis', 6, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'triggerleft', 'axis', 4, nil)
+	love.joystick.setGamepadMapping(joysticks[1]:getGUID(), 'triggerright', 'axis', 5, nil)]]
 end
 
 function love.update(dt)
@@ -61,6 +89,19 @@ function love.draw()
   local w, h = lg.getDimensions()
   --debugWorldDraw(world,0,0,w,h)
 end
+
+--[[function love.joystickpressed(joystick,button)
+	print(button)
+end]]
+
+--[[function love.joystickhat(joystick, hat, direction)
+		print(hat)
+		print(direction)
+end]]
+
+--[[function love.joystickaxis(joystick, axis, value)
+	print(axis)
+end]]
 
 -- gets called when two physic objects start colliding
 function beginContact(f1, f2, contact)

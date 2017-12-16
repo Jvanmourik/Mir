@@ -17,3 +17,10 @@ function table.combine(t1, t2)
     t1[#t1 + 1] = value
   end
 end
+
+-- remove element from table identified by its key and return it
+function table.removekey(t, k)
+    local e = t[k]
+    t[k] = nil
+    return e
+end
