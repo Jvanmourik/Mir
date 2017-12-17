@@ -11,7 +11,7 @@ local function character(x, y, gamepad)
 
   self.name = "character"
   self.width = 40
-  self.height = 50
+  self.height = 40
   self.anchorX = 0.5
   self.anchorY = 0.5
 
@@ -30,34 +30,55 @@ local function character(x, y, gamepad)
   -- child nodes
   ----------------------------------------------
 
-  local graphic = Node()
+  local legs = Node()
 
-  graphic.scaleX = 0.5
-  graphic.scaleY = 0.5
+  legs.scaleX = 0.5
+  legs.scaleY = 0.5
 
   -- sprite renderer component to render the sprite
-  graphic:addComponent("spriteRenderer",
+  legs:addComponent("spriteRenderer",
+  { atlas = "character.png",
+    sprite = assets.character.legs.idle,
+    layer = layer })
+
+  -- animator component to animate the sprite
+  legs:addComponent("animator",
+  { animations = assets.character.animations })
+  legs.animator:play("legs-walk", 0)
+
+  self:addChild(legs)
+
+
+  ----------------------------------------------
+
+  local body = Node()
+
+  body.scaleX = 0.5
+  body.scaleY = 0.5
+
+  -- sprite renderer component to render the sprite
+  body:addComponent("spriteRenderer",
   { atlas = "character.png",
     sprite = assets.character.sword_shield.idle,
     layer = layer })
 
   -- animator component to animate the sprite
-  graphic:addComponent("animator",
+  body:addComponent("animator",
   { animations = assets.character.animations })
-  graphic.animator:play("sword-shield-idle", 0)
+  body.animator:play("sword-shield-idle", 0)
 
-  self:addChild(graphic)
+  self:addChild(body)
 
 
   ----------------------------------------------
 
-  local hitbox = Node(-10, 50, 25, 75, math.pi * 0)
+  local hitbox = Node(-10, 50, 25, 75)
 
   hitbox.anchorX, hitbox.anchorY = 0.5, 0
   hitbox:addComponent("collider")
   hitbox.collider.body:setActive(false)
 
-  self:addChild(hitbox)
+  body:addChild(hitbox)
 
   function hitbox:beginContact(f, contact)
     local collider = f:getUserData()
@@ -82,27 +103,42 @@ local function character(x, y, gamepad)
       local rightX = gamepad:getAxis('rightx')
       local rightY = gamepad:getAxis('righty')
 
-      -- character movement
+      -- left analog stick
       if vector.length(leftX, leftY) > 0.3 then
+        -- character movement
         local dirX, dirY = vector.normalize(leftX, leftY)
         self.x = self.x + self.speed * dt * leftX
         self.y = self.y + self.speed * dt * leftY
+
+        -- rotate legs at walking direction
+        local dirX, dirY = vector.normalize(leftX, leftY)
+        legs.rotation = vector.angle(0, 1, dirX, dirY)
+
+        -- animated legs
+        if not legs.animator:isPlaying("legs-walk") then
+          legs.animator:play("legs-walk", 0)
+        end
+      else
+        if not legs.animator:isPlaying("legs-idle") then
+          legs.animator:play("legs-idle", 0)
+        end
       end
 
-      -- make character look at direction
+      -- right analog stick
       if vector.length(rightX, rightY) > 0.3 then
+        -- make character look at direction
         local dirX, dirY = vector.normalize(rightX, rightY)
-        self.rotation = vector.angle(0, 1, dirX, dirY)
+        body.rotation = vector.angle(0, 1, dirX, dirY)
       end
 
       -- character attack
-      if gamepad:isPressed('rightshoulder') and not graphic.animator:isPlaying("sword-shield-stab") then
+      if gamepad:isPressed('rightshoulder') and not body.animator:isPlaying("sword-shield-stab") then
         -- enable hitbox
         hitbox.collider.body:setActive(true)
 
         -- change animation
-        graphic.animator:play("sword-shield-stab", 1, function()
-          graphic.animator:play("sword-shield-idle", 0)
+        body.animator:play("sword-shield-stab", 1, function()
+          body.animator:play("sword-shield-idle", 0)
           hitbox.collider.body:setActive(false)
         end)
       end
@@ -125,13 +161,13 @@ local function character(x, y, gamepad)
       self:lookAt(lm.getPosition())
 
       -- character attack
-      if input:isPressed(1) and not graphic.animator:isPlaying("sword-shield-stab") then
+      if input:isPressed(1) and not body.animator:isPlaying("sword-shield-stab") then
         -- enable hitbox
         hitbox.collider.body:setActive(true)
 
         -- change animation
-        graphic.animator:play("sword-shield-stab", 1, function()
-          graphic.animator:play("sword-shield-idle", 0)
+        body.animator:play("sword-shield-stab", 1, function()
+          body.animator:play("sword-shield-idle", 0)
           hitbox.collider.body:setActive(false)
         end)
       end

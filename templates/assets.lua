@@ -10,7 +10,7 @@ local assets = {
     unarmed = {
       idle = {
         frames = {
-          quad(0, 377, 126, 90, 705, 467)
+          quad(0, 377, 126, 90, 705, 493)
         },
         anchorX = 0.50,
         anchorY = 0.46,
@@ -21,7 +21,7 @@ local assets = {
     sword_shield = {
       idle = {
         frames = {
-          quad(0, 0, 232, 372, 705, 467)
+          quad(0, 0, 232, 372, 705, 493)
         },
         anchorX = 0.49,
         anchorY = 0.36,
@@ -30,14 +30,40 @@ local assets = {
       },
       stab = {
         frames = {
-          quad(0, 0, 232, 372, 705, 467),
-          quad(237, 0, 232, 372, 705, 467),
-          quad(473, 0, 232, 372, 705, 467),
+          quad(0, 0, 232, 372, 705, 493),
+          quad(237, 0, 232, 372, 705, 493),
+          quad(473, 0, 232, 372, 705, 493)
         },
         anchorX = 0.49,
         anchorY = 0.36,
         sequence = {1, 2, 2, 3, 3, 3, 3, 2, 1},
         interval = 0.05
+      }
+    },
+    legs = {
+      idle = {
+        frames = {
+          quad(136, 377, 70, 116, 705, 493)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1},
+        interval = 0.25
+      },
+      walk = {
+        frames = {
+          quad(136, 377, 70, 116, 705, 493),
+          quad(211, 377, 70, 116, 705, 493),
+          quad(286, 377, 70, 116, 705, 493),
+          quad(361, 377, 70, 116, 705, 493),
+          quad(436, 377, 70, 116, 705, 493),
+          quad(511, 377, 70, 116, 705, 493),
+          quad(586, 377, 70, 116, 705, 493)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1, 2, 4, 6, 4, 2, 1, 3, 5, 7, 5, 3},
+        interval = 0.08
       }
     },
     animations = character
@@ -48,5 +74,7 @@ local assets = {
 character["unarmed-idle"] = assets.character.unarmed.idle
 character["sword-shield-idle"] = assets.character.sword_shield.idle
 character["sword-shield-stab"] = assets.character.sword_shield.stab
+character["legs-idle"] = assets.character.legs.idle
+character["legs-walk"] = assets.character.legs.walk
 
 return assets

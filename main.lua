@@ -61,7 +61,7 @@ function love.draw()
   scene:draw()
 
   local w, h = lg.getDimensions()
-  debugWorldDraw(world,0,0,w,h)
+  --debugWorldDraw(world,0,0,w,h)
 end
 
 function love.joystickadded(joystick)
