@@ -1,7 +1,7 @@
 local Node = require "modules/node"
 
-local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
-  local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
+local function character(x, y, gamepad)
+  local self = Node(x, y)
 
   local assets = require "templates/assets"
 
@@ -76,15 +76,14 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   function self:update(dt)
-    if #input.gamepads > 0 then
-      local gamepad = input.gamepads[1]
+    if gamepad then
       local leftX = gamepad:getAxis('leftx')
       local leftY = gamepad:getAxis('lefty')
       local rightX = gamepad:getAxis('rightx')
       local rightY = gamepad:getAxis('righty')
 
       -- character movement
-      if vector.length(leftX, leftY) > 0.1 then
+      if vector.length(leftX, leftY) > 0.3 then
         local dirX, dirY = vector.normalize(leftX, leftY)
         self.x = self.x + self.speed * dt * leftX
         self.y = self.y + self.speed * dt * leftY

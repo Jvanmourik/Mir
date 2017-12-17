@@ -42,7 +42,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   function self:update(dt)
     -- make enemy look at character in a certain range
     local c = scene.rootNode:getChild("character")
-    if vector.length(self.x - c.x, self.y - c.y) < 200 then
+    if c and vector.length(self.x - c.x, self.y - c.y) < 200 then
       self:lookAt(c.x, c.y)
     end
   end

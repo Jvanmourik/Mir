@@ -24,10 +24,10 @@ function love.load()
   debugWorldDraw = require "lib/debugWorldDraw"
 
   -- load modules
-	local Input = require "modules/input"
-  local Scene = require "modules/scene"
-  local Character = require "modules/character"
-  local Enemy = require "modules/enemy"
+	Input = require "modules/input"
+  Scene = require "modules/scene"
+  Character = require "modules/character"
+  Enemy = require "modules/enemy"
 
 	-- load controller mappings
 	local mappings = require 'mappings'
@@ -44,9 +44,6 @@ function love.load()
   scene = Scene(0, 0)
 
   -- populate scene
-  c = Character(400, 300)
-  scene.rootNode:addChild(c)
-
   e = Enemy(200, 100)
   scene.rootNode:addChild(e)
 end
@@ -64,7 +61,16 @@ function love.draw()
   scene:draw()
 
   local w, h = lg.getDimensions()
-  --debugWorldDraw(world,0,0,w,h)
+  debugWorldDraw(world,0,0,w,h)
+end
+
+function love.joystickadded(joystick)
+	-- add player character when a controller gets connected
+	if joystick:isGamepad() then
+		local gamepad = input:getGamepad(joystick)
+		local c = Character(400, 300, gamepad)
+		scene.rootNode:addChild(c)
+	end
 end
 
 -- gets called when two physic objects start colliding

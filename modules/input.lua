@@ -8,22 +8,24 @@ local function input(...)
   local callbacks = {'keypressed', 'keyreleased',
   'mousepressed', 'mousereleased',
   'gamepadpressed', 'gamepadreleased', 'gamepadaxis',
-  'joystickadded', 'joystickremoved',
-  'update'}
+  'joystickadded', 'joystickremoved'}
   local _love = {}
   for _, c in pairs(callbacks) do
     _love[c] = love[c] or function() end
     love[c] = function(...)
-      _love[c](...)
       self[c](self, ...)
+      _love[c](...)
     end
   end
 
+  _love['update'] = love['update'] or function() end
+  love['update'] = function(...)
+    _love['update'](...)
+    self['update'](self, ...)
+  end
+
   -- gamepad object to keep track of individual gamepad states
-  local gamepad = {
-    prevState = {},
-    state = {}
-  }
+  local gamepad = {}
 
   ----------------------------------------------
   -- attributes
@@ -65,7 +67,10 @@ local function input(...)
   -- add new gamepad to the table self.gamepads
   function self:addGamepad(joystick)
     local gamepad = table.copy(gamepad)
+    gamepad.id, _ = joystick:getID()
     gamepad.joystick = joystick
+    gamepad.prevState = {}
+    gamepad.state = {}
     self.gamepads[#self.gamepads + 1] = gamepad
   end
 
@@ -80,8 +85,9 @@ local function input(...)
 
   -- get gamepad object by joystick
   function self:getGamepad(joystick)
+    local id, _ = joystick:getID()
     for _, gamepad in pairs(self.gamepads) do
-      if gamepad.joystick == joystick then
+      if id == gamepad.id then
         return gamepad
       end
     end

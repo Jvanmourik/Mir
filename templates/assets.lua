@@ -37,7 +37,7 @@ local assets = {
         anchorX = 0.49,
         anchorY = 0.36,
         sequence = {1, 2, 2, 3, 3, 3, 3, 2, 1},
-        interval = 0.075
+        interval = 0.05
       }
     },
     animations = character
