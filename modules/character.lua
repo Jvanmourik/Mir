@@ -37,8 +37,8 @@ local function character(x, y, gamepad)
 
   -- sprite renderer component to render the sprite
   legs:addComponent("spriteRenderer",
-  { atlas = "character.png",
-    sprite = assets.character.legs.idle,
+  { atlas = "images/character.png",
+    asset = assets.character.legs.idle,
     layer = layer })
 
   -- animator component to animate the sprite

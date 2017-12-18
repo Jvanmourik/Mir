@@ -80,7 +80,7 @@ local function node(x, y, w, h, r, sx, sy, ax, ay)
     local options = options or {}
     local c
     if type == "spriteRenderer" then
-      c = SpriteRenderer(self, options.atlas, options.sprite, options.layer)
+      c = SpriteRenderer(self, options.atlas, options.asset, options.layer)
       self.spriteRenderer = c
     elseif type == "animator" then
       c = Animator(self, options.animations)

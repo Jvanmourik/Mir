@@ -2,7 +2,7 @@ local function spriteRenderer(node, file, asset, layer)
   local self = {}
 
   local file = file or "atlas.png"
-  local atlas = lg.newImage("assets/images/" .. file)
+  local atlas = lg.newImage("assets/" .. file)
 
 
   ----------------------------------------------

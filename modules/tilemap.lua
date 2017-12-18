@@ -20,10 +20,12 @@ local function tilemap(name, x, y)
 
     -- add quads to tile table
     for j = 0, tc, 1 do
-      local column = j % (iw/tw)
-      local row = math.floor(j/(iw/tw))
+      local column = j % (iw / tw)
+      local row = math.floor(j / (iw / tw))
       tiles[i] = {
         atlas = ts.image,
+        width = tw,
+        height = th,
         quad = quad(column * tw, row * th, tw, th, iw, ih)
       }
       i = i + 1
@@ -32,19 +34,33 @@ local function tilemap(name, x, y)
 
   -- node factory
   for _, layer in pairs(exportedTable.layers) do
+    -- layer.width, layer.height
+    local i = 0
     if layer.data then
       for _, n in pairs(layer.data) do
-        local atlas = tiles[1].atlas
-        local quad = tiles[1].quad
-        local layer = 0
+        if n ~= 0 then
+          local tile = tiles[n]
 
-        -- create node
-        local tile = Node()
+          local atlas = "maps/" .. tile.atlas
 
-        -- sprite renderer component to render the sprite
-        tile.spriteRenderer = SpriteRenderer(tile, atlas, quad, layer)
+          local x = i % (layer.width - 1)
+          local y = math.floor(i / layer.width)
 
-        self:addChild(tile)
+          local asset = {
+            frames = {tile.quad},
+            anchorX = 0,
+            anchorY = 0
+          }
+
+          -- create node
+          local node = Node(x * tile.width, y * tile.height)
+
+          -- sprite renderer component to render the sprite
+          node.spriteRenderer = SpriteRenderer(node, atlas, asset, 0)
+
+          self:addChild(node)
+        end
+        i = i + 1
       end
     end
   end
