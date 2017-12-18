@@ -28,6 +28,7 @@ function love.load()
   Scene = require "modules/scene"
   Character = require "modules/character"
   Enemy = require "modules/enemy"
+  Tilemap = require "modules/tilemap"
 
 	-- load controller mappings
 	--local mappings = require 'mappings'
@@ -42,6 +43,8 @@ function love.load()
 
   -- create scene
   scene = Scene(0, 0)
+
+	map = Tilemap("level")
 
   -- populate scene
   --e = Enemy(200, 100)
