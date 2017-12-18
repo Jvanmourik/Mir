@@ -25,8 +25,8 @@ function love.load()
 	    -- Get player spawn object
 	    local player
 	    for k, object in pairs(map.objects) do
-	        if object.name == "enemySpawn" then
-	            player = object, object2
+	        if object.name == "playerSpawn" then
+	            player = object
 	            break
 	        end
 	    end
