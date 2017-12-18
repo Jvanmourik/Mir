@@ -1,54 +1,39 @@
+local sti = require "lib/sti"
+local map
+local world
+local tx, ty
+
 function love.load()
-  -- declare shorthand framework names
-	lg = love.graphics
-	li = love.image
-	la = love.audio
-	lm = love.mouse
-	lk = love.keyboard
-	lt = love.timer
-	le = love.event
-	ls = love.system
-	lw = love.window
-	lf = love.filesystem
+	-- Load map
+	map = sti("tiled/tilesets/level.lua", { "box2d" })
 
-  -- set background color
-  lg.setBackgroundColor(222, 222, 222)
+	-- Prepare translations
+	tx, ty = 0, 0
 
-  -- load extensions
-  require "extensions"
-
-  -- load libraries
-  vector = require "lib/vector"
-
-  -- load templates
-  --assets = require "templates/assets"
-  graphics = require "templates/graphics"
-  animations = require "templates/animations"
-
-  -- load modules
-  local Scene = require "modules/scene"
-	local Tilemap = require "modules/tilemap"
-  local Character = require "modules/character"
-	require "modules/map-functions"
-	loadMap()
-  -- create scene
-  scene = Scene(0, 0)
-
-  -- populate scene
-  local t = Tilemap()
-  scene.rootNode:addChild(t)
-
-  local c = Character(100, 100)
-  scene.rootNode:addChild(c)
+	-- Prepare physics world
+	--love.physics.setMeter(32)
+	--world = love.physics.newWorld(0, 0)
+	--map:box2d_init(world)
 end
 
 function love.update(dt)
-  -- update scene
-  scene:update(dt)
+	--world:update(dt)
+	--map:update(dt)
+
+	-- Move map
+	local kd = love.keyboard.isDown
+	local l  = kd("left")  or kd("a")
+	local r  = kd("right") or kd("d")
+	local u  = kd("up")    or kd("w")
+	local d  = kd("down")  or kd("s")
+
+	tx = l and tx - 128 * dt or tx
+	tx = r and tx + 128 * dt or tx
+	ty = u and ty - 128 * dt or ty
+	ty = d and ty + 128 * dt or ty
 end
 
 function love.draw()
-  -- draw scene
-  drawMap()
-	scene:draw()
+	-- Draw map
+	map:draw(-tx, -ty)
 end
