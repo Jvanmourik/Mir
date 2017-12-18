@@ -20,13 +20,13 @@ function love.load()
 	map = sti("tiled/tilesets/level.lua", { "box2d" })
 
 	    -- Create new dynamic data layer called "Sprites" as the 8th layer
-	    local layer = map:addCustomLayer("Sprites", 8)
+	    local layer = map:addCustomLayer("Sprites", 5)
 
 	    -- Get player spawn object
 	    local player
 	    for k, object in pairs(map.objects) do
-	        if object.name == "playerSpawn" then
-	            player = object
+	        if object.name == "enemySpawn" then
+	            player = object, object2
 	            break
 	        end
 	    end
@@ -59,7 +59,7 @@ function love.load()
 	        love.graphics.setPointSize(5)
 	        love.graphics.points(math.floor(self.player.x), math.floor(self.player.y))
 	    end
-
+	print(player.x)
 	-- Prepare translations
 	tx, ty = 0, 0
 
