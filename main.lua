@@ -6,7 +6,22 @@ local tx, ty
 function love.load()
 	-- Load map
 	map = sti("tiled/tilesets/level.lua", { "box2d" })
+	local Character = require "modules/character"
 
+	-- Creat
+	local layer = map:addCustomLayer("Sprites", 8)
+
+	local player
+	for k, object in pairs(map.objects) do
+		if object.name == "Player" then
+				player = object
+				break
+			end
+		end
+
+	-- Create player object
+	layer.player = Character(player.x, player.y)
+	scene.rootNode:addChild(c)
 	-- Prepare translations
 	tx, ty = 0, 0
 
