@@ -45,6 +45,7 @@ function love.load()
   scene = Scene(0, 0)
 
 	map = Tilemap("level")
+	scene.rootNode:addChild(map)
 
   -- populate scene
   --e = Enemy(200, 100)
