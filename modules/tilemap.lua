@@ -12,29 +12,30 @@ local function tilemap(name, x, y)
   local tiles = {}
 
   -- populate tiles table
-  local i = 1
+  local tileIndex = 1
   for _, ts in pairs(exportedTable.tilesets) do
     local tw, th = ts.tilewidth, ts.tileheight
     local iw, ih = ts.imagewidth, ts.imageheight
     local tc = ts.tilecount
 
     -- add quads to tile table
-    for j = 0, tc, 1 do
-      local column = j % (iw / tw)
-      local row = math.floor(j / (iw / tw))
-      tiles[i] = {
+    for i = 0, tc - 1, 1 do
+      local column = i % (iw / tw)
+      local row = math.floor(i / (iw / tw))
+      tiles[tileIndex] = {
         atlas = ts.image,
         width = tw,
         height = th,
         quad = quad(column * tw, row * th, tw, th, iw, ih)
       }
-      i = i + 1
+      tileIndex = tileIndex + 1
     end
   end
 
   -- node factory
+  local l = -100
   for _, layer in pairs(exportedTable.layers) do
-    -- layer.width, layer.height
+
     local i = 0
     if layer.data then
       for _, n in pairs(layer.data) do
@@ -43,7 +44,7 @@ local function tilemap(name, x, y)
 
           local atlas = "maps/" .. tile.atlas
 
-          local x = i % (layer.width - 1)
+          local x = i % (layer.width)
           local y = math.floor(i / layer.width)
 
           local asset = {
@@ -56,12 +57,13 @@ local function tilemap(name, x, y)
           local node = Node(x * tile.width, y * tile.height)
 
           -- sprite renderer component to render the sprite
-          node.spriteRenderer = SpriteRenderer(node, atlas, asset, 0)
+          node.spriteRenderer = SpriteRenderer(node, atlas, asset, l)
 
           self:addChild(node)
         end
         i = i + 1
       end
+      l = l + 1
     end
   end
 

@@ -31,25 +31,25 @@ function love.load()
   Tilemap = require "modules/tilemap"
 
 	-- load controller mappings
-	--local mappings = require 'mappings'
-	--lj.loadGamepadMappings(mappings)
+	local mappings = require 'mappings'
+	lj.loadGamepadMappings(mappings)
 
 	-- create input handler
-	--input = Input()
+	input = Input()
 
   -- create a world for physic bodies to exist in
-  --world = lp.newWorld()
-  --world:setCallbacks(beginContact, endContact)
+  world = lp.newWorld()
+  world:setCallbacks(beginContact, endContact)
 
   -- create scene
   scene = Scene(0, 0)
 
-	map = Tilemap("level")
+	map = Tilemap("level", 500, 300)
 	scene.rootNode:addChild(map)
 
   -- populate scene
-  --e = Enemy(200, 100)
-  --scene.rootNode:addChild(e)
+	local c = Character(400, 300, gamepad)
+	scene.rootNode:addChild(c)
 end
 
 function love.update(dt)
@@ -57,7 +57,7 @@ function love.update(dt)
   scene:update(dt)
 
 	-- update physic bodies
-  --world:update(dt)
+  world:update(dt)
 end
 
 function love.draw()
@@ -68,14 +68,14 @@ function love.draw()
   --debugWorldDraw(world,0,0,w,h)
 end
 
---[[function love.joystickadded(joystick)
+function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
 		local c = Character(400, 300, gamepad)
 		scene.rootNode:addChild(c)
 	end
-end]]
+end
 
 -- gets called when two physic objects start colliding
 function beginContact(f1, f2, contact)

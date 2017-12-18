@@ -39,12 +39,12 @@ local function character(x, y, gamepad)
   legs:addComponent("spriteRenderer",
   { atlas = "images/character.png",
     asset = assets.character.legs.idle,
-    layer = layer })
+    layer = 0 })
 
   -- animator component to animate the sprite
   legs:addComponent("animator",
   { animations = assets.character.animations })
-  legs.animator:play("legs-walk", 0)
+  legs.animator:play("legs-idle", 0)
 
   self:addChild(legs)
 
@@ -58,9 +58,9 @@ local function character(x, y, gamepad)
 
   -- sprite renderer component to render the sprite
   body:addComponent("spriteRenderer",
-  { atlas = "character.png",
-    sprite = assets.character.sword_shield.idle,
-    layer = layer })
+  { atlas = "images/character.png",
+    asset = assets.character.sword_shield.idle,
+    layer = 1 })
 
   -- animator component to animate the sprite
   body:addComponent("animator",
@@ -97,7 +97,9 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   function self:update(dt)
-    if gamepad then
+    if gamepad then -- gamepad
+
+      -- input
       local leftX = gamepad:getAxis('leftx')
       local leftY = gamepad:getAxis('lefty')
       local rightX = gamepad:getAxis('rightx')
@@ -105,29 +107,28 @@ local function character(x, y, gamepad)
 
       -- left analog stick
       if vector.length(leftX, leftY) > 0.3 then
-        -- character movement
         local dirX, dirY = vector.normalize(leftX, leftY)
+
+        -- character movement
         self.x = self.x + self.speed * dt * leftX
         self.y = self.y + self.speed * dt * leftY
 
         -- rotate legs at walking direction
-        local dirX, dirY = vector.normalize(leftX, leftY)
         legs.rotation = vector.angle(0, 1, dirX, dirY)
 
         -- animated legs
         if not legs.animator:isPlaying("legs-walk") then
           legs.animator:play("legs-walk", 0)
         end
-      else
-        if not legs.animator:isPlaying("legs-idle") then
-          legs.animator:play("legs-idle", 0)
-        end
+      elseif not legs.animator:isPlaying("legs-idle") then
+        legs.animator:play("legs-idle", 0)
       end
 
       -- right analog stick
       if vector.length(rightX, rightY) > 0.3 then
-        -- make character look at direction
         local dirX, dirY = vector.normalize(rightX, rightY)
+
+        -- make character look at direction
         body.rotation = vector.angle(0, 1, dirX, dirY)
       end
 
@@ -142,23 +143,38 @@ local function character(x, y, gamepad)
           hitbox.collider.body:setActive(false)
         end)
       end
-    else
-      -- character movement
-      if input:isDown('a') then
-        self.x = self.x - self.speed * dt
-      end
-      if input:isDown('d') then
-        self.x = self.x + self.speed * dt
-      end
-      if input:isDown('w') then
-        self.y = self.y - self.speed * dt
-      end
-      if input:isDown('s') then
-        self.y = self.y + self.speed * dt
+
+    else -- keyboard and mouse
+
+      -- input
+      local dirX, dirY = 0, 0
+      if input:isDown('a') or input:isDown('left') then dirX = -1 end
+      if input:isDown('d') or input:isDown('right') then dirX = 1 end
+      if input:isDown('w') or input:isDown('up') then dirY = -1 end
+      if input:isDown('s') or input:isDown('down') then dirY = 1 end
+
+      -- normalize input
+      dirX, dirY = vector.normalize(dirX, dirY)
+
+      -- arrow keys
+      if vector.length(dirX, dirY) > 0 then
+        -- character movement
+        self.x = self.x + self.speed * dt * dirX
+        self.y = self.y + self.speed * dt * dirY
+
+        -- rotate legs at walking direction
+        legs.rotation = vector.angle(0, 1, dirX, dirY)
+
+        -- animate legs
+        if not legs.animator:isPlaying("legs-walk") then
+          legs.animator:play("legs-walk", 0)
+        end
+      elseif not legs.animator:isPlaying("legs-idle") then
+        legs.animator:play("legs-idle", 0)
       end
 
       -- make character look at direction
-      self:lookAt(lm.getPosition())
+      body:lookAt(lm.getPosition())
 
       -- character attack
       if input:isPressed(1) and not body.animator:isPlaying("sword-shield-stab") then
@@ -171,6 +187,7 @@ local function character(x, y, gamepad)
           hitbox.collider.body:setActive(false)
         end)
       end
+
     end
   end
 
