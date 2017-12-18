@@ -26,12 +26,12 @@ function love.load()
   -- load modules
 	Input = require "modules/input"
   Scene = require "modules/scene"
+  Tilemap = require "modules/tilemap"
   Character = require "modules/character"
   Enemy = require "modules/enemy"
-  Tilemap = require "modules/tilemap"
 
 	-- load controller mappings
-	local mappings = require 'mappings'
+	local mappings = require "mappings"
 	lj.loadGamepadMappings(mappings)
 
 	-- create input handler
