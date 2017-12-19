@@ -54,14 +54,17 @@ function love.load()
 end
 
 function love.update(dt)
-  -- update GUI
-  gui:update(dt)
+  if gameState == 0 then
+    -- update GUI
+    gui:update(dt)
+  
+  else
+    -- update scene
+    scene:update(dt)
 
-  -- update scene
-  scene:update(dt)
-
-  -- update world
-  world:update(dt)
+    -- update world
+    world:update(dt)
+  end
 end
 
 function love.draw()
