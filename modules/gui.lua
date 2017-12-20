@@ -27,7 +27,7 @@ local function gui()
     suit.Label("Music", suit.layout:row(200 * scale, 20 * scale))
     suit.Slider(sliderM, suit.layout:row(200 * scale, 20 * scale))
     suit.Label(tostring(math.floor(sliderM.value * 100)).."%", suit.layout:col(200 * scale, 20 * scale))
-    bgMusic:setVolume(sliderM.value)
+    bgVolume(sliderM.value)
     
     suit.layout:left()
     
@@ -35,7 +35,7 @@ local function gui()
     suit.Label("Effects", suit.layout:row(200 * scale, 20 * scale))
     suit.Slider(sliderE, suit.layout:row(200 * scale, 20 * scale))
     suit.Label(tostring(math.floor(sliderE.value * 100).."%"), suit.layout:col(200 * scale, 20 * scale))
-    efMusic:setVolume(sliderE.value)
+    efVolume(sliderE.value)
     
     suit.layout:left()
     

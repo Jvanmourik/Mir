@@ -6,6 +6,7 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local assets = require "templates/assets"
   local sprite = assets.kramer.graphics.walk.frames[1]
   local _, _, spriteWidth, spriteHeight = sprite:getViewport()
+  local step = 0
 
   ----------------------------------------------
   -- attributes
@@ -47,26 +48,37 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   function self:update(dt)
+  
     touch = {x=self.x,y=self.y} 
     for i, id in ipairs(love.touch.getTouches()) do
       touch.x, touch.y = love.touch.getPosition(id)
     end
     if(lk.isDown("a") or touch.x < self.x) then
       self.x = self.x - 100 * dt
+      step = step + dt
     end
     if(lk.isDown("d") or touch.x > self.x) then
       self.x = self.x + 100 * dt
+      step = step + dt
     end
     if(lk.isDown("w") or touch.y < self.y) then
       self.y = self.y - 100 * dt
+      step = step + dt
     end
     if(lk.isDown("s") or touch.y > self.y) then
       self.y = self.y + 100 * dt
+      step = step + dt
+    end
+
+    if step > 1 then
+      step = 0
+      efMusic["step"]:play()
     end
 
     -- character attack
     if(lm.isDown(1)) then
       hitbox.collider.body:setActive(true)
+      efMusic["slash"]:play()
     else
       hitbox.collider.body:setActive(false)
     end
