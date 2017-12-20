@@ -44,7 +44,7 @@ function love.load()
   -- create scene
   scene = Scene(0, 0)
 
-	map = Tilemap("level", 500, 300)
+	map = Tilemap("level")
 	scene.rootNode:addChild(map)
 
   -- populate scene
