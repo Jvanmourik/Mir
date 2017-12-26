@@ -33,19 +33,17 @@ local function tilemap(name, x, y)
   end
 
   -- node factory
-  local l = -100
-  for _, layer in pairs(exportedTable.layers) do
+  for l, layer in ipairs(exportedTable.layers) do
 
-    local i = 0
-    if layer.data then
-      for _, n in pairs(layer.data) do
+    if layer.type == "tilelayer" then
+      for i, n in ipairs(layer.data) do
         if n ~= 0 then
           local tile = tiles[n]
 
           local atlas = "maps/" .. tile.atlas
 
-          local x = i % (layer.width)
-          local y = math.floor(i / layer.width)
+          local x = (i-1) % (layer.width)
+          local y = math.floor((i-1) / layer.width)
 
           local asset = {
             frames = {tile.quad},
@@ -61,9 +59,43 @@ local function tilemap(name, x, y)
 
           self:addChild(node)
         end
-        i = i + 1
       end
-      l = l + 1
+    elseif layer.type == "objectgroup" then
+      for _, object in pairs(layer.objects) do
+        -- create node
+        local node = Node(object.x, object.y, object.width, object.height)
+
+        -- set node name
+        node.name = object.name
+
+        -- if collision object
+        if object.type == "fixture" then
+          -- collider component to collide with other collision objects
+          local vertices = {}
+          local polygons = {{}}
+
+          if object.polygon then
+            for _, vertex in pairs(object.polygon) do
+              vertices[#vertices + 1] = vertex.x
+              vertices[#vertices + 1] = vertex.y
+            end
+            if #vertices > 16 then
+              polygons = love.math.triangulate(vertices)
+            else
+              polygons[1] = vertices
+            end
+          end
+
+          for _, polygon in pairs(polygons) do
+            node:addComponent("collider", {
+              bodyType = "static",
+              shapeType = object.shape,
+              vertices = polygon
+              })
+          end
+        end
+
+      end
     end
   end
 

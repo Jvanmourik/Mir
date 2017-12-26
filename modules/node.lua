@@ -88,7 +88,7 @@ local function node(x, y, w, h, r, sx, sy, ax, ay, l)
       c = Animator(self, options.animations)
       self.animator = c
     elseif type == "collider" then
-      c = Collider(self, options.bodyType)
+      c = Collider(self, options)
       self.collider = c
     end
     self.components[#self.components + 1] = c

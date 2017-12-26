@@ -1,7 +1,13 @@
-local function collider(node, bodyType)
+local function collider(node, options)
   local self = {}
 
-  local bodyType = bodyType or "dynamic"
+  local bodyType = options.bodyType or "dynamic"
+  local shapeType = options.shapeType or "rectangle"
+
+  local x = node.x + (node.width * node.scaleX) * (0.5 - node.anchorX)
+  local y = node.y + (node.height * node.scaleY) * (0.5 - node.anchorY)
+  local width = options.width or node.width
+  local height = options.height or node.height
 
   ----------------------------------------------
   -- attributes
@@ -9,18 +15,13 @@ local function collider(node, bodyType)
 
   self.active = true
 
-  local x = node.x + (node.width * node.scaleX) * (0.5 - node.anchorX)
-  local y = node.y + (node.height * node.scaleY) * (0.5 - node.anchorY)
-
-  self.body = lp.newBody(world, x, y, bodyType)
-  self.body:setSleepingAllowed(false)
-
-  self.shape = lp.newRectangleShape(node.width * node.scaleX,
-    node.height * node.scaleY)
-
-  self.fixture = lp.newFixture(self.body, self.shape)
-  self.fixture:setSensor(true)
-  self.fixture:setUserData(node)
+  if shapeType == "polygon" then
+    self.shape = HC.polygon(options.vertices)
+  elseif shapeType == "circle" then
+    self.shape = HC.circle(x, y, options.radius)
+  elseif shapeType == "rectangle" then
+    self.shape = HC.rectangle(x, y, width * node.scaleX, height * node.scaleY)
+  end
 
 
   ----------------------------------------------
@@ -28,20 +29,18 @@ local function collider(node, bodyType)
   ----------------------------------------------
 
   function self:update(dt)
-    if self.body:isActive() then
-      local x, y = node:getWorldCoords()
-      local r = node:getWorldRotation()
-      local offsetX = (node.width * node.scaleX) * (0.5 - node.anchorX)
-      local offsetY = (node.height * node.scaleY) * (0.5 - node.anchorY)
+    local x, y = node:getWorldCoords()
+    local r = node:getWorldRotation()
+    local offsetX = (node.width * node.scaleX) * (0.5 - node.anchorX)
+    local offsetY = (node.height * node.scaleY) * (0.5 - node.anchorY)
 
-      -- change offset based on rotation
-      local c, s = math.cos(r), math.sin(r)
-      offsetX, offsetY = offsetX * c - offsetY * s, offsetX * s + offsetY * c
+    -- change offset based on rotation
+    local c, s = math.cos(r), math.sin(r)
+    offsetX, offsetY = offsetX * c - offsetY * s, offsetX * s + offsetY * c
 
-      -- set position and rotation of the physic body
-      self.body:setPosition(x + offsetX, y + offsetY)
-      self.body:setAngle(r)
-    end
+    -- set position and rotation of the physic body
+    self.shape:moveTo(x + offsetX, y + offsetY)
+    self.shape:setRotation(r)
   end
 
 

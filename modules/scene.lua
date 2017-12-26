@@ -67,6 +67,15 @@ local function scene(...)
       local r = node:getWorldRotation()
       node.spriteRenderer:draw(x, y, r)
     end
+
+    -- draw all collision shapes
+    for _, node in pairs(self.rootNode:getAllChildren()) do
+      if node.collider then
+        lg.setColor(32,130,230, 100)
+        node.collider.shape:draw('fill')
+        lg.setColor(255,255,255)
+      end
+    end
   end
 
 

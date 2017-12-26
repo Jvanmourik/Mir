@@ -21,7 +21,7 @@ function love.load()
 
   -- load libraries
   vector = require "lib/vector"
-  debugWorldDraw = require "lib/debugWorldDraw"
+	HC = require "lib/HC"
 
   -- load modules
 	Input = require "modules/input"
@@ -37,35 +37,31 @@ function love.load()
 	-- create input handler
 	input = Input()
 
-  -- create a world for physic bodies to exist in
-  world = lp.newWorld()
-  world:setCallbacks(beginContact, endContact)
-
-  -- create scene
+  -- create scenewds
   scene = Scene(0, 0)
 
-	map = Tilemap("level")
-	scene.rootNode:addChild(map)
+	--map = Tilemap("level")
+	--scene.rootNode:addChild(map)
 
   -- populate scene
-	local c = Character(400, 300, gamepad)
+	local c = Character(600, 500, gamepad)
 	scene.rootNode:addChild(c)
+
+	--local e = Enemy(40, 30)
+	--scene.rootNode:addChild(e)
 end
 
 function love.update(dt)
   -- update scene
   scene:update(dt)
-
-	-- update physic bodies
-  world:update(dt)
 end
 
 function love.draw()
   -- draw scene
   scene:draw()
 
-  --local w, h = lg.getDimensions()
-  --debugWorldDraw(world,0,0,w,h)
+	-- draw collision objects
+	HC.rectangle(x, y, width * node.scaleX, height * node.scaleY)
 end
 
 function love.joystickadded(joystick)
