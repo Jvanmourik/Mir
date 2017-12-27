@@ -23,7 +23,11 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   -- collider component to collide with other collision objects
-  self:addComponent("collider")
+  self:addComponent("collider", {
+    shapeType = "circle",
+    radius = 20
+  })
+
 
 
   ----------------------------------------------
@@ -31,9 +35,7 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   local legs = Node()
-
-  legs.scaleX = 0.5
-  legs.scaleY = 0.5
+  legs.scale = 0.5
 
   -- sprite renderer component to render the sprite
   legs:addComponent("spriteRenderer",
@@ -52,9 +54,7 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   local body = Node()
-
-  body.scaleX = 0.5
-  body.scaleY = 0.5
+  body.scale = 0.5
 
   -- sprite renderer component to render the sprite
   body:addComponent("spriteRenderer",
@@ -73,17 +73,16 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   local hitbox = Node(-10, 50, 25, 75)
-
   hitbox.anchorX, hitbox.anchorY = 0.5, 0
+
   hitbox:addComponent("collider")
-  --hitbox.collider.body:setActive(false)
+  hitbox.collider.active = false
 
   body:addChild(hitbox)
 
-  function hitbox:beginContact(f, contact)
-    local collider = f:getUserData()
-    if collider.name == "enemy" then
-      collider:damage()
+  function hitbox:onCollisionEnter(dt, other, delta)
+    if other.name == "enemy" then
+      other:damage()
     end
   end
 
@@ -135,12 +134,12 @@ local function character(x, y, gamepad)
       -- character attack
       if gamepad:isPressed('rightshoulder') and not body.animator:isPlaying("sword-shield-stab") then
         -- enable hitbox
-        --hitbox.collider.body:setActive(true)
+        hitbox.collider.active = true
 
         -- change animation
         body.animator:play("sword-shield-stab", 1, function()
           body.animator:play("sword-shield-idle", 0)
-          --hitbox.collider.body:setActive(false)
+          hitbox.collider.active = false
         end)
       end
 
@@ -179,32 +178,22 @@ local function character(x, y, gamepad)
       -- character attack
       if input:isPressed(1) and not body.animator:isPlaying("sword-shield-stab") then
         -- enable hitbox
-        --hitbox.collider.body:setActive(true)
+        hitbox.collider.active = true
 
         -- change animation
         body.animator:play("sword-shield-stab", 1, function()
           body.animator:play("sword-shield-idle", 0)
-          --hitbox.collider.body:setActive(false)
+          hitbox.collider.active = false
         end)
       end
 
     end
   end
 
-  function self:beginContact(f, contact)
-    local collider = f:getUserData()
-    if collider.name == "unreachable" then
-      --print(contact:getSeparation())
-      local nx, ny = contact:getNormal()
-      if x2 then
-      local x1, y1, x2, y2 = contact:getPositions()
-
-      local distance = vector.length(x1 - x2, y1 - y2)
-      local tx, ty = nx * distance, ny * distance
-
-      self.x = self.x + tx
-      self.y = self.y + ty
-    end
+  function self:onCollision(dt, other, delta)
+    if other.name == "unreachable" then
+      self.x = self.x + delta.x
+      self.y = self.y + delta.y
     end
   end
 

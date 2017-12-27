@@ -39,16 +39,17 @@ function love.load()
 
   -- create scenewds
   scene = Scene(0, 0)
+	scene.debug = true
 
-	--map = Tilemap("level")
-	--scene.rootNode:addChild(map)
+	map = Tilemap("level")
+	scene.rootNode:addChild(map)
 
   -- populate scene
 	local c = Character(600, 500, gamepad)
 	scene.rootNode:addChild(c)
 
-	--local e = Enemy(40, 30)
-	--scene.rootNode:addChild(e)
+	local e = Enemy(100, 80)
+	scene.rootNode:addChild(e)
 end
 
 function love.update(dt)
@@ -60,8 +61,14 @@ function love.draw()
   -- draw scene
   scene:draw()
 
-	-- draw collision objects
-	HC.rectangle(x, y, width * node.scaleX, height * node.scaleY)
+	-- draw all collision shapes
+	--[[for _, node in pairs(scene.rootNode:getAllChildren()) do
+		if node.active and node.collider and node.collider.active then
+			lg.setColor(0, 255, 255, 100)
+			node.collider.shape:draw('fill')
+			lg.setColor(255, 255, 255)
+		end
+	end]]
 end
 
 function love.joystickadded(joystick)

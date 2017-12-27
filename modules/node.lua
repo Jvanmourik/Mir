@@ -2,7 +2,7 @@ local SpriteRenderer = require "modules/spriteRenderer"
 local Animator = require "modules/animator"
 local Collider = require "modules/collider"
 
-local function node(x, y, w, h, r, sx, sy, ax, ay, l)
+local function node(x, y, w, h, r, s, ax, ay, l)
   local self = {}
 
   ----------------------------------------------
@@ -22,7 +22,7 @@ local function node(x, y, w, h, r, sx, sy, ax, ay, l)
   self.x, self.y = x or 0, y or 0
   self.width, self.height = w or 0, h or 0
   self.rotation = r or 0
-  self.scaleX, self.scaleY = sx or 1, sy or 1
+  self.scale = s or 1
   self.anchorX, self.anchorY = ax or 0, ay or 0
 
 
@@ -92,10 +92,6 @@ local function node(x, y, w, h, r, sx, sy, ax, ay, l)
       self.collider = c
     end
     self.components[#self.components + 1] = c
-  end
-
-  function self:setActive(bool)
-    self.toBeRemoved = true
   end
 
   -- rotate the node to make it look at a position

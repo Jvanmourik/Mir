@@ -9,9 +9,9 @@ local function spriteRenderer(node, file, asset, layer)
   -- attributes
   ----------------------------------------------
 
+  self.active = true
   node.visible = true
   node.layer = layer or 0
-
 
 
   ----------------------------------------------
@@ -26,13 +26,13 @@ local function spriteRenderer(node, file, asset, layer)
     local originX = node.anchorX * spriteWidth
     local originY = node.anchorY * spriteHeight
 
-    -- scale
-    local scaleX = node.width / spriteWidth
-    local scaleY = node.height / spriteHeight
+    -- size
+    local sizeX = node.width / spriteWidth
+    local sizeY = node.height / spriteHeight
 
     -- draw sprite
     lg.draw(atlas, node.sprite, x, y, r,
-      node.scaleX * scaleX, node.scaleY * scaleY, originX, originY)
+      node.scale * sizeX, node.scale * sizeY, originX, originY)
   end
 
   function self:setSprite(asset, frame)

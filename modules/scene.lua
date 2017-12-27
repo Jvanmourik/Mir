@@ -25,7 +25,7 @@ local function scene(...)
 
           -- disable node collider
           if child.collider then
-            child.collider.body:setActive(false)
+            child.collider.active = false
           end
         else
           -- update node
@@ -35,7 +35,7 @@ local function scene(...)
 
           -- update all node components
           for _, component in pairs(child.components) do
-            if component.update then
+            if component.active and component.update then
               component:update(dt)
             end
           end
@@ -51,7 +51,7 @@ local function scene(...)
     -- get all drawable nodes
     local drawableNodes = {}
     for _, child in pairs(self.rootNode:getAllChildren()) do
-      if child.active and child.spriteRenderer then
+      if child.active and child.visible and child.spriteRenderer then
         drawableNodes[#drawableNodes + 1] = child
       end
     end
@@ -66,15 +66,6 @@ local function scene(...)
       local x, y = node:getWorldCoords()
       local r = node:getWorldRotation()
       node.spriteRenderer:draw(x, y, r)
-    end
-
-    -- draw all collision shapes
-    for _, node in pairs(self.rootNode:getAllChildren()) do
-      if node.collider then
-        lg.setColor(32,130,230, 100)
-        node.collider.shape:draw('fill')
-        lg.setColor(255,255,255)
-      end
     end
   end
 
