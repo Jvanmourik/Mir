@@ -7,6 +7,8 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local sprite = assets.kramer.graphics.walk.frames[1]
   local _, _, spriteWidth, spriteHeight = sprite:getViewport()
   local step = 0
+  local id = score:addPlayer()
+
 
   ----------------------------------------------
   -- attributes
@@ -90,7 +92,14 @@ local function character(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   function self:beginContact(f, contact)
     print("beginContact")
   end
-
+  
+  function hitbox:onCollisionEnter(dt, other, delta)
+    if other.name == "enemy" then
+      other:damage()
+      score:scoreUp(id)
+    end
+  end
+  
   function self:endContact(f, contact)
     print("endContact")
   end

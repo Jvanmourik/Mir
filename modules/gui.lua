@@ -8,7 +8,7 @@ local function gui()
   gameState = 0
   
   -- set font
-  local font = love.graphics.newFont(20 * scale)
+  local font = love.graphics.newFont(14 * scale)
   love.graphics.setFont(font)
   
   -- audio sliders

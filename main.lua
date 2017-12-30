@@ -32,9 +32,13 @@ function love.load()
   local Audio = require "modules/audio"
   local Enemy = require "modules/enemy"
   local Gui = require "modules/gui"
+  local Score = require "modules/score"
   
   -- create gui
   gui = Gui()
+  
+  -- create score
+  score = Score()
 
   -- create a world for physic bodies to exist in
   world = lp.newWorld()
@@ -74,6 +78,7 @@ function love.draw()
   else
     -- draw scene
     scene:draw()
+    score:draw()
   end
 end
 
