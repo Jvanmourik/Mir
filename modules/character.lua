@@ -39,7 +39,7 @@ local function character(x, y, gamepad)
 
   -- sprite renderer component to render the sprite
   legs:addComponent("spriteRenderer",
-  { atlas = "images/character.png",
+  { atlas = assets.character.atlas,
     asset = assets.character.legs.idle,
     layer = 0 })
 
@@ -58,7 +58,7 @@ local function character(x, y, gamepad)
 
   -- sprite renderer component to render the sprite
   body:addComponent("spriteRenderer",
-  { atlas = "images/character.png",
+  { atlas = assets.character.atlas,
     asset = assets.character.sword_shield.idle,
     layer = 1 })
 
@@ -173,7 +173,7 @@ local function character(x, y, gamepad)
       end
 
       -- make character look at direction
-      body:lookAt(lm.getPosition())
+      body:lookAt(camera:mousePosition())
 
       -- character attack
       if input:isPressed(1) and not body.animator:isPlaying("sword-shield-stab") then

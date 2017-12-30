@@ -1,5 +1,6 @@
--- declare shorthand newQuad
+-- declare shorthand newQuad and newImage
 local quad = love.graphics.newQuad
+local image = love.graphics.newImage
 
 -- makes referencing specific animations easier
 local character = {}
@@ -7,6 +8,7 @@ local character = {}
 -- stores all assets
 local assets = {
   character = {
+    atlas = image("assets/images/character.png"),
     unarmed = {
       idle = {
         frames = {

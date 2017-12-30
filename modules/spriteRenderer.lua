@@ -1,8 +1,5 @@
-local function spriteRenderer(node, file, asset, layer)
+local function spriteRenderer(node, atlas, asset, layer)
   local self = {}
-
-  local file = file or "atlas.png"
-  local atlas = lg.newImage("assets/" .. file)
 
 
   ----------------------------------------------
@@ -22,6 +19,9 @@ local function spriteRenderer(node, file, asset, layer)
     -- frame dimensions
     local _, _, spriteWidth, spriteHeight = node.sprite:getViewport()
 
+    -- scale
+    local scale = node:getWorldScale()
+
     -- origin offset
     local originX = node.anchorX * spriteWidth
     local originY = node.anchorY * spriteHeight
@@ -31,8 +31,7 @@ local function spriteRenderer(node, file, asset, layer)
     local sizeY = node.height / spriteHeight
 
     -- draw sprite
-    lg.draw(atlas, node.sprite, x, y, r,
-      node.scale * sizeX, node.scale * sizeY, originX, originY)
+    lg.draw(atlas, node.sprite, x, y, r, scale * sizeX, scale * sizeY, originX, originY)
   end
 
   function self:setSprite(asset, frame)

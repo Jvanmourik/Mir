@@ -60,9 +60,10 @@ local function node(x, y, w, h, r, s, ax, ay, l)
     if self.parent then
       local px, py = self.parent:getWorldCoords()
       local pr = self.parent:getWorldRotation()
+      local ps = self.parent:getWorldScale()
       local c, s = math.cos(pr), math.sin(pr)
     	local x, y = self.x * c - self.y * s, self.x * s + self.y * c
-    	return x + px, y + py
+    	return x * ps + px, y * ps + py
     else
       return self.x, self.y
     end
@@ -74,6 +75,15 @@ local function node(x, y, w, h, r, s, ax, ay, l)
       return self.rotation + self.parent:getWorldRotation()
     else
       return self.rotation
+    end
+  end
+
+  -- get scale in world space
+  function self:getWorldScale()
+    if self.parent then
+      return self.scale * self.parent:getWorldScale()
+    else
+      return self.scale
     end
   end
 

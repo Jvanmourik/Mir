@@ -21,7 +21,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   -- sprite renderer component to render the sprite
   self:addComponent("spriteRenderer",
-  { atlas = "images/character.png",
+  { atlas = assets.character.atlas,
     asset = assets.character.unarmed.idle,
     layer = layer })
 

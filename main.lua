@@ -14,7 +14,7 @@ function love.load()
   lp = love.physics
 
   -- set background color
-  lg.setBackgroundColor(255, 255, 255)
+  lg.setBackgroundColor(19, 19, 19)
 
   -- load extensions
   require "extensions"
@@ -22,6 +22,7 @@ function love.load()
   -- load libraries
   vector = require "lib/vector"
 	HC = require "lib/HC"
+	Camera = require "lib/camera"
 
   -- load modules
 	Input = require "modules/input"
@@ -41,12 +42,14 @@ function love.load()
   scene = Scene(0, 0)
 	scene.debug = true
 
-	map = Tilemap("level")
+	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
 
   -- populate scene
-	local c = Character(600, 500, gamepad)
+	c = Character(600, 500, gamepad)
 	scene.rootNode:addChild(c)
+
+	camera = Camera(c.x, c.y)
 
 	local e = Enemy(100, 80)
 	scene.rootNode:addChild(e)
@@ -55,11 +58,15 @@ end
 function love.update(dt)
   -- update scene
   scene:update(dt)
+	local dx,dy = c.x - camera.x, c.y - camera.y
+  camera:move(dx/2, dy/2)
 end
 
 function love.draw()
   -- draw scene
+	camera:attach()
   scene:draw()
+	camera:detach()
 
 	-- draw all collision shapes
 	--[[for _, node in pairs(scene.rootNode:getAllChildren()) do
