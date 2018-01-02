@@ -45,8 +45,6 @@ function love.load()
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
 
-
-
   -- populate scene
 	c = Character(600, 500, gamepad)
 	scene.rootNode:addChild(c)
@@ -69,16 +67,23 @@ function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
+	drawCollisionShapes()
 	camera:detach()
 
+
+end
+
+function drawCollisionShapes()
 	-- draw all collision shapes
-	--[[for _, node in pairs(scene.rootNode:getAllChildren()) do
+	for _, node in pairs(scene.rootNode:getAllChildren()) do
 		if node.active and node.collider and node.collider.active then
 			lg.setColor(0, 255, 255, 100)
 			node.collider.shape:draw('fill')
+			lg.setColor(0, 255, 255, 255)
+			node.collider.shape:draw('line')
 			lg.setColor(255, 255, 255)
 		end
-	end]]
+	end
 end
 
 function love.joystickadded(joystick)

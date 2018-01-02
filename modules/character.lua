@@ -213,8 +213,13 @@ local function character(x, y, gamepad)
   function self:onCollision(dt, other, delta)
     if other.name == "unreachable" then
       self.velocityX, self.velocityY = 0, 0
+      -- adjust character position
       self.x = self.x + delta.x
       self.y = self.y + delta.y
+
+      -- adjust collision shape position
+      local cx, cy = self.collider.shape:center()
+      self.collider.shape:moveTo(cx + delta.x, cy + delta.y)
     end
   end
 
