@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" nextobjectid="56">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" nextobjectid="70">
  <tileset firstgid="1" source="overworld.tsx"/>
  <layer name="Underground 4" width="30" height="12">
   <properties>
@@ -93,4 +93,39 @@
 14,65,118,19,138,90,18,138,142,142,142,40,41,41,45,195,198,198,221,171,171,171,171,171,171,222,198,221,171,171
 </data>
  </layer>
+ <objectgroup name="Objects">
+  <object id="56" name="Pit" type="Fixture" x="801.471" y="591.908">
+   <polygon points="-1.03445,-1.29306 -17.5248,15.5555 -113.663,15.476 -129.656,31.4692 -129.656,63.4155 -145.908,79.7074 -241.45,79.5484 -257.443,64.0129 -257.463,31.9269 -272.859,15.8342 -305.701,15.9538 -321.436,0.219171 -321.436,-32.225 -305.184,-48.3178 -209.026,-48.0591 -193.191,-64.0724 -193.391,-95.7006 -177.377,-112.907 -145.411,-112.907 -129.835,-96.2974 -130.015,-64.7687 -114.081,-48.3973 -18.4203,-48.7555 -0.855359,-31.6483"/>
+  </object>
+  <object id="57" name="Pit" type="Fixture" x="463.243" y="352.108">
+   <polygon points="0,0 16.5444,-16.5444 16.5444,-112.933 1.07898,-128.399 -32.0098,-128.399 -47.1155,-112.214 -47.1155,-79.8446 -62.5809,-64.7389 -159.689,-64.0196 -175.874,-47.8348 -175.514,47.8348 -159.689,63.6599 -126.6,63.3002 -111.854,47.4752 -111.495,14.7461 -96.389,0.35966"/>
+  </object>
+  <object id="58" name="Pit" type="Fixture" x="1327.51" y="415.833">
+   <polygon points="0,0 -15.5567,-15.8036 -16.0506,-111.86 0.740796,-128.158 96.5504,-128.158 112.848,-112.354 111.86,-16.0506 96.5504,0"/>
+  </object>
+  <object id="60" type="Fixture" x="-60.947" y="93.7647">
+   <polygon points="0,0 262.541,-2.34412 304.735,-63.2911 832.161,-63.2911 1010.31,126.582 1099.39,126.582 1204.88,2.34412 1654.95,-2.34412 1753.4,86.7323 1758.09,192.218 1919.83,189.873 1978.43,332.865 2046.41,332.865 2041.73,-138.303 2.34412,-140.647"/>
+  </object>
+  <object id="61" type="Fixture" x="986.873" y="815.752">
+   <polygon points="-2.34412,11.7206 0,-215.659 112.518,-210.97 225.035,-82.0441 618.847,-84.3882 661.041,-142.991 750.117,-147.679 787.623,-79.7 989.217,-82.0441 989.217,16.4088"/>
+  </object>
+  <object id="63" type="Fixture" x="-58.6029" y="93.7647" width="58.6029" height="736.053"/>
+  <object id="64" type="Fixture" x="-2.34412" y="768.87" width="993.905" height="60.947"/>
+  <object id="65" type="Fixture" x="1917.49" y="419.597" width="60.947" height="325.832"/>
+  <object id="66" name="Enemy" type="Location" x="682.341" y="253.127" width="64" height="64">
+   <properties>
+    <property name="Spawntype" value="Enemy"/>
+   </properties>
+  </object>
+  <object id="68" name="Player-start" type="Location" x="127.08" y="574.303" width="64" height="64">
+   <properties>
+    <property name="Spawntype" value="Player"/>
+   </properties>
+  </object>
+  <object id="69" name="Enemy" type="Location" x="1397.71" y="504.268" width="64" height="64">
+   <properties>
+    <property name="Spawntype" value="Enemy"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

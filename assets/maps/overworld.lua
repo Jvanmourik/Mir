@@ -8,7 +8,7 @@ return {
   height = 12,
   tilewidth = 64,
   tileheight = 64,
-  nextobjectid = 56,
+  nextobjectid = 70,
   properties = {},
   tilesets = {
     {
@@ -67,18 +67,6 @@ return {
       tilecount = 300,
       tiles = {
         {
-          id = 0,
-          terrain = { 0, 0, 0, -1 }
-        },
-        {
-          id = 1,
-          terrain = { 0, 0, -1, -1 }
-        },
-        {
-          id = 5,
-          terrain = { 0, 0, -1, 0 }
-        },
-        {
           id = 6,
           terrain = { 3, 3, 3, -1 }
         },
@@ -117,22 +105,6 @@ return {
         {
           id = 24,
           terrain = { 2, 2, 4, 2 }
-        },
-        {
-          id = 25,
-          terrain = { 0, -1, 0, -1 }
-        },
-        {
-          id = 26,
-          terrain = { -1, -1, -1, 0 }
-        },
-        {
-          id = 27,
-          terrain = { -1, -1, 0, -1 }
-        },
-        {
-          id = 28,
-          terrain = { 0, 0, 0, 0 }
         },
         {
           id = 31,
@@ -179,14 +151,6 @@ return {
           terrain = { 4, 4, 4, 4 }
         },
         {
-          id = 51,
-          terrain = { -1, 0, -1, -1 }
-        },
-        {
-          id = 52,
-          terrain = { 0, -1, -1, -1 }
-        },
-        {
           id = 57,
           terrain = { -1, 3, -1, -1 }
         },
@@ -209,14 +173,6 @@ return {
         {
           id = 71,
           terrain = { 2, 4, 4, 4 }
-        },
-        {
-          id = 76,
-          terrain = { 0, -1, -1, 0 }
-        },
-        {
-          id = 77,
-          terrain = { -1, 0, 0, -1 }
         },
         {
           id = 82,
@@ -336,15 +292,104 @@ return {
         },
         {
           id = 156,
-          terrain = { 2, 2, 2, -1 }
+          terrain = { 2, 2, 2, -1 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 2,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = 32.3255,
+                y = 64.1685,
+                width = 0,
+                height = 0,
+                rotation = 0,
+                visible = true,
+                polygon = {
+                  { x = -0.222341, y = -0.444682 },
+                  { x = -0.357076, y = -17.0618 },
+                  { x = 15.7144, y = -32.7055 },
+                  { x = 31.6578, y = -32.7055 },
+                  { x = 31.7218, y = -0.538941 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 157,
-          terrain = { 2, 2, -1, -1 }
+          terrain = { 2, 2, -1, -1 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "rectangle",
+                x = 64.1453,
+                y = 31.9542,
+                width = 31.7947,
+                height = 64.2565,
+                rotation = 90,
+                visible = true,
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 161,
-          terrain = { 2, 2, -1, 2 }
+          terrain = { 2, 2, -1, 2 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 2,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = -0.48247,
+                y = 31.843,
+                width = 0,
+                height = 0,
+                rotation = 90,
+                visible = true,
+                polygon = {
+                  { x = -0.222341, y = -0.444682 },
+                  { x = -0.357076, y = -17.0618 },
+                  { x = 15.7144, y = -32.7055 },
+                  { x = 31.6578, y = -32.7055 },
+                  { x = 31.7218, y = -0.538941 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 162,
@@ -388,15 +433,108 @@ return {
         },
         {
           id = 181,
-          terrain = { 2, -1, 2, -1 }
+          terrain = { 2, -1, 2, -1 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "rectangle",
+                x = 32.0039,
+                y = -0.321647,
+                width = 31.7947,
+                height = 64.2565,
+                rotation = 0,
+                visible = true,
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 182,
-          terrain = { -1, -1, -1, 2 }
+          terrain = { -1, -1, -1, 2 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 3,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = -0.160823,
+                y = -0.160823,
+                width = 0,
+                height = 0,
+                rotation = 0,
+                visible = true,
+                polygon = {
+                  { x = 0, y = 0 },
+                  { x = 64.2565, y = 0.11117 },
+                  { x = 64.4173, y = 31.8681 },
+                  { x = 48.0256, y = 32.0171 },
+                  { x = 32.1282, y = 47.9144 },
+                  { x = 32.1282, y = 63.7006 },
+                  { x = 0.333511, y = 64.0342 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 183,
-          terrain = { -1, -1, 2, -1 }
+          terrain = { -1, -1, 2, -1 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 2,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = 64.3294,
+                y = -0.643294,
+                width = 0,
+                height = 0,
+                rotation = 90,
+                visible = true,
+                polygon = {
+                  { x = 0, y = 0 },
+                  { x = 64.2565, y = 0.11117 },
+                  { x = 64.4173, y = 31.8681 },
+                  { x = 48.0256, y = 32.0171 },
+                  { x = 32.1282, y = 47.9144 },
+                  { x = 32.1282, y = 63.7006 },
+                  { x = 0.333511, y = 64.0342 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 187,
@@ -436,11 +574,79 @@ return {
         },
         {
           id = 207,
-          terrain = { -1, 2, -1, -1 }
+          terrain = { -1, 2, -1, -1 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 2,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = -3.55271e-15,
+                y = 64.3294,
+                width = 0,
+                height = 0,
+                rotation = 270,
+                visible = true,
+                polygon = {
+                  { x = 0, y = 0 },
+                  { x = 64.2565, y = 0.11117 },
+                  { x = 64.4173, y = 31.8681 },
+                  { x = 48.0256, y = 32.0171 },
+                  { x = 32.1282, y = 47.9144 },
+                  { x = 32.1282, y = 63.7006 },
+                  { x = 0.333511, y = 64.0342 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 208,
-          terrain = { 2, -1, -1, -1 }
+          terrain = { 2, -1, -1, -1 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 2,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = 64.651,
+                y = 64.3294,
+                width = 0,
+                height = 0,
+                rotation = 180,
+                visible = true,
+                polygon = {
+                  { x = 0, y = 0 },
+                  { x = 64.2565, y = 0.11117 },
+                  { x = 64.4173, y = 31.8681 },
+                  { x = 48.0256, y = 32.0171 },
+                  { x = 32.1282, y = 47.9144 },
+                  { x = 32.1282, y = 63.7006 },
+                  { x = 0.333511, y = 64.0342 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 213,
@@ -468,11 +674,85 @@ return {
         },
         {
           id = 232,
-          terrain = { 2, -1, -1, 2 }
+          terrain = { 2, -1, -1, 2 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 3,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = 0,
+                y = 65.2943,
+                width = 0,
+                height = 0,
+                rotation = 0,
+                visible = true,
+                polygon = {
+                  { x = -0.160823, y = -1.12576 },
+                  { x = -0.160823, y = -33.2904 },
+                  { x = 15.9215, y = -33.2904 },
+                  { x = 31.843, y = -49.0511 },
+                  { x = 31.6822, y = -65.616 },
+                  { x = 63.6861, y = -65.616 },
+                  { x = 63.8469, y = -32.9688 },
+                  { x = 47.7646, y = -33.2904 },
+                  { x = 31.6822, y = -17.3689 },
+                  { x = 32.0039, y = -1.12576 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 233,
-          terrain = { -1, 2, 2, -1 }
+          terrain = { -1, 2, 2, -1 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = -1.44741,
+                y = -7.10543e-15,
+                width = 0,
+                height = 0,
+                rotation = 90,
+                visible = true,
+                polygon = {
+                  { x = -0.160823, y = -1.12576 },
+                  { x = -0.160823, y = -33.2904 },
+                  { x = 15.9215, y = -33.2904 },
+                  { x = 31.843, y = -49.0511 },
+                  { x = 31.6822, y = -65.616 },
+                  { x = 63.6861, y = -65.616 },
+                  { x = 63.8469, y = -32.9688 },
+                  { x = 47.7646, y = -33.2904 },
+                  { x = 31.6822, y = -17.3689 },
+                  { x = 32.0039, y = -1.12576 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 238,
@@ -496,7 +776,32 @@ return {
         },
         {
           id = 261,
-          terrain = { -1, 2, -1, 2 }
+          terrain = { -1, 2, -1, 2 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "rectangle",
+                x = 0,
+                y = 0,
+                width = 31.7947,
+                height = 64.2565,
+                rotation = 0,
+                visible = true,
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 263,
@@ -535,12 +840,104 @@ return {
           terrain = { -1, 1, 1, 1 }
         },
         {
+          id = 281,
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 2,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = 64.651,
+                y = 31.6822,
+                width = 0,
+                height = 0,
+                rotation = 270,
+                visible = true,
+                polygon = {
+                  { x = -0.222341, y = -0.444682 },
+                  { x = -0.357076, y = -17.0618 },
+                  { x = 15.7144, y = -32.7055 },
+                  { x = 31.6578, y = -32.7055 },
+                  { x = 31.7218, y = -0.538941 }
+                },
+                properties = {}
+              }
+            }
+          }
+        },
+        {
           id = 285,
-          terrain = { -1, -1, 2, 2 }
+          terrain = { -1, -1, 2, 2 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 1,
+                name = "",
+                type = "",
+                shape = "rectangle",
+                x = 64,
+                y = 0,
+                width = 31.7947,
+                height = 64.2565,
+                rotation = 90,
+                visible = true,
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 286,
-          terrain = { -1, 2, 2, 2 }
+          terrain = { -1, 2, 2, 2 },
+          objectGroup = {
+            type = "objectgroup",
+            name = "",
+            visible = true,
+            opacity = 1,
+            offsetx = 0,
+            offsety = 0,
+            draworder = "index",
+            properties = {},
+            objects = {
+              {
+                id = 2,
+                name = "",
+                type = "",
+                shape = "polygon",
+                x = 31.5214,
+                y = -0.321647,
+                width = 0,
+                height = 0,
+                rotation = 180,
+                visible = true,
+                polygon = {
+                  { x = -0.222341, y = -0.444682 },
+                  { x = -0.357076, y = -17.0618 },
+                  { x = 15.7144, y = -32.7055 },
+                  { x = 31.6578, y = -32.7055 },
+                  { x = 31.7218, y = -0.538941 }
+                },
+                properties = {}
+              }
+            }
+          }
         },
         {
           id = 287,
@@ -716,6 +1113,250 @@ return {
         19, 19, 19, 19, 13, 14, 65, 282, 184, 0, 183, 286, 287, 145, 47, 170, 171, 175, 71, 25, 64, 14, 65, 41, 20, 72, 48, 71, 122, 47,
         19, 13, 18, 19, 38, 39, 142, 40, 282, 286, 287, 41, 41, 41, 45, 195, 198, 221, 175, 71, 21, 21, 21, 21, 72, 170, 171, 175, 71, 72,
         14, 65, 118, 19, 138, 90, 18, 138, 142, 142, 142, 40, 41, 41, 45, 195, 198, 198, 221, 171, 171, 171, 171, 171, 171, 222, 198, 221, 171, 171
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "Objects",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 56,
+          name = "Pit",
+          type = "Fixture",
+          shape = "polygon",
+          x = 801.471,
+          y = 591.908,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = -1.03445, y = -1.29306 },
+            { x = -17.5248, y = 15.5555 },
+            { x = -113.663, y = 15.476 },
+            { x = -129.656, y = 31.4692 },
+            { x = -129.656, y = 63.4155 },
+            { x = -145.908, y = 79.7074 },
+            { x = -241.45, y = 79.5484 },
+            { x = -257.443, y = 64.0129 },
+            { x = -257.463, y = 31.9269 },
+            { x = -272.859, y = 15.8342 },
+            { x = -305.701, y = 15.9538 },
+            { x = -321.436, y = 0.219171 },
+            { x = -321.436, y = -32.225 },
+            { x = -305.184, y = -48.3178 },
+            { x = -209.026, y = -48.0591 },
+            { x = -193.191, y = -64.0724 },
+            { x = -193.391, y = -95.7006 },
+            { x = -177.377, y = -112.907 },
+            { x = -145.411, y = -112.907 },
+            { x = -129.835, y = -96.2974 },
+            { x = -130.015, y = -64.7687 },
+            { x = -114.081, y = -48.3973 },
+            { x = -18.4203, y = -48.7555 },
+            { x = -0.855359, y = -31.6483 }
+          },
+          properties = {}
+        },
+        {
+          id = 57,
+          name = "Pit",
+          type = "Fixture",
+          shape = "polygon",
+          x = 463.243,
+          y = 352.108,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 16.5444, y = -16.5444 },
+            { x = 16.5444, y = -112.933 },
+            { x = 1.07898, y = -128.399 },
+            { x = -32.0098, y = -128.399 },
+            { x = -47.1155, y = -112.214 },
+            { x = -47.1155, y = -79.8446 },
+            { x = -62.5809, y = -64.7389 },
+            { x = -159.689, y = -64.0196 },
+            { x = -175.874, y = -47.8348 },
+            { x = -175.514, y = 47.8348 },
+            { x = -159.689, y = 63.6599 },
+            { x = -126.6, y = 63.3002 },
+            { x = -111.854, y = 47.4752 },
+            { x = -111.495, y = 14.7461 },
+            { x = -96.389, y = 0.35966 }
+          },
+          properties = {}
+        },
+        {
+          id = 58,
+          name = "Pit",
+          type = "Fixture",
+          shape = "polygon",
+          x = 1327.51,
+          y = 415.833,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = -15.5567, y = -15.8036 },
+            { x = -16.0506, y = -111.86 },
+            { x = 0.740796, y = -128.158 },
+            { x = 96.5504, y = -128.158 },
+            { x = 112.848, y = -112.354 },
+            { x = 111.86, y = -16.0506 },
+            { x = 96.5504, y = 0 }
+          },
+          properties = {}
+        },
+        {
+          id = 60,
+          name = "",
+          type = "Fixture",
+          shape = "polygon",
+          x = -60.947,
+          y = 93.7647,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 262.541, y = -2.34412 },
+            { x = 304.735, y = -63.2911 },
+            { x = 832.161, y = -63.2911 },
+            { x = 1010.31, y = 126.582 },
+            { x = 1099.39, y = 126.582 },
+            { x = 1204.88, y = 2.34412 },
+            { x = 1654.95, y = -2.34412 },
+            { x = 1753.4, y = 86.7323 },
+            { x = 1758.09, y = 192.218 },
+            { x = 1919.83, y = 189.873 },
+            { x = 1978.43, y = 332.865 },
+            { x = 2046.41, y = 332.865 },
+            { x = 2041.73, y = -138.303 },
+            { x = 2.34412, y = -140.647 }
+          },
+          properties = {}
+        },
+        {
+          id = 61,
+          name = "",
+          type = "Fixture",
+          shape = "polygon",
+          x = 986.873,
+          y = 815.752,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = -2.34412, y = 11.7206 },
+            { x = 0, y = -215.659 },
+            { x = 112.518, y = -210.97 },
+            { x = 225.035, y = -82.0441 },
+            { x = 618.847, y = -84.3882 },
+            { x = 661.041, y = -142.991 },
+            { x = 750.117, y = -147.679 },
+            { x = 787.623, y = -79.7 },
+            { x = 989.217, y = -82.0441 },
+            { x = 989.217, y = 16.4088 }
+          },
+          properties = {}
+        },
+        {
+          id = 63,
+          name = "",
+          type = "Fixture",
+          shape = "rectangle",
+          x = -58.6029,
+          y = 93.7647,
+          width = 58.6029,
+          height = 736.053,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 64,
+          name = "",
+          type = "Fixture",
+          shape = "rectangle",
+          x = -2.34412,
+          y = 768.87,
+          width = 993.905,
+          height = 60.947,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 65,
+          name = "",
+          type = "Fixture",
+          shape = "rectangle",
+          x = 1917.49,
+          y = 419.597,
+          width = 60.947,
+          height = 325.832,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 66,
+          name = "Enemy",
+          type = "Location",
+          shape = "rectangle",
+          x = 682.341,
+          y = 253.127,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["Spawntype"] = "Enemy"
+          }
+        },
+        {
+          id = 68,
+          name = "Player-start",
+          type = "Location",
+          shape = "rectangle",
+          x = 127.08,
+          y = 574.303,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["Spawntype"] = "Player"
+          }
+        },
+        {
+          id = 69,
+          name = "Enemy",
+          type = "Location",
+          shape = "rectangle",
+          x = 1397.71,
+          y = 504.268,
+          width = 64,
+          height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["Spawntype"] = "Enemy"
+          }
+        }
       }
     }
   }

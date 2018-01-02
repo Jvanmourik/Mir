@@ -51,7 +51,7 @@ function love.load()
 	c = Character(600, 500, gamepad)
 	scene.rootNode:addChild(c)
 
-	local e = Enemy(100, 80)
+	local e = Enemy(200, 180)
 	scene.rootNode:addChild(e)
 
 	camera = Camera(c.x, c.y)

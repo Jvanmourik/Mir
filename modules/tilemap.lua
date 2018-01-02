@@ -80,7 +80,7 @@ local function tilemap(name, x, y)
     elseif layer.type == "objectgroup" then
       for _, object in pairs(layer.objects) do
         -- check if it is a collision object
-        if object.type == "fixture" then
+        if object.type == "fixture" or object.type == "Fixture" then
           -- table to hold the polygon's vertices
           local vertices = {}
 
@@ -96,7 +96,7 @@ local function tilemap(name, x, y)
           local node = Node(object.x, object.y, object.width, object.height)
 
           -- set node name
-          node.name = object.name
+          node.name = "unreachable"
 
           -- add collider component to collide with other collision objects
           node:addComponent("collider", {
