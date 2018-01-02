@@ -31,7 +31,10 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     animationName = "walk" })]]
 
   -- collider component to collide with other collision objects
-  self:addComponent("collider")
+  self:addComponent("collider", {
+    shapeType = "circle",
+    radius = 40
+  })
 
 
   ----------------------------------------------

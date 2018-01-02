@@ -76,7 +76,7 @@ local function character(x, y, gamepad)
 
   ----------------------------------------------
 
-  local hitbox = Node(-10, 50, 25, 75)
+  local hitbox = Node(-20, 80, 25, 75)
   hitbox.anchorX, hitbox.anchorY = 0.5, 0
 
   hitbox:addComponent("collider")
