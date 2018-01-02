@@ -15,12 +15,19 @@ local function spriteRenderer(node, atlas, asset, layer)
   -- methods
   ----------------------------------------------
 
-  function self:draw(x, y, r)
-    -- frame dimensions
-    local _, _, spriteWidth, spriteHeight = node.sprite:getViewport()
+  function self:draw()
+
+    -- position
+    local x, y = node:getWorldCoords()
+
+    -- rotation
+    local r = node:getWorldRotation()
 
     -- scale
-    local scale = node:getWorldScale()
+    local s = node:getWorldScale()
+
+    -- frame dimensions
+    local _, _, spriteWidth, spriteHeight = node.sprite:getViewport()
 
     -- origin offset
     local originX = node.anchorX * spriteWidth
@@ -31,7 +38,7 @@ local function spriteRenderer(node, atlas, asset, layer)
     local sizeY = node.height / spriteHeight
 
     -- draw sprite
-    lg.draw(atlas, node.sprite, x, y, r, scale * sizeX, scale * sizeY, originX, originY)
+    lg.draw(atlas, node.sprite, x, y, r, s * sizeX, s * sizeY, originX, originY)
   end
 
   function self:setSprite(asset, frame)

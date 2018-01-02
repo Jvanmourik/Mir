@@ -63,9 +63,7 @@ local function scene(...)
 
     -- draw all drawable nodes
     for _, node in pairs(drawableNodes) do
-      local x, y = node:getWorldCoords()
-      local r = node:getWorldRotation()
-      node.spriteRenderer:draw(x, y, r)
+      node.spriteRenderer:draw()
     end
   end
 

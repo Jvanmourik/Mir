@@ -15,7 +15,12 @@ local function character(x, y, gamepad)
   self.anchorX = 0.5
   self.anchorY = 0.5
 
+  self.velocityX = 0
+  self.velocityY = 0
+  self.dragX = 3
+  self.dragY = 3
   self.speed = 400
+  self.rollSpeed = 1200
 
 
   ----------------------------------------------
@@ -27,7 +32,6 @@ local function character(x, y, gamepad)
     shapeType = "circle",
     radius = 20
   })
-
 
 
   ----------------------------------------------
@@ -155,24 +159,39 @@ local function character(x, y, gamepad)
       -- normalize input
       dirX, dirY = vector.normalize(dirX, dirY)
 
-      -- arrow keys
-      if vector.length(dirX, dirY) > 0 then
-        -- character movement
-        self.x = self.x + self.speed * dt * dirX
-        self.y = self.y + self.speed * dt * dirY
+      -- apply input multiplied with speed to velocity
+      if vector.length(self.velocityX, self.velocityY) <= self.speed then
+        self.velocityX, self.velocityY = dirX * self.speed, dirY * self.speed
 
-        -- rotate legs at walking direction
-        legs.rotation = vector.angle(0, 1, dirX, dirY)
+        if vector.length(dirX, dirY) > 0 then
+          -- character movement
+          if input:isPressed("space") then
+            self.velocityX, self.velocityY = dirX * self.rollSpeed, dirY * self.rollSpeed
+          end
 
-        -- animate legs
-        if not legs.animator:isPlaying("legs-walk") then
-          legs.animator:play("legs-walk", 0)
+          -- animate legs
+          if not legs.animator:isPlaying("legs-walk") then
+            legs.animator:play("legs-walk", 0)
+          end
+        elseif not legs.animator:isPlaying("legs-idle") then
+          legs.animator:play("legs-idle", 0)
         end
-      elseif not legs.animator:isPlaying("legs-idle") then
-        legs.animator:play("legs-idle", 0)
       end
 
+      -- add velocity to position
+      self.x = self.x + self.velocityX * dt
+      self.y = self.y + self.velocityY * dt
+
+      -- rotate legs at walking direction
+      legs.rotation = vector.angle(0, 1, self.velocityX, self.velocityY)
+
+      -- apply drag to velocity
+      self.velocityX = self.velocityX * (1 - self.dragX * dt)
+      self.velocityY = self.velocityY * (1 - self.dragY * dt)
+
       -- make character look at direction
+      local x,y = lm.getPosition()
+      local cx,cy = camera:mousePosition()
       body:lookAt(camera:mousePosition())
 
       -- character attack
@@ -187,11 +206,13 @@ local function character(x, y, gamepad)
         end)
       end
 
+
     end
   end
 
   function self:onCollision(dt, other, delta)
     if other.name == "unreachable" then
+      self.velocityX, self.velocityY = 0, 0
       self.x = self.x + delta.x
       self.y = self.y + delta.y
     end

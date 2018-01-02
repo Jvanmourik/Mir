@@ -14,8 +14,10 @@ local function layer(...)
 
   function self:update(dt)
     if self.scale ~= 1 then
-      self.x = (camera.x/self.width) * (self.width - self.width * self.scale)
-      self.y = (camera.y/self.height) * (self.height - self.height * self.scale)
+      local x = (camera.x/self.width) * (self.width - self.width * self.scale)
+      local y = (camera.y/self.height) * (self.height - self.height * self.scale)
+      self.x = math.floor(x + 0.5)
+      self.y = math.floor(y + 0.5)
     end
   end
 

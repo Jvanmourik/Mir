@@ -45,21 +45,24 @@ function love.load()
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
 
+
+
   -- populate scene
 	c = Character(600, 500, gamepad)
 	scene.rootNode:addChild(c)
 
-	camera = Camera(c.x, c.y)
-
 	local e = Enemy(100, 80)
 	scene.rootNode:addChild(e)
+
+	camera = Camera(c.x, c.y)
 end
 
 function love.update(dt)
   -- update scene
   scene:update(dt)
+
 	local dx,dy = c.x - camera.x, c.y - camera.y
-  camera:move(dx/2, dy/2)
+	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
 end
 
 function love.draw()
