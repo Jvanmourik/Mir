@@ -51,6 +51,7 @@ function love.load()
 
 	-- iterate through all spawn locations
 	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
+		-- set amount to spawn
 		local spawncount = location.properties.spawncount or 1
 		for i = 1, spawncount do
 			local x = location.x
