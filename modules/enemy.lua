@@ -15,7 +15,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   self.scale = 0.5
 
   self.health = 1
-
+  self.speed = 5
 
   ----------------------------------------------
   -- components

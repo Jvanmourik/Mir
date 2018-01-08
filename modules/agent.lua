@@ -7,6 +7,7 @@ local function agent(node)
   local ctimer = 60
   local dirX, dirY, length
   local deltaX, deltaY
+  local returning = false
   ----------------------------------------------
   -- methods
   ----------------------------------------------
@@ -50,12 +51,49 @@ local function agent(node)
     end]]
   end
 
-  function self:followPath(vertices)
-    local n = 1
-    local startX, endX, startY, endY = vertices[n], vertices[n + 2], vertices[n + 1], vertices[n + 3]
-    local deltaX = vertices[n + 2] - vertices[n]
-    local deltaY = vertices[n + 3] - vertices[n+ 1]
-    local length = vector.length(startx - node.x, starty - node.y)
+  function self:followPath(vertices, loop, n)
+    local n = n or 1
+    local loop = loop or true
+    if n + 3 <= #vertices and returning == false then
+      local startX, endX, startY, endY = vertices[n], vertices[n + 2], vertices[n + 1], vertices[n + 3]
+      local deltaX = endX - startX
+      local deltaY = endY - startY
+      local length = vector.length(endX - node.x, endY - node.y)
+      print(length)
+      local dirX, dirY = vector.normalize(deltaX, deltaY)
+      while length >= 0 do
+        node.x = node.x + dirX * node.speed
+        node.y = node.y + dirY * node.speed
+      end
+      self:followPath(vertices, loop, n + 2)
+    elseif n + 3 > #vertices and returning == false then
+      returning = true
+    elseif n > 1 and returning == true then
+      local startX, endX, startY, endY = vertices[n], vertices[n - 2], vertices[n + 1], vertices[n - 2]
+      local deltaX = endX - startX
+      local deltaY = endY - startY
+      local length = vector.length(endX - node.x, endY - node.y)
+      local dirX, dirY = vector.normalize(deltaX, deltaY)
+      while length >= 0 do
+        node.x = node.x + dirX * node.speed
+        node.y = node.y + dirY * node.speed
+      end
+      self:followPath(vertices, loop, n - 2)
+    elseif n <= 1 and returning == true then
+      returning = false
+    end
+  end
+
+  function self:toPoint(vertices, startX, endX, startY, endY)
+    local deltaX = endX - startX
+    local deltaY = endY - startY
+    local length = vector.length(startX - node.x, startY - node.y)
+    local dirX, dirY = vector.normalize(deltaX, deltaY)
+    while length >= 0 do
+      node.x = node.x + dirX * node.speed
+      node.y = node.y + dirY * node.speed
+    end
+    self:followPath(vertices, n)
   end
 
   function self:dodge(target)
