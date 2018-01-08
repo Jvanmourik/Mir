@@ -54,6 +54,20 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     end
   end
 
+  function self:onCollision(dt, other, delta)
+    if not other.collider.isSensor then
+      self.velocityX, self.velocityY = 0, 0
+      
+      -- adjust character position
+      self.x = self.x + delta.x
+      self.y = self.y + delta.y
+
+      -- adjust collision shape position
+      local cx, cy = self.collider.shape:center()
+      self.collider.shape:moveTo(cx + delta.x, cy + delta.y)
+    end
+  end
+
   function self:damage(amount)
     local amount = amount or 1
     self.health = self.health - amount

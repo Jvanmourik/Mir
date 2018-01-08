@@ -81,6 +81,7 @@ local function character(x, y, gamepad)
 
   hitbox:addComponent("collider")
   hitbox.collider.active = false
+  hitbox.collider.isSensor = true
 
   body:addChild(hitbox)
 
@@ -213,6 +214,7 @@ local function character(x, y, gamepad)
   function self:onCollision(dt, other, delta)
     if not other.collider.isSensor then
       self.velocityX, self.velocityY = 0, 0
+
       -- adjust character position
       self.x = self.x + delta.x
       self.y = self.y + delta.y
