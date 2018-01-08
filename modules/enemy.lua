@@ -38,6 +38,8 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     radius = 40
   })
 
+  -- agent component to implement AI
+  self:addComponent("agent")
 
   ----------------------------------------------
   -- methods

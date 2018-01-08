@@ -1,6 +1,7 @@
 local SpriteRenderer = require "modules/spriteRenderer"
 local Animator = require "modules/animator"
 local Collider = require "modules/collider"
+local Agent = require "modules/agent"
 
 local function node(x, y, w, h, r, s, ax, ay, l)
   local self = {}
@@ -131,6 +132,9 @@ local function node(x, y, w, h, r, s, ax, ay, l)
     elseif type == "collider" then
       c = Collider(self, options)
       self.collider = c
+    elseif type == "agent" then
+      c = Agent(self, options)
+      self.agent = c
     end
     self.components[#self.components + 1] = c
   end
