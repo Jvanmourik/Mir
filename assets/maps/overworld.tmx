@@ -144,47 +144,52 @@
 </data>
  </layer>
  <objectgroup name="Objects">
-  <object id="56" name="Pit" type="Fixture" x="801.471" y="591.908">
+  <object id="56" name="Pit" type="fixture" x="801.471" y="591.908">
    <polygon points="-1.03445,-1.29306 -17.5248,15.5555 -113.663,15.476 -129.656,31.4692 -129.656,63.4155 -145.908,79.7074 -241.45,79.5484 -257.443,64.0129 -257.463,31.9269 -272.859,15.8342 -305.701,15.9538 -321.436,0.219171 -321.436,-32.225 -305.184,-48.3178 -209.026,-48.0591 -193.191,-64.0724 -193.391,-95.7006 -177.377,-112.907 -145.411,-112.907 -129.835,-96.2974 -130.015,-64.7687 -114.081,-48.3973 -18.4203,-48.7555 -0.855359,-31.6483"/>
   </object>
-  <object id="57" name="Pit" type="Fixture" x="463.243" y="352.108">
+  <object id="57" name="Pit" type="fixture" x="463.243" y="352.108">
    <polygon points="0,0 16.5444,-16.5444 16.5444,-112.933 1.07898,-128.399 -32.0098,-128.399 -47.1155,-112.214 -47.1155,-79.8446 -62.5809,-64.7389 -159.689,-64.0196 -175.874,-47.8348 -175.514,47.8348 -159.689,63.6599 -126.6,63.3002 -111.854,47.4752 -111.495,14.7461 -96.389,0.35966"/>
   </object>
-  <object id="58" name="Pit" type="Fixture" x="1327.51" y="415.833">
+  <object id="58" name="Pit" type="fixture" x="1327.51" y="415.833">
    <polygon points="0,0 -15.5567,-15.8036 -16.0506,-111.86 0.740796,-128.158 96.5504,-128.158 112.848,-112.354 111.86,-16.0506 96.5504,0"/>
   </object>
-  <object id="60" type="Fixture" x="-60.947" y="93.7647">
+  <object id="60" type="fixture" x="-60.947" y="93.7647">
    <polygon points="0,0 262.541,-2.34412 304.735,-63.2911 832.161,-63.2911 1010.31,126.582 1099.39,126.582 1204.88,2.34412 1654.95,-2.34412 1753.4,86.7323 1758.09,192.218 1919.83,189.873 1978.43,332.865 2046.41,332.865 2041.73,-138.303 2.34412,-140.647"/>
   </object>
-  <object id="63" type="Fixture" x="-58.6029" y="93.7647" width="58.6029" height="701.912"/>
-  <object id="64" type="Fixture" x="-58.1083" y="795.148" width="289.882" height="322.697"/>
-  <object id="65" type="Fixture" x="1917.49" y="419.597" width="60.947" height="325.832"/>
-  <object id="66" name="Enemy" type="Location" x="682.341" y="253.127" width="64" height="64">
+  <object id="63" type="fixture" x="-58.6029" y="93.7647" width="58.6029" height="701.912"/>
+  <object id="64" type="fixture" x="-58.1083" y="795.148" width="289.882" height="322.697"/>
+  <object id="65" type="fixture" x="1917.49" y="419.597" width="60.947" height="325.832"/>
+  <object id="66" name="Enemy" type="location" x="560.037" y="259.798" width="300" height="135">
    <properties>
-    <property name="Spawntype" value="Enemy"/>
+    <property name="spawncount" type="int" value="3"/>
+    <property name="spawnposition" value="random"/>
+    <property name="spawntype" value="enemy"/>
    </properties>
   </object>
-  <object id="68" name="Player-start" type="Location" x="127.08" y="574.303" width="64" height="64">
+  <object id="68" name="Player-start" type="location" x="127.08" y="574.303" width="64" height="64">
    <properties>
-    <property name="Spawntype" value="Player"/>
+    <property name="spawnposition" value="center"/>
+    <property name="spawntype" value="player"/>
    </properties>
   </object>
-  <object id="69" name="Enemy" type="Location" x="1397.71" y="504.268" width="64" height="64">
+  <object id="69" name="Enemy" type="location" x="1397.71" y="504.268" width="64" height="64">
    <properties>
-    <property name="Spawntype" value="Enemy"/>
+    <property name="spawncount" type="int" value="1"/>
+    <property name="spawnposition" value="center"/>
+    <property name="spawntype" value="enemy"/>
    </properties>
   </object>
-  <object id="70" type="Fixture" x="-59.6395" y="1119.72" width="58.6029" height="284.403"/>
-  <object id="71" type="Fixture" x="-59.6395" y="1405.04" width="792.495" height="60.4793"/>
-  <object id="72" type="Fixture" x="1977.75" y="1243.86">
+  <object id="70" type="fixture" x="-59.6395" y="1119.72" width="58.6029" height="284.403"/>
+  <object id="71" type="fixture" x="-59.6395" y="1405.04" width="792.495" height="60.4793"/>
+  <object id="72" type="fixture" x="1977.75" y="1243.86">
    <polygon points="0,0 -140.133,0 -171.916,-56.3421 -268.708,-62.1208 -436.29,-254.262 -517.192,-254.262 -563.421,-322.161 -648.656,-320.717 -793.123,-472.407 -781.566,-509.968 -364.057,-509.968 -335.163,-572.089 -238.37,-573.534 -199.364,-507.079 -1.44467,-507.079"/>
   </object>
-  <object id="73" type="Fixture" x="1916.94" y="1245.64" width="60.947" height="161.14"/>
-  <object id="74" type="Fixture" x="1307.29" y="1405.99" width="672.042" height="62.9025"/>
-  <object id="75" type="Fixture" x="735.753" y="1469.56">
+  <object id="73" type="fixture" x="1916.94" y="1245.64" width="60.947" height="161.14"/>
+  <object id="74" type="fixture" x="1307.29" y="1405.99" width="672.042" height="62.9025"/>
+  <object id="75" type="fixture" x="735.753" y="1469.56">
    <polygon points="0,0 -3.9032,-142.467 -62.4512,-167.838 -68.306,-273.224 -165.886,-286.885 -212.724,-345.433 -267.369,-349.336 -269.321,-675.254 -208.821,-671.351 -175.644,-606.948 -11.7096,-606.948 -5.8548,-499.61 54.6448,-464.481 62.4512,-364.949 171.741,-361.046 275.176,-226.386 364.949,-222.482 403.981,-156.128 569.867,-154.176 573.77,1.9516"/>
   </object>
-  <object id="76" type="Fixture" x="447.493" y="770.065" width="21.692" height="378.706"/>
-  <object id="78" type="Fixture" x="232.285" y="769.613" width="21.692" height="378.706"/>
+  <object id="76" type="fixture" x="447.493" y="770.065" width="21.692" height="378.706"/>
+  <object id="78" type="fixture" x="232.285" y="769.613" width="21.692" height="378.706"/>
  </objectgroup>
 </map>

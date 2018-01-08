@@ -17,7 +17,7 @@ local function scene(...)
 
   function self:update(dt)
     -- update all nodes
-    for _, child in pairs(self.rootNode:getAllChildren()) do
+    for _, child in pairs(self.rootNode:getChildren()) do
       if child.active then
         if child.toBeRemoved then
           -- disable node
@@ -50,7 +50,7 @@ local function scene(...)
 
     -- get all drawable nodes
     local drawableNodes = {}
-    for _, child in pairs(self.rootNode:getAllChildren()) do
+    for _, child in pairs(self.rootNode:getChildren()) do
       if child.active and child.visible and child.spriteRenderer then
         drawableNodes[#drawableNodes + 1] = child
       end

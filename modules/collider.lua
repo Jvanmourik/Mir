@@ -56,7 +56,7 @@ local function collider(node, options)
 
     -- check if a collision has started
     for shape, delta in pairs(HC.collisions(self.shape)) do
-      for _, other in pairs(scene.rootNode:getAllChildren()) do
+      for _, other in pairs(scene.rootNode:getChildren()) do
         if other.collider and other.collider.active
           and other.collider.shape == shape then
           if node.onCollisionEnter and not collisions[shape] then

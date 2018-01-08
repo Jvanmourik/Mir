@@ -79,34 +79,33 @@ local function tilemap(name, x, y)
       end
     elseif layer.type == "objectgroup" then
       for _, object in pairs(layer.objects) do
-        -- check if it is a collision object
-        if object.type == "fixture" or object.type == "Fixture" then
-          -- table to hold the polygon's vertices
-          local vertices = {}
+        -- create node
+        local node = Node(object.x, object.y, object.width, object.height)
 
-          -- populate vertices table
-          if object.polygon then
-            for _, vertex in pairs(object.polygon) do
-              vertices[#vertices + 1] = vertex.x
-              vertices[#vertices + 1] = vertex.y
-            end
+        -- add properties
+        node.name = object.name
+        node.type = object.type
+        node.properties = object.properties
+
+        -- table to hold the polygon's vertices
+        local vertices = {}
+
+        -- populate vertices table
+        if object.polygon then
+          for _, vertex in pairs(object.polygon) do
+            vertices[#vertices + 1] = vertex.x
+            vertices[#vertices + 1] = vertex.y
           end
+        end
 
-          -- create node
-          local node = Node(object.x, object.y, object.width, object.height)
-
-          -- set node name
-          node.name = "unreachable"
-
-          -- add collider component to collide with other collision objects
-          node:addComponent("collider", {
+        -- add collider component to collide with other collision objects
+        node:addComponent("collider", {
             shapeType = object.shape,
             vertices = vertices
-            })
+          })
 
-          -- add child node to layer node
-          layerNode:addChild(node)
-        end
+        -- add child node to layer node
+        layerNode:addChild(node)
       end
     end
 

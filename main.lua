@@ -1,4 +1,5 @@
 function love.load()
+
   -- declare shorthand framework names
 	lg = love.graphics
 	li = love.image
@@ -12,6 +13,9 @@ function love.load()
 	lw = love.window
 	lf = love.filesystem
   lp = love.physics
+
+	-- set random seed so initial math.random() will always be different
+	math.randomseed(lt.getTime())
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
@@ -38,21 +42,43 @@ function love.load()
 	-- create input handler
 	input = Input()
 
-  -- create scenewds
+  -- create scene
   scene = Scene(0, 0)
-	scene.debug = true
 
+	-- create tilemap
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
 
-  -- populate scene
-	c = Character(600, 500, gamepad)
-	scene.rootNode:addChild(c)
+	-- iterate through all spawn locations
+	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
+		local spawncount = location.properties.spawncount or 1
+		for i = 1, spawncount do
+			local x = location.x
+			local y = location.y
 
-	local e = Enemy(200, 180)
-	scene.rootNode:addChild(e)
+			-- set spawn position
+			if location.properties.spawnposition == "center" then
+				x = location.x + location.width * 0.5
+				y = location.y + location.height * 0.5
+			elseif location.properties.spawnposition == "random" then
+				x = location.x + location.width * math.random()
+				y = location.y + location.height * math.random()
+			end
 
-	camera = Camera(c.x, c.y)
+			if location.properties.spawntype == "player" then
+				-- create player
+				c = Character(math.floor(x + 0.5), math.floor(y + 0.5))
+				scene.rootNode:addChild(c)
+
+				-- create camera
+				camera = Camera(c.x, c.y)
+			elseif location.properties.spawntype == "enemy" then
+				-- create enemy
+				local e = Enemy(x, y)
+				scene.rootNode:addChild(e)
+			end
+		end
+	end
 end
 
 function love.update(dt)
@@ -67,21 +93,27 @@ function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
-	drawCollisionShapes()
+	--drawCollisionShapes()
 	camera:detach()
-
-
 end
 
 function drawCollisionShapes()
 	-- draw all collision shapes
-	for _, node in pairs(scene.rootNode:getAllChildren()) do
+	for _, node in pairs(scene.rootNode:getChildren()) do
 		if node.active and node.collider and node.collider.active then
-			lg.setColor(0, 255, 255, 100)
-			node.collider.shape:draw('fill')
-			lg.setColor(0, 255, 255, 255)
-			node.collider.shape:draw('line')
-			lg.setColor(255, 255, 255)
+			if node.type == "location" then
+				lg.setColor(255, 255, 0, 100)
+				node.collider.shape:draw('fill')
+				lg.setColor(255, 255, 0, 255)
+				node.collider.shape:draw('line')
+				lg.setColor(255, 255, 255)
+			else
+				lg.setColor(0, 255, 255, 100)
+				node.collider.shape:draw('fill')
+				lg.setColor(0, 255, 255, 255)
+				node.collider.shape:draw('line')
+				lg.setColor(255, 255, 255)
+			end
 		end
 	end
 end
@@ -97,7 +129,7 @@ end
 
 -- gets called when two physic objects start colliding
 function beginContact(f1, f2, contact)
-  for _, node in pairs(scene.rootNode:getAllChildren()) do
+  for _, node in pairs(scene.rootNode:getChildren()) do
     if node.beginContact and node.collider then
       if node.collider.fixture == f1 then
         node:beginContact(f2, contact)
@@ -110,7 +142,7 @@ end
 
 -- gets called when two physic objects stop colliding
 function endContact(f1, f2, contact)
-  for _, node in pairs(scene.rootNode:getAllChildren()) do
+  for _, node in pairs(scene.rootNode:getChildren()) do
     if node.endContact and node.collider then
       if node.collider.fixture == f1 then
         node:endContact(f2, contact)

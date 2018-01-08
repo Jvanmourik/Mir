@@ -1223,7 +1223,7 @@ return {
         {
           id = 56,
           name = "Pit",
-          type = "Fixture",
+          type = "fixture",
           shape = "polygon",
           x = 801.471,
           y = 591.908,
@@ -1262,7 +1262,7 @@ return {
         {
           id = 57,
           name = "Pit",
-          type = "Fixture",
+          type = "fixture",
           shape = "polygon",
           x = 463.243,
           y = 352.108,
@@ -1293,7 +1293,7 @@ return {
         {
           id = 58,
           name = "Pit",
-          type = "Fixture",
+          type = "fixture",
           shape = "polygon",
           x = 1327.51,
           y = 415.833,
@@ -1316,7 +1316,7 @@ return {
         {
           id = 60,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "polygon",
           x = -60.947,
           y = 93.7647,
@@ -1346,7 +1346,7 @@ return {
         {
           id = 63,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = -58.6029,
           y = 93.7647,
@@ -1359,7 +1359,7 @@ return {
         {
           id = 64,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = -58.1083,
           y = 795.148,
@@ -1372,7 +1372,7 @@ return {
         {
           id = 65,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = 1917.49,
           y = 419.597,
@@ -1385,22 +1385,24 @@ return {
         {
           id = 66,
           name = "Enemy",
-          type = "Location",
+          type = "location",
           shape = "rectangle",
-          x = 682.341,
-          y = 253.127,
-          width = 64,
-          height = 64,
+          x = 560.037,
+          y = 259.798,
+          width = 300,
+          height = 135,
           rotation = 0,
           visible = true,
           properties = {
-            ["Spawntype"] = "Enemy"
+            ["spawncount"] = 3,
+            ["spawnposition"] = "random",
+            ["spawntype"] = "enemy"
           }
         },
         {
           id = 68,
           name = "Player-start",
-          type = "Location",
+          type = "location",
           shape = "rectangle",
           x = 127.08,
           y = 574.303,
@@ -1409,13 +1411,14 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["Spawntype"] = "Player"
+            ["spawnposition"] = "center",
+            ["spawntype"] = "player"
           }
         },
         {
           id = 69,
           name = "Enemy",
-          type = "Location",
+          type = "location",
           shape = "rectangle",
           x = 1397.71,
           y = 504.268,
@@ -1424,13 +1427,15 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["Spawntype"] = "Enemy"
+            ["spawncount"] = 1,
+            ["spawnposition"] = "center",
+            ["spawntype"] = "enemy"
           }
         },
         {
           id = 70,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = -59.6395,
           y = 1119.72,
@@ -1443,7 +1448,7 @@ return {
         {
           id = 71,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = -59.6395,
           y = 1405.04,
@@ -1456,7 +1461,7 @@ return {
         {
           id = 72,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "polygon",
           x = 1977.75,
           y = 1243.86,
@@ -1486,7 +1491,7 @@ return {
         {
           id = 73,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = 1916.94,
           y = 1245.64,
@@ -1499,7 +1504,7 @@ return {
         {
           id = 74,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = 1307.29,
           y = 1405.99,
@@ -1512,7 +1517,7 @@ return {
         {
           id = 75,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "polygon",
           x = 735.753,
           y = 1469.56,
@@ -1547,7 +1552,7 @@ return {
         {
           id = 76,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = 447.493,
           y = 770.065,
@@ -1560,7 +1565,7 @@ return {
         {
           id = 78,
           name = "",
-          type = "Fixture",
+          type = "fixture",
           shape = "rectangle",
           x = 232.285,
           y = 769.613,

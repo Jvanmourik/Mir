@@ -30,20 +30,51 @@ local function node(x, y, w, h, r, s, ax, ay, l)
   -- methods
   ----------------------------------------------
 
-  -- get all parents recursively
-  function self:getAllParents()
-    return getAllParentsFrom(self)
+  -- get parents recursively
+  function self:getParents()
+    return getParentsFrom(self)
   end
 
-  -- get all children recursively
-  function self:getAllChildren()
-    return getAllChildrenFrom(self)
+  -- get children recursively
+  function self:getChildren()
+    return getChildrenFrom(self)
+  end
+
+  -- get children by name
+  function self:getChildrenByName(name)
+    local children = {}
+    for _, child in pairs(getChildrenFrom(self)) do
+      if child.name == name then
+        children[#children + 1] = child
+      end
+    end
+    return children
+  end
+
+  -- get children by type
+  function self:getChildrenByType(type)
+    local children = {}
+    for _, child in pairs(getChildrenFrom(self)) do
+      if child.type == type then
+        children[#children + 1] = child
+      end
+    end
+    return children
   end
 
   -- get child by name
-  function self:getChild(name)
-    for _, child in pairs(self:getAllChildren()) do
+  function self:getChildByName(name)
+    for _, child in pairs(self:getChildren()) do
       if child.name == name then
+        return child
+      end
+    end
+  end
+
+  -- get child by type
+  function self:getChildByType(type)
+    for _, child in pairs(self:getChildren()) do
+      if child.type == type then
         return child
       end
     end
@@ -117,22 +148,22 @@ local function node(x, y, w, h, r, s, ax, ay, l)
   ----------------------------------------------
 
   -- helper method to get all parent from given node recursively
-  function getAllParentsFrom(node)
+  function getParentsFrom(node)
     local parents = {}
     if node.parent then
       parents[#parents + 1] = node.parent
-      table.combine(parents, getAllParentsFrom(node.parent))
+      table.combine(parents, getParentsFrom(node.parent))
     end
     return parents
   end
 
   -- helper method to get all children from given node recursively
-  function getAllChildrenFrom(node)
+  function getChildrenFrom(node)
     local children = {}
     for _, child in pairs(node.children) do
       children[#children + 1] = child
       if #child.children > 0 then
-        table.combine(children, getAllChildrenFrom(child))
+        table.combine(children, getChildrenFrom(child))
       end
     end
     return children
