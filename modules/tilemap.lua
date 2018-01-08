@@ -91,8 +91,9 @@ local function tilemap(name, x, y)
         local vertices = {}
 
         -- populate vertices table
-        if object.polygon then
-          for _, vertex in pairs(object.polygon) do
+        local points = object.polyline or object.polygon
+        if points then
+          for _, vertex in pairs(points) do
             vertices[#vertices + 1] = vertex.x
             vertices[#vertices + 1] = vertex.y
           end
