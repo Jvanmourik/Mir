@@ -1,59 +1,69 @@
 local Node = require "modules/node"
-local SpriteRenderer = require "modules/spriteRenderer"
-local Animator = require "modules/animator"
-local Agent = require "modules/agent"
 
 local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
+
   local assets = require "templates/assets"
-  local sprite = assets.redenemysprite.graphics.shrink.frames[1]
-  local atlas = lg.newImage("assets/images/redenemy.png")
+
+  ----------------------------------------------
+  -- attributes
+  ----------------------------------------------
+
+
+
+  self.name = "enemy"
+  self.scale = 0.5
+
+  self.health = 1
+
 
   ----------------------------------------------
   -- components
   ----------------------------------------------
 
   -- sprite renderer component to render the sprite
-  self.spriteRenderer = SpriteRenderer(self, sprite, layer, atlas)
+  self:addComponent("spriteRenderer",
+  { atlas = assets.character.atlas,
+    asset = assets.character.unarmed.idle,
+    layer = layer })
 
   -- animator component to animate the sprite
-  self.animator = Animator(self, assets.redenemysprite.animations, "shrink")
+  --[[self:addComponent("animator",
+  { animations = assets.kramer.animations,
+    animationName = "walk" })]]
 
-  -- agent component to add intelligent behaviour
-  self.agent = Agent(self)
+  -- collider component to collide with other collision objects
+  self:addComponent("collider", {
+    shapeType = "circle",
+    radius = 40
+  })
 
-
-  ----------------------------------------------
-  -- attributes
-  ----------------------------------------------
-
-  local _, _, spriteWidth, spriteHeight = sprite:getViewport()
-  self.width = w or spriteWidth
-  self.height = h or spriteHeight
-  self.speed = 2
-  self.target = scene.rootNode:getChild("character")
-  self.traveling = false
-  local startX = self.x
-  local startY = self.y
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
 
   function self:update(dt)
-    --[[if(self.agent:area(250, self.target)) then
-      self.agent:charge(self.target)
-    end]]
+    if not self.target then
+      self.target = scene.rootNode:getChildByName("character")
+    end
 
-  self.agent:patrolling(startX , 200, startY, startY)
+    -- make enemy look at character in a certain range
+    if self.target and vector.length(self.x - c.x, self.y - c.y) < 200 then
+      self:lookAt(c.x, c.y)
+    end
+  end
 
-  --self.agent:follow(self.target)
+  function self:damage(amount)
+    local amount = amount or 1
+    self.health = self.health - amount
+    if self.health <= 0 then
+      self:kill()
+    end
+  end
 
-  --[[if(self.agent:area(200, self.target) == false) then
-    self.agent:patrolling(startX, 250, startY, startY)
-  elseif(self.agent:insideScreen(self)) then
-    self.agent:follow(self.target)
-  end]]
+  function self:kill()
+    self.active = false
   end
 
 
