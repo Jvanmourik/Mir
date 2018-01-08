@@ -49,6 +49,15 @@ local function agent(node)
       node.y = node.y + node.y * angle
     end]]
   end
+
+  function self:followPath(vertices)
+    local n = 1
+    local startX, endX, startY, endY = vertices[n], vertices[n + 2], vertices[n + 1], vertices[n + 3]
+    local deltaX = vertices[n + 2] - vertices[n]
+    local deltaY = vertices[n + 3] - vertices[n+ 1]
+    local length = vector.length(startx - node.x, starty - node.y)
+  end
+
   function self:dodge(target)
     self:direction(target)
     node.x = node.x - dirX * node.speed
