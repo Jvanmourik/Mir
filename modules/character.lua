@@ -211,7 +211,7 @@ local function character(x, y, gamepad)
   end
 
   function self:onCollision(dt, other, delta)
-    if other.type == "fixture" then
+    if not other.collider.isSensor then
       self.velocityX, self.velocityY = 0, 0
       -- adjust character position
       self.x = self.x + delta.x

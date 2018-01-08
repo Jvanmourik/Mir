@@ -93,7 +93,7 @@ function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
-	--drawCollisionShapes()
+	drawCollisionShapes()
 	camera:detach()
 end
 
@@ -101,7 +101,7 @@ function drawCollisionShapes()
 	-- draw all collision shapes
 	for _, node in pairs(scene.rootNode:getChildren()) do
 		if node.active and node.collider and node.collider.active then
-			if node.type == "location" then
+			if node.collider.isSensor then
 				lg.setColor(255, 255, 0, 100)
 				node.collider.shape:draw('fill')
 				lg.setColor(255, 255, 0, 255)
@@ -125,30 +125,4 @@ function love.joystickadded(joystick)
 		local c = Character(400, 300, gamepad)
 		scene.rootNode:addChild(c)
 	end
-end
-
--- gets called when two physic objects start colliding
-function beginContact(f1, f2, contact)
-  for _, node in pairs(scene.rootNode:getChildren()) do
-    if node.beginContact and node.collider then
-      if node.collider.fixture == f1 then
-        node:beginContact(f2, contact)
-      elseif node.collider.fixture == f2 then
-        node:beginContact(f1, contact)
-      end
-    end
-  end
-end
-
--- gets called when two physic objects stop colliding
-function endContact(f1, f2, contact)
-  for _, node in pairs(scene.rootNode:getChildren()) do
-    if node.endContact and node.collider then
-      if node.collider.fixture == f1 then
-        node:endContact(f2, contact)
-      elseif node.collider.fixture == f2 then
-        node:endContact(f1, contact)
-      end
-    end
-  end
 end

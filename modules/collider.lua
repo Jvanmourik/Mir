@@ -16,6 +16,7 @@ local function collider(node, options)
   ----------------------------------------------
 
   self.active = true
+  self.isSensor = false
 
   if shapeType == "polygon" then
     self.shape = HC.polygon(unpack(options.vertices))

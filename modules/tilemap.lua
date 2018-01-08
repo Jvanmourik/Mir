@@ -104,6 +104,10 @@ local function tilemap(name, x, y)
             vertices = vertices
           })
 
+        if node.type == "location" then
+          node.collider.isSensor = true
+        end
+
         -- add child node to layer node
         layerNode:addChild(node)
       end
