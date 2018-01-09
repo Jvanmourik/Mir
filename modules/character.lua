@@ -21,7 +21,7 @@ local function character(x, y, gamepad)
   self.dragY = 3
   self.speed = 400
   self.rollSpeed = 1200
-
+  self.health = 1
 
   ----------------------------------------------
   -- components
@@ -221,6 +221,18 @@ local function character(x, y, gamepad)
       local cx, cy = self.collider.shape:center()
       self.collider.shape:moveTo(cx + delta.x, cy + delta.y)
     end
+  end
+
+  function self:damage(amount)
+    local amount = amount or 1
+    self.health = self.health - amount
+    if self.health <= 0 then
+      self:kill()
+    end
+  end
+
+  function self:kill()
+    self.active = false
   end
 
 

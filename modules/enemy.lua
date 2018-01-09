@@ -44,6 +44,24 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     radius = 40
   })
 
+  local hitbox = Node(-20, 80, 25, 75)
+  hitbox.anchorX, hitbox.anchorY = 0.5, 0
+
+  hitbox:addComponent("collider")
+  hitbox.collider.active = false
+
+  body:addChild(hitbox)
+
+  function hitbox:onCollisionEnter(dt, other, delta)
+    if other.name == "character" then
+      other:damage()
+    end
+  end
+
+  function hitbox:endContact(f, contact)
+    --print("endContact")
+  end
+
   -- agent component to implement AI
   self:addComponent("agent")
 
@@ -60,13 +78,13 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     if self.target and vector.length(self.x - c.x, self.y - c.y) < 200 then
       self:lookAt(c.x, c.y)
       -- enable hitbox
-      --hitbox.collider.active = true
+      hitbox.collider.active = true
 
       -- change animation
       if not body.animator:isPlaying("sword-shield-stab") then
         body.animator:play("sword-shield-stab", 1, function()
           body.animator:play("sword-shield-idle", 0)
-          --hitbox.collider.active = false
+          hitbox.collider.active = false
         end)
       end
     end
