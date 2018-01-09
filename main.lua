@@ -80,6 +80,16 @@ function love.load()
 			end
 		end
 	end
+
+	-- iterate through all paths
+	for _, path in pairs(scene.rootNode:getChildrenByType("path")) do
+		local x = path.vertices[1].x
+		local y = path.vertices[1].y
+
+		local e = Enemy(x, y)
+		e.agent:followPath(path, true)
+		scene.rootNode:addChild(e)
+	end
 end
 
 function love.update(dt)

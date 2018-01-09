@@ -91,12 +91,18 @@ local function tilemap(name, x, y)
         local vertices = {}
 
         -- populate vertices table
-        local points = object.polyline or object.polygon
-        if points then
-          for _, vertex in pairs(points) do
+        if object.polygon then
+          for _, vertex in pairs(object.polygon) do
             vertices[#vertices + 1] = vertex.x
             vertices[#vertices + 1] = vertex.y
           end
+        elseif object.polyline then
+          for _, vertex in pairs(object.polyline) do
+            vertices[#vertices + 1] = vertex
+            vertices[#vertices].x = vertices[#vertices].x + object.x
+            vertices[#vertices].y = vertices[#vertices].y + object.y
+          end
+          node.vertices = vertices
         end
 
         -- add collider component to collide with other collision objects
@@ -106,8 +112,6 @@ local function tilemap(name, x, y)
               shapeType = object.shape,
               vertices = vertices
             })
-        else
-          node.vertices = vertices
         end
 
         -- add child node to layer node

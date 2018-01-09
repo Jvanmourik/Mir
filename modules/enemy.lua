@@ -15,7 +15,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   self.scale = 0.5
 
   self.health = 1
-
+  self.speed = 100
 
   ----------------------------------------------
   -- components
@@ -38,6 +38,10 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     radius = 40
   })
 
+  -- agent component to implement AI
+  self:addComponent("agent")
+
+
 
   ----------------------------------------------
   -- methods
@@ -49,7 +53,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     end
 
     -- make enemy look at character in a certain range
-    if self.target and vector.length(self.x - c.x, self.y - c.y) < 200 then
+    if not self.agent.pathing and self.target and vector.length(self.x - c.x, self.y - c.y) < 200 then
       self:lookAt(c.x, c.y)
     end
   end
@@ -57,7 +61,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   function self:onCollision(dt, other, delta)
     if not other.collider.isSensor then
       self.velocityX, self.velocityY = 0, 0
-      
+
       -- adjust character position
       self.x = self.x + delta.x
       self.y = self.y + delta.y
