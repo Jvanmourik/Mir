@@ -22,15 +22,21 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   ----------------------------------------------
 
   -- sprite renderer component to render the sprite
-  self:addComponent("spriteRenderer",
+  local body = Node()
+
+  -- sprite renderer component to render the sprite
+  body:addComponent("spriteRenderer",
   { atlas = assets.character.atlas,
-    asset = assets.character.unarmed.idle,
-    layer = layer })
+    asset = assets.character.sword_shield.idle,
+    layer = 1 })
 
   -- animator component to animate the sprite
-  --[[self:addComponent("animator",
-  { animations = assets.kramer.animations,
-    animationName = "walk" })]]
+  body:addComponent("animator",
+  { animations = assets.character.animations })
+  body.animator:play("sword-shield-idle", 0)
+
+  self:addChild(body)
+
 
   -- collider component to collide with other collision objects
   self:addComponent("collider", {
@@ -53,6 +59,16 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     -- make enemy look at character in a certain range
     if self.target and vector.length(self.x - c.x, self.y - c.y) < 200 then
       self:lookAt(c.x, c.y)
+      -- enable hitbox
+      --hitbox.collider.active = true
+
+      -- change animation
+      if not body.animator:isPlaying("sword-shield-stab") then
+        body.animator:play("sword-shield-stab", 1, function()
+          body.animator:play("sword-shield-idle", 0)
+          --hitbox.collider.active = false
+        end)
+      end
     end
   end
 
