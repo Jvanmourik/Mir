@@ -96,11 +96,13 @@ local function tilemap(name, x, y)
             vertices[#vertices + 1] = vertex.x
             vertices[#vertices + 1] = vertex.y
           end
-        end
-
-        -- add polyLine to node
-        if object.polyline then
-          node.polyline = object.polyline
+        elseif object.polyline then
+          for _, vertex in pairs(object.polyline) do
+            vertices[#vertices + 1] = vertex
+            vertices[#vertices].x = vertices[#vertices].x + object.x
+            vertices[#vertices].y = vertices[#vertices].y + object.y
+          end
+          node.vertices = vertices
         end
 
         -- add collider component to collide with other collision objects

@@ -18,39 +18,33 @@ local function agent(node)
   local endX, endY
 
   ----------------------------------------------
+  -- attributes
+  ----------------------------------------------
+
+  self.active = true
+
+
+  ----------------------------------------------
   -- methods
   ----------------------------------------------
   function self:update(dt)
     if pathing then
-      local distanceToPoint = vector.length(node.x, node.y, endX, endY)
+      local deltaX = endX - node.x
+      local deltaY = endY - node.y
+      local distanceToPoint = vector.length(deltaX, deltaY)
       if distanceToPoint < 30 then
+        if mirror then
+          currentPoint = currentPoint - 1
+        else
+          currentPoint = currentPoint + 1
+        end
         _callback()
       else
-        local deltaX = target.x - node.x
-        local deltaY = target.y - node.y
         local dirX, dirY = vector.normalize(deltaX, deltaY)
         node.x = node.x + dirX * node.speed * dt
         node.y = node.y + dirY * node.speed * dt
+        node:lookAt(node.x + dirX, node.y + dirY)
       end
-
-
-      --[[if currentPoint < #vertices and returning == false and walking == false then
-        local startX = vertices[currentPoint].x
-        local startY = vertices[currentPoint].y
-        local endX = vertices[currentPoint + 1].x
-        local endY = vertices[currentPoint + 1].y
-        walking = true
-      elseif currentPoint >= #vertices and returning == false and walking == false then
-        returning = true
-      elseif currentPoint > 1 and returning == true and walking == false then
-        local startX = vertices[currentPoint].x
-        local startY = vertices[currentPoint].y
-        local endX = vertices[currentPoint - 1].x
-        local endY = vertices[currentPoint - 1].y
-      elseif currentPoint <= 1 and returning == true and walking == false then
-        returning = false
-      end
-    self:goToPoint(startX, endX, startY, endY)]]
     end
   end
 
@@ -69,38 +63,27 @@ local function agent(node)
       local dirX, dirY = vector.normalize(deltaX, deltaY)
       node.x = node.x + dirX * node.speed
       node.y = node.y + dirY * node.speed
-  end
-    --[[if(node.x > target.x and node.x > target.x + 25) then
-      node.x = node.x - node.x * angle
-    elseif(node.x < target.x - 25) then
-      deltax = target.x - node.x
-      deltay = target.y - node.y
-      angle = math.atan2(deltax, deltay)
-      node.x = node.x + node.x * angle
     end
-    if(node.y > target.y and node.y > target.y + 25) then
-      deltax = node.x - target.x
-      deltay = node.y - target.y
-      angle = math.atan2(deltax, deltay)
-      node.y = node.y - node.y * angle
-    elseif(node.y < target.y - 25) then
-      deltax = target.x - node.x
-      deltay = target.y - node.y
-      angle = math.atan2(deltax, deltay)
-      node.y = node.y + node.y * angle
-    end]]
   end
 
   function self:followPath(pathNode, isLooping)
     pathing = true
     currentPoint = 1
-    vertices = pathNode.polyline
+    vertices = pathNode.vertices
 
     self:goToPoint(vertices[currentPoint + 1].x, vertices[currentPoint + 1].y, handleNextPoint)
   end
 
   function handleNextPoint()
-    if currentPoint < #vertices then
+    if currentPoint < #vertices and not mirror then
+      self:goToPoint(vertices[currentPoint + 1].x, vertices[currentPoint + 1].y, handleNextPoint)
+    elseif currentPoint > 1 and mirror then
+      self:goToPoint(vertices[currentPoint - 1].x, vertices[currentPoint - 1].y, handleNextPoint)
+    elseif currentPoint == #vertices and not mirror then
+      mirror = true
+      self:goToPoint(vertices[currentPoint - 1].x, vertices[currentPoint - 1].y, handleNextPoint)
+    elseif currentPoint == 1 and mirror then
+      mirror = false
       self:goToPoint(vertices[currentPoint + 1].x, vertices[currentPoint + 1].y, handleNextPoint)
     else
       pathing = false
