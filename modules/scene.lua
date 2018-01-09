@@ -63,7 +63,11 @@ local function scene(...)
 
     -- draw all drawable nodes
     for _, node in pairs(drawableNodes) do
-      node.spriteRenderer:draw()
+      if node.active == true then
+        --node.spriteRenderer:draw()
+      else
+        print("No draw")
+      end
     end
   end
 

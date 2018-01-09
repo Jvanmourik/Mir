@@ -232,6 +232,7 @@ local function character(x, y, gamepad)
   end
 
   function self:kill()
+    legs.animator:stop()
     self.active = false
   end
 
