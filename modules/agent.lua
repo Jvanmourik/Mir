@@ -7,13 +7,53 @@ local function agent(node)
   local ctimer = 60
   local dirX, dirY, length
   local deltaX, deltaY
-  local returning = false
+
+  local pathing = false
+  local mirror = false
+  local isLooping = false
+  local currentPoint
+  local vertices
+  local isWalking = false
+  local _callback
+  local endX, endY
+
   ----------------------------------------------
   -- methods
   ----------------------------------------------
   function self:update(dt)
+    if pathing then
+      local distanceToPoint = vector.length(node.x, node.y, endX, endY)
+      if distanceToPoint < 30 then
+        _callback()
+      else
+        local deltaX = target.x - node.x
+        local deltaY = target.y - node.y
+        local dirX, dirY = vector.normalize(deltaX, deltaY)
+        node.x = node.x + dirX * node.speed * dt
+        node.y = node.y + dirY * node.speed * dt
+      end
 
+
+      --[[if currentPoint < #vertices and returning == false and walking == false then
+        local startX = vertices[currentPoint].x
+        local startY = vertices[currentPoint].y
+        local endX = vertices[currentPoint + 1].x
+        local endY = vertices[currentPoint + 1].y
+        walking = true
+      elseif currentPoint >= #vertices and returning == false and walking == false then
+        returning = true
+      elseif currentPoint > 1 and returning == true and walking == false then
+        local startX = vertices[currentPoint].x
+        local startY = vertices[currentPoint].y
+        local endX = vertices[currentPoint - 1].x
+        local endY = vertices[currentPoint - 1].y
+      elseif currentPoint <= 1 and returning == true and walking == false then
+        returning = false
+      end
+    self:goToPoint(startX, endX, startY, endY)]]
+    end
   end
+
   function self:direction(target)
     local deltaX = target.x - node.x
     local deltaY = target.y - node.y
@@ -51,56 +91,32 @@ local function agent(node)
     end]]
   end
 
-  function self:followPath(vertices, loop, n)
-    local n = n or 1
-    local loop = loop or true
-    if n + 3 <= #vertices and returning == false then
-      local startX, endX, startY, endY = vertices[n], vertices[n + 2], vertices[n + 1], vertices[n + 3]
-      local deltaX = endX - startX
-      local deltaY = endY - startY
-      local length = vector.length(endX - node.x, endY - node.y)
-      print(length)
-      local dirX, dirY = vector.normalize(deltaX, deltaY)
-      while length >= 0 do
-        node.x = node.x + dirX * node.speed
-        node.y = node.y + dirY * node.speed
-      end
-      self:followPath(vertices, loop, n + 2)
-    elseif n + 3 > #vertices and returning == false then
-      returning = true
-    elseif n > 1 and returning == true then
-      local startX, endX, startY, endY = vertices[n], vertices[n - 2], vertices[n + 1], vertices[n - 2]
-      local deltaX = endX - startX
-      local deltaY = endY - startY
-      local length = vector.length(endX - node.x, endY - node.y)
-      local dirX, dirY = vector.normalize(deltaX, deltaY)
-      while length >= 0 do
-        node.x = node.x + dirX * node.speed
-        node.y = node.y + dirY * node.speed
-      end
-      self:followPath(vertices, loop, n - 2)
-    elseif n <= 1 and returning == true then
-      returning = false
+  function self:followPath(pathNode, isLooping)
+    pathing = true
+    currentPoint = 1
+    vertices = pathNode.polyline
+
+    self:goToPoint(vertices[currentPoint + 1].x, vertices[currentPoint + 1].y, handleNextPoint)
+  end
+
+  function handleNextPoint()
+    if currentPoint < #vertices then
+      self:goToPoint(vertices[currentPoint + 1].x, vertices[currentPoint + 1].y, handleNextPoint)
+    else
+      pathing = false
     end
   end
 
-  function self:toPoint(vertices, startX, endX, startY, endY)
-    local deltaX = endX - startX
-    local deltaY = endY - startY
-    local length = vector.length(startX - node.x, startY - node.y)
-    local dirX, dirY = vector.normalize(deltaX, deltaY)
-    while length >= 0 do
-      node.x = node.x + dirX * node.speed
-      node.y = node.y + dirY * node.speed
-    end
-    self:followPath(vertices, n)
+  function self:goToPoint(x, y, callback)
+    endX, endY = x, y
+    isWalking = true
+    _callback = callback
   end
 
   function self:dodge(target)
     self:direction(target)
     node.x = node.x - dirX * node.speed
     node.y = node.y - dirY * node.speed
-  --end
   end
 
   function self:charge(target)
@@ -138,6 +154,7 @@ local function agent(node)
   end
 
   function self:patrolling(startx, endx, starty, endy)
+    local deltaX, deltaY
     if(pbool == false) then
       deltaX = endx - startx
       deltaY = endy - starty

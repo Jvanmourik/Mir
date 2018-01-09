@@ -81,12 +81,12 @@ function love.load()
 	end
 
 	-- iterate through all spawn locations
-	for _, path in pairs(scene.rootNode:getChildrenByType("path")) do
-		local x = path.x + path.vertices[1]
-		local y = path.y + path.vertices[2]
+	for _, pathNode in pairs(scene.rootNode:getChildrenByType("path")) do
+		local x = pathNode.x + pathNode.polyline[1].x
+		local y = pathNode.y + pathNode.polyline[1].y
 
 		local e = Enemy(x, y)
-		e.agent:followPath(path.vertices, true)
+		e.agent:followPath(pathNode, true)
 		scene.rootNode:addChild(e)
 	end
 end

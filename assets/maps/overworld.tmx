@@ -166,7 +166,7 @@
     <property name="spawntype" value="enemy"/>
    </properties>
   </object>
-  <object id="68" name="Player-start" type="location" x="127.08" y="574.303" width="64" height="64">
+  <object id="68" name="Player-start" type="location" x="1022.08" y="512.303" width="64" height="64">
    <properties>
     <property name="spawnposition" value="center"/>
     <property name="spawntype" value="player"/>
