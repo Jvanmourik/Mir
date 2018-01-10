@@ -16,7 +16,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   self.health = 1
   self.speed = 100
-
+  self.timer = 0
   ----------------------------------------------
   -- components
   ----------------------------------------------
@@ -76,18 +76,24 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
     -- make enemy look at character in a certain range
     if self.target and vector.length(self.x - c.x, self.y - c.y) < 200 then
-      self:lookAt(c.x, c.y)
-      -- enable hitbox
-      hitbox.collider.active = true
-
-      -- change animation
       if not body.animator:isPlaying("sword-shield-stab") then
-        body.animator:play("sword-shield-stab", 1, function()
-          body.animator:play("sword-shield-idle", 0)
-          hitbox.collider.active = false
-        end)
+        self:lookAt(c.x, c.y)
+      end
+      if self.timer <= 0 then
+        -- enable hitbox
+        hitbox.collider.active = true
+
+        -- change animation
+        if not body.animator:isPlaying("sword-shield-stab") then
+          body.animator:play("sword-shield-stab", 1, function()
+            body.animator:play("sword-shield-idle", 0)
+            hitbox.collider.active = false
+            self.timer = 60
+          end)
+        end
       end
     end
+    self.timer = self.timer - 1
   end
 
   function self:damage(amount)
@@ -99,7 +105,10 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   end
 
   function self:kill()
-    self.active = false
+    if not body.animator:isPlaying("sword-shield-stab") then
+      body.active = false
+      self.active = false
+    end
   end
 
 

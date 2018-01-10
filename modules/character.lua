@@ -232,8 +232,11 @@ local function character(x, y, gamepad)
   end
 
   function self:kill()
-    legs.animator:stop()
-    self.active = false
+    if not body.animator:isPlaying("sword-shield-stab") then
+      body.active = false
+      legs.active = false
+      self.active = false
+    end
   end
 
 
