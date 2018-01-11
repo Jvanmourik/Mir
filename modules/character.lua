@@ -107,7 +107,6 @@ local function character(x, y, gamepad)
       self.y = 1000
       body.active = true
       legs.active = true
-
     end
 
     if gamepad then -- gamepad
