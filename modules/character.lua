@@ -22,7 +22,7 @@ local function character(x, y, gamepad)
   self.speed = 400
   self.rollSpeed = 1200
   self.health = 1
-  self.alive = true
+  --self.alive = true
 
   ----------------------------------------------
   -- components
@@ -101,13 +101,13 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   function self:update(dt)
-    if lk.isDown("r") and not self.alive then
+    --[[if lk.isDown("r") and not self.alive then
       self.alive = true
       self.x = 100
       self.y = 1000
       body.active = true
       legs.active = true
-    end
+    end]]
 
     if gamepad then -- gamepad
 
@@ -244,8 +244,14 @@ local function character(x, y, gamepad)
     if not body.animator:isPlaying("sword-shield-stab") then
       body.active = false
       legs.active = false
-      self.alive = false
+      self.active = false
+      --self.alive = false
     end
+  end
+
+  function self:revive()
+    body.active = true
+    legs.active = true
   end
 
 

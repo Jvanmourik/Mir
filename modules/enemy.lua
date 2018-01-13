@@ -75,7 +75,7 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     end
 
     -- make enemy look at character in a certain range
-    if self.target and vector.length(self.x - c.x, self.y - c.y) < 200 then
+    if self.target and vector.length(self.x - c.x, self.y - c.y) < 200  and c.active then
       if not body.animator:isPlaying("sword-shield-stab") then
         self:lookAt(c.x, c.y)
       end

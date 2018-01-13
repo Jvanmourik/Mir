@@ -98,17 +98,16 @@ function love.update(dt)
 	local dx,dy = c.x - camera.x, c.y - camera.y
 	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
 
-	--[[if lk.isDown("r") then
+	if lk.isDown("r") then
 		for _, node in pairs(scene.rootNode:getChildren()) do
 			if node.name == "character" then
-				node.body.active = true
-				node.legs.active = true
 				node.active = true
-				print("He exists")
+				node.x = 120
+				node.y = 1200
+				node:revive()
 			end
 		end
-		print("Hi")
-	end]]
+	end
 end
 
 function love.draw()
