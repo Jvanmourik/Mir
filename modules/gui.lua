@@ -6,6 +6,7 @@ local function gui()
   ----------------------------------------------
   
   gameState = 0
+  local scale = scale
   
   -- set font
   local font = love.graphics.newFont(14 * scale)

@@ -1,9 +1,11 @@
 function love.load()
+
   -- declare shorthand framework names
 	lg = love.graphics
 	li = love.image
 	la = love.audio
 	lm = love.mouse
+	lj = love.joystick
 	lk = love.keyboard
 	lt = love.timer
 	le = love.event
@@ -12,53 +14,101 @@ function love.load()
 	lf = love.filesystem
  lp = love.physics
 
+	-- set random seed so initial math.random() will always be different
+	math.randomseed(lt.getTime())
+
   --set scale
   scale = love.window.getPixelScale( )
   love.graphics.scale(scale, scale)
   
   -- set background color
-  lg.setBackgroundColor(222, 222, 222)
+  lg.setBackgroundColor(19, 19, 19)
 
   -- load extensions
   require "extensions"
 
   -- load libraries
   vector = require "lib/vector"
+  HC = require "lib/HC"
+  Camera = require "lib/camera"
   suit = require "lib/suit"
 
+
   -- load modules
-  local Scene = require "modules/scene"
-  local Character = require "modules/character"
-  local Audio = require "modules/audio"
-  local Enemy = require "modules/enemy"
-  local Gui = require "modules/gui"
-  local Score = require "modules/score"
-  local Lifes = require "modules/lifes"
+	Input = require "modules/input"
+  Scene = require "modules/scene"
+  Tilemap = require "modules/tilemap"
+  Character = require "modules/character"
+  Enemy = require "modules/enemy"
+  Audio = require "modules/audio"
+  Gui = require "modules/gui"
+  Score = require "modules/score"
+  Lifes = require "modules/lifes"
+
+
+	-- load controller mappings
+	local mappings = require "mappings"
+	lj.loadGamepadMappings(mappings)
+
+	-- create input handler
+	input = Input()
   
-  -- create gui
-  gui = Gui()
+ -- create gui
+ gui = Gui()
   
-  -- create score
-  score = Score()
-  
-  -- create lifes
-  lifes = Lifes()
+ -- create score
+ score = Score()
+ 
+ -- create lifes
+ lifes = Lifes()
 
-  -- create a world for physic bodies to exist in
-  world = lp.newWorld()
-  world:setCallbacks(beginContact, endContact)
+ -- create scene
+ scene = Scene(0, 0)
 
-  -- create scene
-  scene = Scene(0, 0)
+	-- create tilemap
+	map = Tilemap("overworld")
+	scene.rootNode:addChild(map)
 
-  -- populate scene
-  c = Character(100, 100)
-  c.anchorX, c.anchorY = 0.5, 0.5
-  scene.rootNode:addChild(c)
+	-- iterate through all spawn locations
+	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
+		local spawncount = location.properties.spawncount or 1
+		for i = 1, spawncount do
+			local x = location.x
+			local y = location.y
 
-  e = Enemy(200, 100)
-  e.anchorX, e.anchorY = 0.5, 0.5
-  scene.rootNode:addChild(e)
+			-- set spawn position
+			if location.properties.spawnposition == "center" then
+				x = location.x + location.width * 0.5
+				y = location.y + location.height * 0.5
+			elseif location.properties.spawnposition == "random" then
+				x = location.x + location.width * math.random()
+				y = location.y + location.height * math.random()
+			end
+
+			if location.properties.spawntype == "player" then
+				-- create player
+				c = Character(math.floor(x + 0.5), math.floor(y + 0.5))
+				scene.rootNode:addChild(c)
+
+				-- create camera
+				camera = Camera(c.x, c.y)
+			elseif location.properties.spawntype == "enemy" then
+				-- create enemy
+				local e = Enemy(x, y)
+				scene.rootNode:addChild(e)
+			end
+		end
+	end
+
+	-- iterate through all spawn locations
+	for _, path in pairs(scene.rootNode:getChildrenByType("path")) do
+		local x = path.vertices[1].x
+		local y = path.vertices[1].y
+
+		local e = Enemy(x, y)
+		e.agent:followPath(path, true)
+		scene.rootNode:addChild(e)
+	end
 end
 
 function love.update(dt)
@@ -70,8 +120,20 @@ function love.update(dt)
     -- update scene
     scene:update(dt)
 
-    -- update world
-    world:update(dt)
+	   local dx,dy = c.x - camera.x, c.y - camera.y
+	   camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+
+					--[[if lk.isDown("r") then
+						for _, node in pairs(scene.rootNode:getChildren()) do
+							if node.name == "character" then
+								node.body.active = true
+								node.legs.active = true
+								node.active = true
+								print("He exists")
+							end
+						end
+						print("Hi")
+					end]]
   end
 end
 
@@ -80,33 +142,42 @@ function love.draw()
     -- draw GUI
     suit.draw()
   else
-    -- draw scene
-    scene:draw()
+				  -- draw scene
+					camera:attach()
+				  scene:draw()
+					drawCollisionShapes()
+					camera:detach()
     score:draw()
     lifes:draw()
   end
 end
 
--- gets called when two physic objects start colliding
-function beginContact(f1, f2, contact)
-  for _, node in pairs(scene.rootNode:getAllChildren()) do
-    if node.collider.fixture == f1 then
-      if node.beginContact then
-        node:beginContact(f2, contact)
-      end
-      break
-    end
-  end
+function drawCollisionShapes()
+	-- draw all collision shapes
+	for _, node in pairs(scene.rootNode:getChildren()) do
+		if node.active and node.collider and node.collider.active then
+			if node.collider.isSensor then
+				lg.setColor(255, 255, 0, 100)
+				node.collider.shape:draw('fill')
+				lg.setColor(255, 255, 0, 255)
+				node.collider.shape:draw('line')
+				lg.setColor(255, 255, 255)
+			else
+				lg.setColor(0, 255, 255, 100)
+				node.collider.shape:draw('fill')
+				lg.setColor(0, 255, 255, 255)
+				node.collider.shape:draw('line')
+				lg.setColor(255, 255, 255)
+			end
+		end
+	end
 end
 
--- gets called when two physic objects stop colliding
-function endContact(f1, f2, contact)
-  for _, node in pairs(scene.rootNode:getAllChildren()) do
-    if node.collider.fixture == f1 then
-      if node.endContact then
-        node:endContact(f2, contact)
-      end
-      break
-    end
-  end
+function love.joystickadded(joystick)
+	-- add player character when a controller gets connected
+	if joystick:isGamepad() then
+		local gamepad = input:getGamepad(joystick)
+		local c = Character(400, 300, gamepad)
+		scene.rootNode:addChild(c)
+	end
 end

@@ -17,21 +17,29 @@ local function scene(...)
 
   function self:update(dt)
     -- update all nodes
-    for _, child in pairs(self.rootNode:getAllChildren()) do
+    for _, child in pairs(self.rootNode:getChildren()) do
       if child.active then
-        
-        -- update node
-        if child.update then
-          child:update(dt)
-        end
+        if child.toBeRemoved then
+          -- disable node
+          child.active = false
 
-        -- update all node components
-        for _, component in pairs(child.components) do
-          if component.update then
-            component:update(dt)
+          -- disable node collider
+          if child.collider then
+            child.collider.active = false
+          end
+        else
+          -- update node
+          if child.update then
+            child:update(dt)
+          end
+
+          -- update all node components
+          for _, component in pairs(child.components) do
+            if component.active and component.update then
+              component:update(dt)
+            end
           end
         end
-
       end
     end
   end
@@ -42,8 +50,8 @@ local function scene(...)
 
     -- get all drawable nodes
     local drawableNodes = {}
-    for _, child in pairs(self.rootNode:getAllChildren()) do
-      if child.spriteRenderer then
+    for _, child in pairs(self.rootNode:getChildren()) do
+      if child.active and child.visible and child.spriteRenderer then
         drawableNodes[#drawableNodes + 1] = child
       end
     end
@@ -55,9 +63,7 @@ local function scene(...)
 
     -- draw all drawable nodes
     for _, node in pairs(drawableNodes) do
-      local x, y = node:getWorldCoords()
-      local r = node:getWorldRotation()
-      node.spriteRenderer:draw(x, y, r)
+        node.spriteRenderer:draw()
     end
   end
 

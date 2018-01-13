@@ -23,6 +23,7 @@ local function lifes()
   function self:lifeDown()
     if lifes > 0 then
       lifes = lifes - 1
+    end
   end
   
   function self:draw()
