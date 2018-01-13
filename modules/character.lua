@@ -105,7 +105,7 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   function self:update(dt)
-    if lk.isDown("r") and not self.alive then
+    if lk.isDown("r") and not self.alive and lifes ~= 0 then
       self.alive = true
       self.x = 100
       self.y = 1000
@@ -185,6 +185,10 @@ local function character(x, y, gamepad)
           -- animate legs
           if not legs.animator:isPlaying("legs-walk") then
             legs.animator:play("legs-walk", 0)
+            if step > 1 then
+              step = 0
+              efMusic["step"]:play()
+            end
           end
         elseif not legs.animator:isPlaying("legs-idle") then
           legs.animator:play("legs-idle", 0)
@@ -244,6 +248,7 @@ local function character(x, y, gamepad)
     self.health = self.health - amount
     if self.health <= 0 then
       self:kill()
+      lifes = lifes - 1
     end
   end
 
@@ -252,11 +257,6 @@ local function character(x, y, gamepad)
       body.active = false
       legs.active = false
       self.alive = false
-    end
-
-    if step > 1 then
-      step = 0
-      efMusic["step"]:play()
     end
   end
 
