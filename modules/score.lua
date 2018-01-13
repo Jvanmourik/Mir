@@ -52,9 +52,9 @@ local function score()
   
   function self:draw()
     lg.print("player1: " .. score1, 1, 1)
-    lg.print("player2: " .. score1, 1, font:getHeight())
-    lg.print("player3: " .. score1, 1, font:getHeight() * 2)
-    lg.print("player4: " .. score1, 1, font:getHeight() * 3)
+    lg.print("player2: " .. score2, 1, font:getHeight())
+    lg.print("player3: " .. score3, 1, font:getHeight() * 2)
+    lg.print("player4: " .. score4, 1, font:getHeight() * 3)
     -- debug amount of players
     lg.print("players: " .. players, 1, font:getHeight() * 4)
   end
