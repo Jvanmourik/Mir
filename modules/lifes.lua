@@ -19,6 +19,14 @@ local function lifes()
   function self:update(dt)
     
   end
+
+  function self:reviveAllowed()
+    if lifes > 0 then
+      return true
+    else
+      return false
+    end
+  end
   
   function self:lifeDown()
     if lifes > 0 then

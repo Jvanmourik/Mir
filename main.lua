@@ -20,7 +20,7 @@ function love.load()
   --set scale
   scale = love.window.getPixelScale( )
   love.graphics.scale(scale, scale)
-  
+
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
 
