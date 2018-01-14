@@ -32,6 +32,8 @@ local function agent(node)
   ----------------------------------------------
   -- methods
   ----------------------------------------------
+
+  -- update function called each frame, dt is time since last frame
   function self:update(dt)
     if pathing then
       local deltaX = endX - node.x
@@ -52,13 +54,13 @@ local function agent(node)
       end
     end
 
-    if following  then
+    if following then
       if self:area(radius, target) then
         self:goToPoint(target.x, target.y, dt)
       end
     end
 
-    if avoiding  then
+    if avoiding then
       if self:area(radius, target) then
         self:goToPoint(-target.x, -target.y, dt)
       end

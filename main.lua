@@ -32,7 +32,7 @@ function love.load()
 	Input = require "modules/input"
   Scene = require "modules/scene"
   Tilemap = require "modules/tilemap"
-  Character = require "modules/character"
+  Player = require "modules/player"
   Enemy = require "modules/enemy"
 
 	-- load controller mappings
@@ -68,7 +68,7 @@ function love.load()
 
 			if location.properties.spawntype == "player" then
 				-- create player
-				c = Character(math.floor(x + 0.5), math.floor(y + 0.5))
+				c = Player(math.floor(x + 0.5), math.floor(y + 0.5))
 				scene.rootNode:addChild(c)
 
 				-- create camera
@@ -98,13 +98,24 @@ function love.update(dt)
 
 	local dx,dy = c.x - camera.x, c.y - camera.y
 	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+
+	if lk.isDown("r") then
+		for _, node in pairs(scene.rootNode:getChildren()) do
+			if node.name == "player" then
+				node.active = true
+				node.x = 120
+				node.y = 1200
+				node:revive()
+			end
+		end
+	end
 end
 
 function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
-	--drawCollisionShapes()
+  drawCollisionShapes()
 	camera:detach()
 end
 
