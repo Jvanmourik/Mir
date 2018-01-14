@@ -259,6 +259,7 @@ local function character(x, y, gamepad)
       self.x = -1000
       self.y = -1000
       lifes:lifeDown()
+      score:scoreDown(id)
     end
   end
 

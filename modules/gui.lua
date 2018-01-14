@@ -41,13 +41,18 @@ local function gui()
     suit.layout:left()
     
     -- start game
-    if suit.Button("Start!", suit.layout:row(200 * scale, 30 * scale)).hit then
-      gameState = 1
+    if gameState == 0 then
+      if suit.Button("Start!", suit.layout:row(200 * scale, 30 * scale)).hit then
+        gameState = 1
+      end
+    elseif gameState == 2 then
+      if suit.Button("Continue!", suit.layout:row(200 * scale, 30 * scale)).hit then
+        gameState = 1
+      end
+      if suit.Button("Quit", suit.layout:col(200 * scale, 30 * scale)).hit then
+        le.quit()
+      end
     end
-    if lk.isDown("escape") then
-      gameState = 0
-    end
-    
   end
   
   ----------------------------------------------

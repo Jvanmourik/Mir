@@ -112,10 +112,9 @@ function love.load()
 end
 
 function love.update(dt)
-  if gameState == 0 then
+  if gameState == 0 or gameState == 2 then
     -- update GUI
     gui:update(dt)
-  
   else
     -- update scene
     scene:update(dt)
@@ -134,11 +133,14 @@ function love.update(dt)
 						end
 						print("Hi")
 					end]]
+					if input:isPressed("escape") then
+      gameState = 2
+    end
   end
 end
 
 function love.draw()
-  if gameState == 0 then
+  if gameState == 0 or gameState == 2 then
     -- draw GUI
     suit.draw()
   else
