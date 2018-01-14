@@ -21,6 +21,7 @@ local function character(x, y, gamepad)
   self.dragY = 3
   self.speed = 400
   self.rollSpeed = 1200
+  self.health = 1
 
 
   ----------------------------------------------
@@ -209,6 +210,28 @@ local function character(x, y, gamepad)
 
 
     end
+  end
+
+  function self:damage(amount)
+    local amount = amount or 1
+    self.health = self.health - amount
+    if self.health <= 0 then
+      self:kill()
+    end
+  end
+
+  function self:kill()
+    if not body.animator:isPlaying("sword-shield-stab") then
+      body.active = false
+      legs.active = false
+      self.active = false
+      --self.alive = false
+    end
+  end
+
+  function self:revive()
+    body.active = true
+    legs.active = true
   end
 
   function self:onCollision(dt, other, delta)
