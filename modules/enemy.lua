@@ -16,21 +16,27 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
 
   self.health = 1
   self.speed = 100
-
+  self.timer = 0
   ----------------------------------------------
   -- components
   ----------------------------------------------
 
   -- sprite renderer component to render the sprite
-  self:addComponent("spriteRenderer",
+  local body = Node()
+
+  -- sprite renderer component to render the sprite
+  body:addComponent("spriteRenderer",
   { atlas = assets.character.atlas,
-    asset = assets.character.unarmed.idle,
-    layer = layer })
+    asset = assets.character.sword_shield.idle,
+    layer = 1 })
 
   -- animator component to animate the sprite
-  --[[self:addComponent("animator",
-  { animations = assets.kramer.animations,
-    animationName = "walk" })]]
+  body:addComponent("animator",
+  { animations = assets.character.animations })
+  body.animator:play("sword-shield-idle", 0)
+
+  self:addChild(body)
+
 
   -- collider component to collide with other collision objects
   self:addComponent("collider", {
@@ -38,10 +44,26 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     radius = 40
   })
 
+  local hitbox = Node(-20, 80, 25, 75)
+  hitbox.anchorX, hitbox.anchorY = 0.5, 0
+
+  hitbox:addComponent("collider")
+  hitbox.collider.active = false
+
+  body:addChild(hitbox)
+
+  function hitbox:onCollisionEnter(dt, other, delta)
+    if other.name == "character" then
+      other:damage()
+    end
+  end
+
+  function hitbox:endContact(f, contact)
+    --print("endContact")
+  end
+
   -- agent component to implement AI
   self:addComponent("agent")
-
-
 
   ----------------------------------------------
   -- methods
@@ -53,23 +75,25 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
     end
 
     -- make enemy look at character in a certain range
-    if not self.agent.pathing and self.target and vector.length(self.x - c.x, self.y - c.y) < 200 then
-      self:lookAt(c.x, c.y)
+    if self.target and vector.length(self.x - c.x, self.y - c.y) < 200  and c.active then
+      if not body.animator:isPlaying("sword-shield-stab") then
+        self:lookAt(c.x, c.y)
+      end
+      if self.timer <= 0 then
+        -- enable hitbox
+        hitbox.collider.active = true
+
+        -- change animation
+        if not body.animator:isPlaying("sword-shield-stab") then
+          body.animator:play("sword-shield-stab", 1, function()
+            body.animator:play("sword-shield-idle", 0)
+            hitbox.collider.active = false
+            self.timer = 60
+          end)
+        end
+      end
     end
-  end
-
-  function self:onCollision(dt, other, delta)
-    if not other.collider.isSensor then
-      self.velocityX, self.velocityY = 0, 0
-
-      -- adjust character position
-      self.x = self.x + delta.x
-      self.y = self.y + delta.y
-
-      -- adjust collision shape position
-      local cx, cy = self.collider.shape:center()
-      self.collider.shape:moveTo(cx + delta.x, cy + delta.y)
-    end
+    self.timer = self.timer - 1
   end
 
   function self:damage(amount)
@@ -81,7 +105,10 @@ local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
   end
 
   function self:kill()
-    self.active = false
+    if not body.animator:isPlaying("sword-shield-stab") then
+      body.active = false
+      self.active = false
+    end
   end
 
 
