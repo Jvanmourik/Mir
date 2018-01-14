@@ -75,6 +75,10 @@ function love.load()
 			elseif location.properties.spawntype == "enemy" then
 				-- create enemy
 				local e = Enemy(x, y)
+				c = scene.rootNode:getChildByName("character")
+				if c then
+					e.agent:followTarget(c, 200)
+				end
 				scene.rootNode:addChild(e)
 			end
 		end
