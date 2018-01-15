@@ -35,7 +35,7 @@ local function enemy(x, y)
 
     if target then
       -- distance between self and target
-      local distance = vector.length(self.x - target.y, self.y - target.x)
+      local distance = vector.length(self.x - target.x, self.y - target.y)
 
       if distance < 200 then
         -- make enemy look at target in a certain range
