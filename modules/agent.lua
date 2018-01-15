@@ -22,6 +22,7 @@ local function agent(node)
   local target
 
   local avoiding = false
+  
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
@@ -66,14 +67,6 @@ local function agent(node)
       end
     end
   end
-
-  --[[function self:direction(target)
-    local deltaX = target.x - node.x
-    local deltaY = target.y - node.y
-    local dirX, dirY = vector.normalize(deltaX, deltaY)
-    local length = vector.length(deltaX, deltaY)
-    return dirX, dirY, length
-  end]]
 
   function self:followTarget(_target, _radius)
     following = true
@@ -127,24 +120,6 @@ local function agent(node)
     target = _target
   end
 
-  --[[function self:charge(target)
-    if(cbool == false) then
-      dirX, dirY, length = self:direction(target)
-      cbool = true
-    end
-    if(length >= 0) then
-      node.x = node.x + dirX * node.speed * 5
-      node.y = node.y + dirY * node.speed * 5
-      length = length - vector.length(dirX, dirY) * node.speed * 5
-    else
-      ctimer = ctimer - 1
-      if(ctimer <= 0) then
-        cbool = false
-        ctimer = 60
-      end
-    end
-  end]]
-
   function self:area(radius, target)
     local deltaX = target.x - node.x
     local deltaY = target.y - node.y
@@ -154,33 +129,7 @@ local function agent(node)
     return false
   end
 
-  --[[function self:insideScreen(target)
-    if(target.x + target.width <= screenwidth and target.x >= 0 and target.y + target.height <= screenheight and target.y >= 0) then
-      return true
-    end
-      return false
-  end]]
 
-  --[[function self:patrolling(startx, endx, starty, endy)
-    local deltaX, deltaY
-    if(pbool == false) then
-      deltaX = endx - startx
-      deltaY = endy - starty
-      length = vector.length(endx - node.x, endy - node.y)
-    else
-      deltaX = startx - endx
-      deltaY = starty - endy
-      length = vector.length(startx - node.x, starty - node.y)
-    end
-    if(length <= 0 and pbool == false) then
-      pbool = true
-    elseif(length <= 0 and pbool) then
-      pbool = false
-    end
-      local dirX, dirY = vector.normalize(deltaX, deltaY)
-      node.x = node.x + dirX * node.speed
-      node.y = node.y + dirY * node.speed
-    end]]
   ----------------------------------------------
   return self
 end
