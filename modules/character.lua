@@ -20,7 +20,6 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   self.dragX = 3
   self.dragY = 3
   self.speed = 400
-  self.rollSpeed = 1200
   self.health = 1
 
 
@@ -101,7 +100,6 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
-
     -- animate legs
     if vector.length(self.velocityX, self.velocityY) > 0 then
       if not self.legs.animator:isPlaying("legs-walk") then

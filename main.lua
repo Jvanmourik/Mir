@@ -144,7 +144,7 @@ function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
-		local c = Character(400, 300, gamepad)
+		c = Player(400, 300, gamepad)
 		scene.rootNode:addChild(c)
 	end
 end
