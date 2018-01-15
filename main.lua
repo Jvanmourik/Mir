@@ -17,6 +17,9 @@ function love.load()
 	-- set random seed so initial math.random() will always be different
 	math.randomseed(lt.getTime())
 
+	-- set window to fullscreen in desktop mode
+	lw.setFullscreen(true, "desktop")
+
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
 
@@ -73,6 +76,7 @@ function love.load()
 
 				-- create camera
 				camera = Camera(c.x, c.y)
+				--camera:zoomTo(1.5)
 			elseif location.properties.spawntype == "enemy" then
 				-- create enemy
 				local e = Enemy(x, y)
@@ -115,7 +119,7 @@ function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
-  drawCollisionShapes()
+  --drawCollisionShapes()
 	camera:detach()
 end
 
