@@ -18,8 +18,6 @@ local function character(x, y, gamepad)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
-    -- call base update method
-    base.update(self, dt)
 
     -- direction vector
     local dirX, dirY = 0, 0
@@ -67,15 +65,6 @@ local function character(x, y, gamepad)
       end
     end
 
-    -- add velocity to position
-    self.x = self.x + self.velocityX * dt
-    self.y = self.y + self.velocityY * dt
-
-    -- apply drag to velocity
-    self.velocityX = self.velocityX * (1 - self.dragX * dt)
-    self.velocityY = self.velocityY * (1 - self.dragY * dt)
-
-
     -- character attack
     if not gamepad and input:isPressed(1) or gamepad and gamepad:isPressed('rightshoulder') then
       if not self.body.animator:isPlaying("sword-shield-stab") then
@@ -89,6 +78,9 @@ local function character(x, y, gamepad)
         end)
       end
     end
+
+    -- call base update method
+    base.update(self, dt)
   end
 
 

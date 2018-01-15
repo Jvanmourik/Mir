@@ -91,7 +91,7 @@ function love.load()
 		local y = path.vertices[1].y
 
 		local e = Enemy(x, y)
-		e.agent:followPath(path, true)
+		e.agent:goToPoint(100, 100)
 		scene.rootNode:addChild(e)
 	end
 end

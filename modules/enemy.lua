@@ -2,6 +2,7 @@ local Character = require "modules/character"
 
 local function enemy(x, y)
   local self = Character(x, y)
+  local base = {}; base.update = self.update or function() end
 
   ----------------------------------------------
   -- attributes
@@ -34,10 +35,20 @@ local function enemy(x, y)
     end
 
     if target then
-      -- distance between self and target
-      local distance = vector.length(self.x - target.x, self.y - target.y)
+
+      local distance = vector.length(target.x - self.x, target.y - self.y)
 
       if distance < 200 then
+        self.agent:goToPoint(target.x, target.y)
+      end
+      --[[-- distance between self and target
+      local distance = vector.length(target.x - self.x, target.y - self.y)
+
+      if distance < 200 then
+        local dirX, dirY = vector.normalize(target.x - self.x, target.y - self.y)
+        -- apply input multiplied with speed to velocity
+        self.velocityX, self.velocityY = dirX * self.speed, dirY * self.speed
+
         -- make enemy look at target in a certain range
         if not self.body.animator:isPlaying("sword-shield-stab") then
           self:lookAt(target.x, target.y)
@@ -60,8 +71,11 @@ local function enemy(x, y)
 
         -- update timer
         timer = timer - 1000 * dt
-      end
+      end]]
     end
+
+    -- call base update method
+    base.update(self, dt)
   end
 
 
