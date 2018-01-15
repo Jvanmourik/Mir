@@ -18,10 +18,10 @@ local function input(...)
     end
   end
 
-  _love['update'] = love['update'] or function() end
-  love['update'] = function(...)
-    _love['update'](...)
-    self['update'](self, ...)
+  _love.update = love.update or function() end
+  love.update = function(...)
+    _love.update(...)
+    self.update(self, ...)
   end
 
   -- gamepad object to keep track of individual gamepad states

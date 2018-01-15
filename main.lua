@@ -17,6 +17,9 @@ function love.load()
 	-- set random seed so initial math.random() will always be different
 	math.randomseed(lt.getTime())
 
+	-- set window to fullscreen in desktop mode
+	lw.setFullscreen(true, "desktop")
+
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
 
@@ -32,7 +35,7 @@ function love.load()
 	Input = require "modules/input"
   Scene = require "modules/scene"
   Tilemap = require "modules/tilemap"
-  Character = require "modules/character"
+  Player = require "modules/player"
   Enemy = require "modules/enemy"
 
 	-- load controller mappings
@@ -68,17 +71,28 @@ function love.load()
 
 			if location.properties.spawntype == "player" then
 				-- create player
-				c = Character(math.floor(x + 0.5), math.floor(y + 0.5))
+				c = Player(math.floor(x + 0.5), math.floor(y + 0.5))
 				scene.rootNode:addChild(c)
 
 				-- create camera
 				camera = Camera(c.x, c.y)
+				--camera:zoomTo(1.5)
 			elseif location.properties.spawntype == "enemy" then
 				-- create enemy
 				local e = Enemy(x, y)
 				scene.rootNode:addChild(e)
 			end
 		end
+	end
+
+	-- iterate through all paths
+	for _, path in pairs(scene.rootNode:getChildrenByType("path")) do
+		local x = path.vertices[1].x
+		local y = path.vertices[1].y
+
+		local e = Enemy(x, y)
+		e.agent:followPath(path, true)
+		scene.rootNode:addChild(e)
 	end
 end
 
@@ -88,13 +102,24 @@ function love.update(dt)
 
 	local dx,dy = c.x - camera.x, c.y - camera.y
 	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+
+	if lk.isDown("r") then
+		for _, node in pairs(scene.rootNode:getChildren()) do
+			if node.name == "player" then
+				node.active = true
+				node.x = 120
+				node.y = 1200
+				node:revive()
+			end
+		end
+	end
 end
 
 function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
-	drawCollisionShapes()
+  --drawCollisionShapes()
 	camera:detach()
 end
 
@@ -123,7 +148,7 @@ function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
-		local c = Character(400, 300, gamepad)
+		c = Player(400, 300, gamepad)
 		scene.rootNode:addChild(c)
 	end
 end
