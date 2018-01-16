@@ -9,7 +9,7 @@ local function enemy(x, y)
   ----------------------------------------------
 
   self.name = "enemy"
-  self.speed = 200
+  self.speed = 400
 
 
   ----------------------------------------------
@@ -26,8 +26,8 @@ local function enemy(x, y)
 
   local target
   local timer = 0
-  local agroDistance = 200
-  local attackCooldown = 1500
+  local aggroDistance = 200
+  local attackCooldown = 2500
   local isAttacking = false
 
   -- update function called each frame, dt is time since last frame
@@ -41,10 +41,10 @@ local function enemy(x, y)
       local distance = vector.length(target.x - self.x, target.y - self.y)
 
       -- if in range
-      if distance < agroDistance then
+      if distance < aggroDistance then
         -- move to target
-        if not isAttacking then
-          self.agent:goToPoint(target.x, target.y, _, 90)
+        if distance > 100 and not isAttacking then
+          self.agent:goToPoint(target.x, target.y)
         elseif self.agent.state == "walk" then
           self.agent:stop()
         end

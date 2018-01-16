@@ -106,9 +106,10 @@ function love.update(dt)
 	if lk.isDown("r") then
 		for _, node in pairs(scene.rootNode:getChildren()) do
 			if node.name == "player" then
-				node.active = true
-				node.x = 120
-				node.y = 1200
+				local x, y = 120, 1200
+				node.x = x
+				node.y = y
+				node.collider.shape:moveTo(x, y)
 				node:revive()
 			end
 		end
