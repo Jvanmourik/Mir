@@ -67,16 +67,7 @@ local function character(x, y, gamepad)
 
     -- character attack
     if not gamepad and input:isPressed(1) or gamepad and gamepad:isPressed('rightshoulder') then
-      if not self.body.animator:isPlaying("sword-shield-stab") then
-        -- enable hitbox
-        self.hitbox.collider.active = true
-
-        -- change animation
-        self.body.animator:play("sword-shield-stab", 1, function()
-          self.body.animator:play("sword-shield-idle", 0)
-          self.hitbox.collider.active = false
-        end)
-      end
+      self:attack()
     end
 
     -- call base update method

@@ -18,7 +18,7 @@ function love.load()
 	math.randomseed(lt.getTime())
 
 	-- set window to fullscreen in desktop mode
-	lw.setFullscreen(true, "desktop")
+	--lw.setFullscreen(true, "desktop")
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
@@ -91,7 +91,7 @@ function love.load()
 		local y = path.vertices[1].y
 
 		local e = Enemy(x, y)
-		e.agent:goToPoint(100, 100)
+		e.agent:followPath(path.vertices, true)
 		scene.rootNode:addChild(e)
 	end
 end

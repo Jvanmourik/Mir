@@ -126,6 +126,20 @@ local function character(x, y, w, h, r, s, ax, ay, l)
     prevX, prevY = self.x, self.y
   end
 
+  function self:attack(callback)
+    if not self.body.animator:isPlaying("sword-shield-stab") then
+      -- enable hitbox
+      self.hitbox.collider.active = true
+
+      -- change animation
+      self.body.animator:play("sword-shield-stab", 1, function()
+        self.body.animator:play("sword-shield-idle", 0)
+        self.hitbox.collider.active = false
+        if callback then callback() end
+      end)
+    end
+  end
+
   -- apply damage to character
   function self:damage(amount)
     local amount = amount or 1

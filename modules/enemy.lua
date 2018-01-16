@@ -9,7 +9,7 @@ local function enemy(x, y)
   ----------------------------------------------
 
   self.name = "enemy"
-  self.timer = 0
+  self.speed = 200
 
 
   ----------------------------------------------
@@ -26,55 +26,60 @@ local function enemy(x, y)
 
   local target
   local timer = 0
+  local isAttacking = false
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
+    -- get target
     if not target then
       target = scene.rootNode:getChildByName("player")
     end
 
     if target then
-
       local distance = vector.length(target.x - self.x, target.y - self.y)
 
-      if distance < 200 then
-        self.agent:goToPoint(target.x, target.y)
-      end
-      --[[-- distance between self and target
-      local distance = vector.length(target.x - self.x, target.y - self.y)
+      -- if in range
+      if distance < 400 then
+        -- move to target
+        if not isAttacking then
+          self.agent:goToPoint(target.x, target.y, _, 90)
+        elseif self.agent.state == "walk" then
+          self.agent:stop()
+        end
 
-      if distance < 200 then
-        local dirX, dirY = vector.normalize(target.x - self.x, target.y - self.y)
-        -- apply input multiplied with speed to velocity
-        self.velocityX, self.velocityY = dirX * self.speed, dirY * self.speed
-
-        -- make enemy look at target in a certain range
-        if not self.body.animator:isPlaying("sword-shield-stab") then
-          self:lookAt(target.x, target.y)
+        if not isAttacking and self.agent.state == "idle" then
+          self.body:lookAt(target.x, target.y)
         end
 
         -- attack
-        if timer <= 0 then
-          -- enable hitbox
-          self.hitbox.collider.active = true
+        if distance < 100 and timer <= 0 then
+          isAttacking = true
+          self:attack(function()
+            isAttacking = false
 
-          -- change animation
-          if not self.body.animator:isPlaying("sword-shield-stab") then
-            self.body.animator:play("sword-shield-stab", 1, function()
-              self.body.animator:play("sword-shield-idle", 0)
-              self.hitbox.collider.active = false
-              timer = 1000
-            end)
-          end
+          end)
+          timer = 1500
         end
 
         -- update timer
         timer = timer - 1000 * dt
-      end]]
+      end
     end
 
     -- call base update method
     base.update(self, dt)
+  end
+
+  function self:moveToPoint(x, y, dt)
+    local deltaX = x - self.x
+    local deltaY = y - self.y
+    local dirX, dirY = vector.normalize(deltaX, deltaY)
+
+    -- apply input multiplied with speed to velocity
+    self.x, self.y = self.x + dirX * self.speed * dt, self.y + dirY * self.speed * dt
+
+    -- make node look at destination
+    self.body:lookAt(self.x + dirX, self.y + dirY)
   end
 
 
