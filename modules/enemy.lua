@@ -25,22 +25,35 @@ local function enemy(x, y)
   ----------------------------------------------
 
   local target
+  local players
   local timer = 0
   local aggroDistance = 200
-  local attackCooldown = 2500
+  local attackCooldown = 1500
   local isAttacking = false
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
-    -- get target
-    if not target then
-      target = scene.rootNode:getChildByName("player")
+    -- get players
+    if not players then
+      players = scene.rootNode:getChildrenByName("player")
     end
 
-    if target then
+    -- set closest player as target
+    local d
+    for _, player in pairs(players) do
+      if player.active then
+        local distance = vector.length(player.x - self.x, player.y - self.y)
+        if not d or distance < d then
+          d = distance
+          target = player
+        end
+      end
+    end
+
+    if target and target.active then
       local distance = vector.length(target.x - self.x, target.y - self.y)
 
-      -- if in range
+      -- if target in range
       if distance < aggroDistance then
         -- move to target
         if distance > 100 and not isAttacking then
@@ -49,6 +62,7 @@ local function enemy(x, y)
           self.agent:stop()
         end
 
+        -- look at target if agent is idle
         if not isAttacking and self.agent.state == "idle" then
           self.body:lookAt(target.x, target.y)
         end
@@ -58,7 +72,6 @@ local function enemy(x, y)
           isAttacking = true
           self:attack(function()
             isAttacking = false
-
           end)
           timer = attackCooldown
         end
