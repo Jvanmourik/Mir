@@ -26,6 +26,8 @@ local function enemy(x, y)
 
   local target
   local timer = 0
+  local agroDistance = 200
+  local attackCooldown = 1500
   local isAttacking = false
 
   -- update function called each frame, dt is time since last frame
@@ -39,7 +41,7 @@ local function enemy(x, y)
       local distance = vector.length(target.x - self.x, target.y - self.y)
 
       -- if in range
-      if distance < 400 then
+      if distance < agroDistance then
         -- move to target
         if not isAttacking then
           self.agent:goToPoint(target.x, target.y, _, 90)
@@ -58,7 +60,7 @@ local function enemy(x, y)
             isAttacking = false
 
           end)
-          timer = 1500
+          timer = attackCooldown
         end
 
         -- update timer
