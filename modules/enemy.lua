@@ -24,7 +24,6 @@ local function enemy(x, y)
   -- methods
   ----------------------------------------------
 
-
   local target
   local timer = 0
 
