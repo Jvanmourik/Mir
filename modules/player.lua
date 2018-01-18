@@ -2,7 +2,7 @@ local Character = require "modules/character"
 
 local function character(x, y, gamepad)
   local self = Character(x, y)
-  local base = {}; base.update = self.update or function() end
+  local base = table.copy(self);
 
   ----------------------------------------------
   -- attributes
