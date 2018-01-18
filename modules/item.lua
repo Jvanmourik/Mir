@@ -22,6 +22,7 @@ local function item(id, x, y)
   end
 
   self.tag = "item"
+  self.rotation = math.random() * 2 * math.pi
 
 
   ----------------------------------------------
@@ -47,15 +48,9 @@ local function item(id, x, y)
   ----------------------------------------------
 
   -- update function called each frame, dt is time since last frame
-  --[[function self:update(dt)
-    if isAttacking and self.type == "bow" then
-      print("shoot arrow")
-    elseif isAttacking and self.type == "damageStaff" then
-      print("cast damaging spell")
-    elseif isAttacking and self.type == "healingStaff" then
-      print("cast healing spell")
-    end
-  end]]
+  function self:update(dt)
+    self.rotation = self.rotation + 0.25 * math.pi * dt
+  end
 
 
   ----------------------------------------------

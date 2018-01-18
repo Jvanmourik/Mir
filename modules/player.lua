@@ -19,8 +19,8 @@ local function character(x, y, gamepad)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
+    -- pickup item
     if input:isPressed('e') or gamepad and gamepad:isPressed('x') then
-
       -- get items
       local items = scene.rootNode:getChildrenByTag("item")
 
@@ -40,7 +40,7 @@ local function character(x, y, gamepad)
       -- check if item is in range
       local range = 80
       if target and d < range then
-        -- pick up item
+        -- finnaly pick up the item
         self:pickUpItem(target)
       end
     end
