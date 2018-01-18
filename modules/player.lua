@@ -21,28 +21,7 @@ local function character(x, y, gamepad)
   function self:update(dt)
     -- pickup item
     if input:isPressed('e') or gamepad and gamepad:isPressed('x') then
-      -- get items
-      local items = scene.rootNode:getChildrenByTag("item")
-
-      -- get closest item
-      local target
-      local d
-      for _, item in pairs(items) do
-        local distance = vector.length(self.x - item.x, self.y - item.y)
-        if not d or distance < d then
-          if item.active then
-            d = distance
-            target = item
-          end
-        end
-      end
-
-      -- check if item is in range
-      local range = 80
-      if target and d < range then
-        -- finnaly pick up the item
-        self:pickUpItem(target)
-      end
+      self:pickupItem()
     end
 
     -- direction vector
@@ -100,8 +79,30 @@ local function character(x, y, gamepad)
     base.update(self, dt)
   end
 
-  function self:pickUpItem(item)
-    item.active = false
+  local pickupDistance = 80
+  function self:pickupItem()
+    -- get items
+    local items = scene.rootNode:getChildrenByTag("item")
+
+    -- get closest item
+    local closestItem
+    local distance
+    for _, item in pairs(items) do
+      local d = vector.length(self.x - item.x, self.y - item.y)
+      if not distance or d < distance then
+        if item.active then
+          distance = d
+          closestItem = item
+        end
+      end
+    end
+
+    -- check if item is in range
+    if closestItem and distance < pickupDistance then
+      -- finnaly pick up the item
+      closestItem.active = false
+      return closestItem
+    end
   end
 
 
