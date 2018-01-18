@@ -1,184 +1,105 @@
 local function agent(node)
   local self = {}
-  local screenwidth = 800
-  local screenheight= 600
-  local pbool = false
-  local cbool = false
-  local ctimer = 60
-  local dirX, dirY, length
-  local deltaX, deltaY
 
-  local pathing = false
-  local mirror = false
-  local isLooping = false
-  local currentPoint
-  local vertices
-  local isWalking = false
-  local _callback
-  local endX, endY
-
-  local following = false
-  local radius
-  local target
-
-  local avoiding = false
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
   self.active = true
 
+  self.state = "idle"
+
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
+
+  local currentPoint, nextPoint
+  local points
+  local _isLooping
+  local followPathCallback
+
+  local destinationX, destinationY
+  local minimumDistance = 60
+  local _minimumDistance = minimumDistance
+  local goToPointCallback
+
+  -- update function called each frame, dt is time since last frame
   function self:update(dt)
-    if pathing then
-      local deltaX = endX - node.x
-      local deltaY = endY - node.y
-      local distanceToPoint = vector.length(deltaX, deltaY)
-      if distanceToPoint < 30 then
-        if mirror then
-          currentPoint = currentPoint - 1
-        else
-          currentPoint = currentPoint + 1
-        end
-        _callback()
-      else
+    if self.state == "walk" then
+      local deltaX = destinationX - node.x
+      local deltaY = destinationY - node.y
+      if vector.length(deltaX, deltaY) > minimumDistance then
         local dirX, dirY = vector.normalize(deltaX, deltaY)
-        node.x = node.x + dirX * node.speed * dt
-        node.y = node.y + dirY * node.speed * dt
-        node:lookAt(node.x + dirX, node.y + dirY)
-      end
-    end
+        -- apply input multiplied with speed to velocity
+        node.x, node.y = node.x + dirX * node.speed * dt, node.y + dirY * node.speed * dt
 
-    if following  then
-      if self:area(radius, target) then
-        self:goToPoint(target.x, target.y, dt)
-      end
-    end
-
-    if avoiding  then
-      if self:area(radius, target) then
-        self:goToPoint(-target.x, -target.y, dt)
+        -- make node look at destination
+        node.body:lookAt(node.x + dirX, node.y + dirY)
+      else
+        self.state = "idle"
+        if goToPointCallback then goToPointCallback() end
       end
     end
   end
 
-  --[[function self:direction(target)
-    local deltaX = target.x - node.x
-    local deltaY = target.y - node.y
-    local dirX, dirY = vector.normalize(deltaX, deltaY)
-    local length = vector.length(deltaX, deltaY)
-    return dirX, dirY, length
-  end]]
-
-  function self:followTarget(_target, _radius)
-    following = true
-    radius = _radius
-    target = _target
-  end
-
-  function self:goToPoint(x, y, dt)
-    local deltaX = x - node.x
-    local deltaY = y - node.y
-    if(vector.length(deltaX, deltaY) > 20) then
-      local dirX, dirY = vector.normalize(deltaX, deltaY)
-      node.x = node.x + dirX * node.speed * dt
-      node.y = node.y + dirY * node.speed * dt
-    end
-  end
-
-  function self:followPath(pathNode, isLooping)
-    pathing = true
+  -- let node move between given points
+  function self:followPath(vertices, isLooping, callback)
     currentPoint = 1
-    vertices = pathNode.vertices
+    nextPoint = 2
+    points = vertices
+    _isLooping = isLooping
+    followPathCallback = callback
 
-    self:goToPathPoint(vertices[currentPoint + 1].x, vertices[currentPoint + 1].y, handleNextPoint)
+    -- go to next point
+    self:goToPoint(points[currentPoint + 1].x, points[currentPoint + 1].y, handleNextPoint)
   end
 
+  -- moves node to given point
+  function self:goToPoint(x, y, callback, r)
+    self.state = "walk"
+    destinationX = x
+    destinationY = y
+    goToPointCallback = callback
+    minimumDistance = r or _minimumDistance
+  end
+
+  function self:stop()
+    self.state = "idle"
+  end
+
+
+  ----------------------------------------------
+  -- private methods
+  ----------------------------------------------
+
+  -- helper method to choose next point on path
   function handleNextPoint()
-    if currentPoint < #vertices and not mirror then
-      self:goToPathPoint(vertices[currentPoint + 1].x, vertices[currentPoint + 1].y, handleNextPoint)
-    elseif currentPoint > 1 and mirror then
-      self:goToPathPoint(vertices[currentPoint - 1].x, vertices[currentPoint - 1].y, handleNextPoint)
-    elseif currentPoint == #vertices and not mirror then
-      mirror = true
-      self:goToPathPoint(vertices[currentPoint - 1].x, vertices[currentPoint - 1].y, handleNextPoint)
-    elseif currentPoint == 1 and mirror then
-      mirror = false
-      self:goToPathPoint(vertices[currentPoint + 1].x, vertices[currentPoint + 1].y, handleNextPoint)
-    else
-      pathing = false
+    -- check if followPath has ended
+    if nextPoint == #points and not _isLooping then
+      self.state = "idle"
+      if followPathCallback then followPathCallback() end
+      return
     end
+
+    -- define direction
+    local dir = (nextPoint - currentPoint)
+
+    -- set currentPoint
+    currentPoint = nextPoint
+
+    -- define next point
+    if dir > 0 and currentPoint < #points or currentPoint == 1 then
+      nextPoint = nextPoint + 1
+    elseif dir < 0 and currentPoint > 1 or currentPoint == #points then
+      nextPoint = nextPoint - 1
+    end
+
+    -- go to next point
+    self:goToPoint(points[nextPoint].x, points[nextPoint].y, handleNextPoint)
   end
 
-  function self:goToPathPoint(x, y, callback)
-    endX, endY = x, y
-    isWalking = true
-    _callback = callback
-  end
 
-  function self:avoidTarget(_target, _radius)
-    avoiding = true
-    radius = _radius
-    target = _target
-  end
-
-  --[[function self:charge(target)
-    if(cbool == false) then
-      dirX, dirY, length = self:direction(target)
-      cbool = true
-    end
-    if(length >= 0) then
-      node.x = node.x + dirX * node.speed * 5
-      node.y = node.y + dirY * node.speed * 5
-      length = length - vector.length(dirX, dirY) * node.speed * 5
-    else
-      ctimer = ctimer - 1
-      if(ctimer <= 0) then
-        cbool = false
-        ctimer = 60
-      end
-    end
-  end]]
-
-  function self:area(radius, target)
-    local deltaX = target.x - node.x
-    local deltaY = target.y - node.y
-    if(vector.length(deltaX, deltaY) <= radius) then
-      return true
-    end
-    return false
-  end
-
-  --[[function self:insideScreen(target)
-    if(target.x + target.width <= screenwidth and target.x >= 0 and target.y + target.height <= screenheight and target.y >= 0) then
-      return true
-    end
-      return false
-  end]]
-
-  --[[function self:patrolling(startx, endx, starty, endy)
-    local deltaX, deltaY
-    if(pbool == false) then
-      deltaX = endx - startx
-      deltaY = endy - starty
-      length = vector.length(endx - node.x, endy - node.y)
-    else
-      deltaX = startx - endx
-      deltaY = starty - endy
-      length = vector.length(startx - node.x, starty - node.y)
-    end
-    if(length <= 0 and pbool == false) then
-      pbool = true
-    elseif(length <= 0 and pbool) then
-      pbool = false
-    end
-      local dirX, dirY = vector.normalize(deltaX, deltaY)
-      node.x = node.x + dirX * node.speed
-      node.y = node.y + dirY * node.speed
-    end]]
   ----------------------------------------------
   return self
 end

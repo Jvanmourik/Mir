@@ -1,114 +1,100 @@
-local Node = require "modules/node"
+local Character = require "modules/character"
 
-local function enemy(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY, layer)
-  local self = Node(x, y, w, h, r, scaleX, scaleY, anchorX, anchorY)
-
-  local assets = require "templates/assets"
+local function enemy(x, y)
+  local self = Character(x, y)
+  local base = {}; base.update = self.update or function() end
 
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
-
-
   self.name = "enemy"
-  self.scale = 0.5
+  self.speed = 400
 
-  self.health = 1
-  self.speed = 100
-  self.timer = 0
+
   ----------------------------------------------
   -- components
   ----------------------------------------------
 
-  -- sprite renderer component to render the sprite
-  local body = Node()
-
-  -- sprite renderer component to render the sprite
-  body:addComponent("spriteRenderer",
-  { atlas = assets.character.atlas,
-    asset = assets.character.sword_shield.idle,
-    layer = 1 })
-
-  -- animator component to animate the sprite
-  body:addComponent("animator",
-  { animations = assets.character.animations })
-  body.animator:play("sword-shield-idle", 0)
-
-  self:addChild(body)
-
-
-  -- collider component to collide with other collision objects
-  self:addComponent("collider", {
-    shapeType = "circle",
-    radius = 40
-  })
-
-  local hitbox = Node(-20, 80, 25, 75)
-  hitbox.anchorX, hitbox.anchorY = 0.5, 0
-
-  hitbox:addComponent("collider")
-  hitbox.collider.active = false
-
-  body:addChild(hitbox)
-
-  function hitbox:onCollisionEnter(dt, other, delta)
-    if other.name == "character" then
-      other:damage()
-    end
-  end
-
-  function hitbox:endContact(f, contact)
-    --print("endContact")
-  end
-
   -- agent component to implement AI
   self:addComponent("agent")
+
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
 
+  local target
+  local players
+  local timer = 0
+  local aggroDistance = 200
+  local attackCooldown = 1500
+  local isAttacking = false
+
+  -- update function called each frame, dt is time since last frame
   function self:update(dt)
-    if not self.target then
-      self.target = scene.rootNode:getChildByName("character")
+    -- get players
+    if not players then
+      players = scene.rootNode:getChildrenByName("player")
     end
 
-    -- make enemy look at character in a certain range
-    if self.target and vector.length(self.x - c.x, self.y - c.y) < 200  and c.active then
-      if not body.animator:isPlaying("sword-shield-stab") then
-        self:lookAt(c.x, c.y)
-      end
-      if self.timer <= 0 then
-        -- enable hitbox
-        hitbox.collider.active = true
-
-        -- change animation
-        if not body.animator:isPlaying("sword-shield-stab") then
-          body.animator:play("sword-shield-stab", 1, function()
-            body.animator:play("sword-shield-idle", 0)
-            hitbox.collider.active = false
-            self.timer = 60
-          end)
+    -- set closest player as target
+    local d
+    for _, player in pairs(players) do
+      if player.active then
+        local distance = vector.length(player.x - self.x, player.y - self.y)
+        if not d or distance < d then
+          d = distance
+          target = player
         end
       end
     end
-    self.timer = self.timer - 1
+
+    if target and target.active then
+      local distance = vector.length(target.x - self.x, target.y - self.y)
+
+      -- if target in range
+      if distance < aggroDistance then
+        -- move to target
+        if distance > 100 and not isAttacking then
+          self.agent:goToPoint(target.x, target.y)
+        elseif self.agent.state == "walk" then
+          self.agent:stop()
+        end
+
+        -- look at target if agent is idle
+        if not isAttacking and self.agent.state == "idle" then
+          self.body:lookAt(target.x, target.y)
+        end
+
+        -- attack
+        if distance < 100 and timer <= 0 then
+          isAttacking = true
+          self:attack(function()
+            isAttacking = false
+          end)
+          timer = attackCooldown
+        end
+
+        -- update timer
+        timer = timer - 1000 * dt
+      end
+    end
+
+    -- call base update method  
+    base.update(self, dt)
   end
 
-  function self:damage(amount)
-    local amount = amount or 1
-    self.health = self.health - amount
-    if self.health <= 0 then
-      self:kill()
-    end
-  end
+  function self:moveToPoint(x, y, dt)
+    local deltaX = x - self.x
+    local deltaY = y - self.y
+    local dirX, dirY = vector.normalize(deltaX, deltaY)
 
-  function self:kill()
-    if not body.animator:isPlaying("sword-shield-stab") then
-      body.active = false
-      self.active = false
-    end
+    -- apply input multiplied with speed to velocity
+    self.x, self.y = self.x + dirX * self.speed * dt, self.y + dirY * self.speed * dt
+
+    -- make node look at destination
+    self.body:lookAt(self.x + dirX, self.y + dirY)
   end
 
 

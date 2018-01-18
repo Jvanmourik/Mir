@@ -114,7 +114,6 @@ local function tilemap(name, x, y)
             })
         end
 
-
         -- add child node to layer node
         layerNode:addChild(node)
       end

@@ -63,7 +63,7 @@ local function scene(...)
 
     -- draw all drawable nodes
     for _, node in pairs(drawableNodes) do
-        node.spriteRenderer:draw()
+      node.spriteRenderer:draw()
     end
   end
 
