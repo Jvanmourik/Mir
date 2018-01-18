@@ -75,10 +75,10 @@ local function enemy(x, y)
           end)
           timer = attackCooldown
         end
-
-        -- update timer
-        timer = timer - 1000 * dt
       end
+
+      -- update timer
+      timer = timer - 1000 * dt
     end
 
     -- call base update method

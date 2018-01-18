@@ -24,6 +24,9 @@ local function item(id, x, y)
   self.tag = "item"
   self.rotation = math.random() * 2 * math.pi
 
+  self.velocityX, self.velocityY = 0, 0
+  self.dragX, self.dragY = 6, 6
+
 
   ----------------------------------------------
   -- components
@@ -49,6 +52,15 @@ local function item(id, x, y)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
+    -- add velocity to position
+    self.x = self.x + self.velocityX * dt
+    self.y = self.y + self.velocityY * dt
+
+    -- apply drag to velocity
+    self.velocityX = self.velocityX * (1 - self.dragX * dt)
+    self.velocityY = self.velocityY * (1 - self.dragY * dt)
+
+    -- rotate
     self.rotation = self.rotation + 0.25 * math.pi * dt
   end
 

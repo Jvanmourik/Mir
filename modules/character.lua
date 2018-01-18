@@ -11,15 +11,12 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   ----------------------------------------------
 
   self.name = "character"
-  self.width = 40
-  self.height = 40
-  self.anchorX = 0.5
-  self.anchorY = 0.5
+  self.width, self.height = 40, 40
+  self.anchorX, self.anchorY = 0.5, 0.5
 
-  self.velocityX = 0
-  self.velocityY = 0
-  self.dragX = 3
-  self.dragY = 3
+
+  self.velocityX, self.velocityY = 0, 0
+  self.dragX, self.dragY = 3, 3
   self.speed = 400
   self.health = 1
 

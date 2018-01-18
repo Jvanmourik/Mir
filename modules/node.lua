@@ -139,6 +139,11 @@ local function node(x, y, w, h, r, s, ax, ay, l)
     end
   end
 
+  function self:getForwardVector()
+    local r = self.rotation + 0.5 * math.pi
+    return math.cos(r), math.sin(r)
+  end
+
   -- add component to self.components and self.<type>
   function self:addComponent(type, options)
     local options = options or {}

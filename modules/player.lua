@@ -2,7 +2,7 @@ local Character = require "modules/character"
 
 local function character(x, y, gamepad)
   local self = Character(x, y)
-  local base = {}; base.update = self.update or function() end
+  local base = table.copy(self)
 
   ----------------------------------------------
   -- attributes
@@ -19,11 +19,6 @@ local function character(x, y, gamepad)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
-    -- pickup item
-    if input:isPressed('e') or gamepad and gamepad:isPressed('x') then
-      self:pickupItem()
-    end
-
     -- direction vector
     local dirX, dirY = 0, 0
 
@@ -75,6 +70,14 @@ local function character(x, y, gamepad)
       self:attack()
     end
 
+    -- pickup item
+    if not gamepad and input:isPressed('e') or gamepad and gamepad:isPressed('x') then
+      print(self.rotation)
+      if self:pickupItem() then
+        self:throwItem(1000)
+      end
+    end
+
     -- call base update method
     base.update(self, dt)
   end
@@ -103,6 +106,13 @@ local function character(x, y, gamepad)
       closestItem.active = false
       return closestItem
     end
+  end
+
+  function self:throwItem(force)
+    local item = Item(1, self.x, self.y)
+    local dirX, dirY = self.body:getForwardVector()
+    item.velocityX, item.velocityY = dirX * force, dirY * force
+    scene.rootNode:addChild(item)
   end
 
 
