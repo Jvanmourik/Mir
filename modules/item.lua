@@ -25,7 +25,7 @@ local function item(id, x, y)
   self.rotation = math.random() * 2 * math.pi
 
   self.velocityX, self.velocityY = 0, 0
-  self.dragX, self.dragY = 6, 6
+  self.dragX, self.dragY = 8, 8
 
 
   ----------------------------------------------

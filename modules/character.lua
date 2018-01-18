@@ -94,7 +94,6 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   -- handle collision
   function self.weapon:onCollisionEnter(dt, other, delta)
     if other.damage and type(other.damage) == "function" then
-      print(self.damage)
       other:damage()
     end
   end
@@ -165,8 +164,8 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   -- kill character
   function self:kill()
-    local zwaard = Item(1, self.x, self.y)
-    scene.rootNode:addChild(zwaard)
+    local item = Item(1, self.x, self.y)
+    scene.rootNode:addChild(item)
     self.weapon.active = false
     self.body.active = false
     self.legs.active = false
