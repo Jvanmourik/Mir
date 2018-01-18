@@ -37,6 +37,7 @@ function love.load()
   Tilemap = require "modules/tilemap"
   Player = require "modules/player"
   Enemy = require "modules/enemy"
+  Item = require "modules/item"
 
 	-- load controller mappings
 	local mappings = require "mappings"
@@ -51,6 +52,11 @@ function love.load()
 	-- create tilemap
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
+
+	for i=1,20 do
+		local zwaard = Item(1, 100 + i * 10, 100 + i * 10)
+		scene.rootNode:addChild(zwaard)
+	end
 
 	-- iterate through all spawn locations
 	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
@@ -120,7 +126,7 @@ function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
-  --drawCollisionShapes()
+  drawCollisionShapes()
 	camera:detach()
 end
 
@@ -128,7 +134,13 @@ function drawCollisionShapes()
 	-- draw all collision shapes
 	for _, node in pairs(scene.rootNode:getChildren()) do
 		if node.active and node.collider and node.collider.active then
-			if node.collider.isSensor then
+			if node.collider.isColliding then
+				lg.setColor(255, 0, 255, 100)
+				node.collider.shape:draw('fill')
+				lg.setColor(255, 0, 255, 255)
+				node.collider.shape:draw('line')
+				lg.setColor(255, 255, 255)
+			elseif node.collider.isSensor then
 				lg.setColor(255, 255, 0, 100)
 				node.collider.shape:draw('fill')
 				lg.setColor(255, 255, 0, 255)

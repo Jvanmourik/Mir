@@ -9,14 +9,13 @@ local function collider(node, options)
   local width = options.width or node.width
   local height = options.height or node.height
 
-  local collisions = {}
-
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
   self.active = true
-  self.isSensor = false
+  self.isSensor = options.sensor or false
+  self.isColliding = false
 
   if shapeType == "polygon" then
     self.shape = HC.polygon(unpack(options.vertices))
@@ -51,16 +50,18 @@ local function collider(node, options)
     self:handleCollisions(dt)
   end
 
+  local collisions = {}
   function self:handleCollisions(dt)
     -- check collision with other colliders
     local collisionsThisFrame = {}
 
     -- check if a collision has started
     for shape, delta in pairs(HC.collisions(self.shape)) do
-      for _, other in pairs(scene.rootNode:getChildren()) do
-        if other.active and other.collider and other.collider.active
-          and other.collider.shape == shape then
-          if node.onCollisionEnter and not collisions[shape] then
+      for _, other in pairs(scene.collisionObjects) do
+        local col = other.collider
+        if other.active and col and col.active and not col.isSensor and col.shape == shape then
+          self.isColliding = true
+          if not collisions[shape] and node.onCollisionEnter then
             node:onCollisionEnter(dt, other, delta)
           end
           if node.onCollision then
@@ -75,6 +76,7 @@ local function collider(node, options)
     -- check if a collision has ended
     for other, delta in pairs(collisions) do
       if not collisionsThisFrame[other] then
+        self.isColliding = false
         if node.onCollisionExit then
           node:onCollisionExit(dt, other, delta)
         end

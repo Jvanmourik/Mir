@@ -2,7 +2,6 @@ local assets = require "templates/assets"
 
 -- Stores all items
 local items = {
-  atlas = assets.items.atlas,
   {
     id = 1,
     name = "regularSword",

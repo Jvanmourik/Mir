@@ -132,6 +132,7 @@ local function node(x, y, w, h, r, s, ax, ay, l)
     elseif type == "collider" then
       c = Collider(self, options)
       self.collider = c
+      scene.collisionObjects[#scene.collisionObjects + 1] = self
     elseif type == "agent" then
       c = Agent(self, options)
       self.agent = c

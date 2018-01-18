@@ -4,6 +4,7 @@ local function item(id, x, y)
   local self = Node(x, y)
 
   local items = require "templates/items"
+  local assets = require "templates/assets"
 
   ----------------------------------------------
   -- attributes
@@ -28,11 +29,12 @@ local function item(id, x, y)
   -- collider component to collide with other collision objects
   self:addComponent("collider", {
     shapeType = "circle",
-    radius = 20
+    radius = 50,
+    sensor = true
   })
 
   self:addComponent("spriteRenderer", {
-    atlas = items.atlas,
+    atlas = assets.items.atlas,
     asset = asset,
     layer = 0
   })
@@ -43,7 +45,7 @@ local function item(id, x, y)
   ----------------------------------------------
 
   -- update function called each frame, dt is time since last frame
-  function self:update(dt)
+  --[[function self:update(dt)
     if isAttacking and self.type == "bow" then
       print("shoot arrow")
     elseif isAttacking and self.type == "damageStaff" then
@@ -51,7 +53,7 @@ local function item(id, x, y)
     elseif isAttacking and self.type == "healingStaff" then
       print("cast healing spell")
     end
-  end
+  end]]
 
 
   ----------------------------------------------
