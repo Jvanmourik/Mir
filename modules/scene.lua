@@ -9,6 +9,7 @@ local function scene(...)
 
   -- root node of the node graph
   self.rootNode = Node(...)
+  self.collisionObjects = {}
 
 
   ----------------------------------------------

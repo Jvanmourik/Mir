@@ -1,16 +1,18 @@
 local Character = require "modules/character"
+local Item = require "modules/item"
 
 local function character(x, y, gamepad)
   local self = Character(x, y)
-  local base = table.copy(self);
+  local base = table.copy(self)
 
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
   self.name = "player"
+  self.health = 3
   self.rollSpeed = 800
-
+  self.item = "regularSword"
 
   ----------------------------------------------
   -- methods
@@ -18,7 +20,6 @@ local function character(x, y, gamepad)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
-
     -- direction vector
     local dirX, dirY = 0, 0
 
@@ -70,8 +71,48 @@ local function character(x, y, gamepad)
       self:attack()
     end
 
+    -- pickup item
+    if not gamepad and input:isPressed('e') or gamepad and gamepad:isPressed('x') then
+      if self:pickupItem() then
+        self:throwItem(1000)
+      end
+    end
+
     -- call base update method
     base.update(self, dt)
+  end
+
+  local pickupDistance = 80
+  function self:pickupItem()
+    -- get items
+    local items = scene.rootNode:getChildrenByTag("item")
+
+    -- get closest item
+    local closestItem
+    local distance
+    for _, item in pairs(items) do
+      local d = vector.length(self.x - item.x, self.y - item.y)
+      if not distance or d < distance then
+        if item.active then
+          distance = d
+          closestItem = item
+        end
+      end
+    end
+
+    -- check if item is in range
+    if closestItem and distance < pickupDistance then
+      -- finnaly pick up the item
+      closestItem.active = false
+      return closestItem
+    end
+  end
+
+  function self:throwItem(force)
+    local item = Item(1, self.x, self.y)
+    local dirX, dirY = self.body:getForwardVector()
+    item.velocityX, item.velocityY = dirX * force, dirY * force
+    scene.rootNode:addChild(item)
   end
 
 

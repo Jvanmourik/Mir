@@ -39,24 +39,24 @@ local function enemy(x, y)
     end
 
     -- set closest player as target
-    local d
+    local distance
     for _, player in pairs(players) do
       if player.active then
-        local distance = vector.length(player.x - self.x, player.y - self.y)
-        if not d or distance < d then
-          d = distance
+        local d = vector.length(player.x - self.x, player.y - self.y)
+        if not distance or d < distance then
+          distance = d
           target = player
         end
       end
     end
 
     if target and target.active then
-      local distance = vector.length(target.x - self.x, target.y - self.y)
+      local d = vector.length(target.x - self.x, target.y - self.y)
 
       -- if target in range
-      if distance < aggroDistance then
+      if d < aggroDistance then
         -- move to target
-        if distance > 100 and not isAttacking then
+        if d > 100 and not isAttacking then
           self.agent:goToPoint(target.x, target.y)
         elseif self.agent.state == "walk" then
           self.agent:stop()
@@ -68,17 +68,17 @@ local function enemy(x, y)
         end
 
         -- attack
-        if distance < 100 and timer <= 0 then
+        if d < 100 and timer <= 0 then
           isAttacking = true
           self:attack(function()
             isAttacking = false
           end)
           timer = attackCooldown
         end
-
-        -- update timer
-        timer = timer - 1000 * dt
       end
+
+      -- update timer
+      timer = timer - 1000 * dt
     end
 
     -- call base update method

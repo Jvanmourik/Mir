@@ -97,7 +97,7 @@ function love.load()
 end
 
 function love.update(dt)
-  -- update scene
+	-- update scene
   scene:update(dt)
 
 	local players = scene.rootNode:getChildrenByName("player")
@@ -136,7 +136,13 @@ function drawCollisionShapes()
 	-- draw all collision shapes
 	for _, node in pairs(scene.rootNode:getChildren()) do
 		if node.active and node.collider and node.collider.active then
-			if node.collider.isSensor then
+			if node.collider.isColliding then
+				lg.setColor(255, 0, 255, 100)
+				node.collider.shape:draw('fill')
+				lg.setColor(255, 0, 255, 255)
+				node.collider.shape:draw('line')
+				lg.setColor(255, 255, 255)
+			elseif node.collider.isSensor then
 				lg.setColor(255, 255, 0, 100)
 				node.collider.shape:draw('fill')
 				lg.setColor(255, 255, 0, 255)
