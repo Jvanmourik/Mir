@@ -74,35 +74,35 @@ local assets = {
     atlas = image("assets/images/items.png"),
     regularSword = {
       frames = {
-        quad(0, 0, 40, 60, 40, 60)
+        quad(43, 1, 19, 42, 63, 44)
       },
       anchorX = 0.5,
       anchorY = 0.5
     },
     regularBow = {
       frames = {
-        quad(10, 0, 10, 10, 40, 60)
+        quad(22, 1, 19, 42, 63, 44)
       },
       anchorX = 0.5,
       anchorY = 0.5
     },
     regularDamageStaff = {
       frames = {
-        quad(20, 0, 10, 10, 40, 60)
+        quad(22, 1, 19, 42, 63, 44)
       },
       anchorX = 0.5,
       anchorY = 0.5
     },
     regularHealingStaff = {
       frames = {
-        quad(30, 0, 10, 10, 40, 60)
+        quad(22, 1, 19, 42, 63, 44)
       },
       anchorX = 0.5,
       anchorY = 0.5
     },
     bloodSword = {
       frames = {
-        quad(0, 10, 10, 10, 40, 60)
+        quad(1, 1, 19, 42, 63, 44)
       },
       anchorX = 0.5,
       anchorY = 0.5

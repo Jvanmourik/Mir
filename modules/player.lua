@@ -105,7 +105,7 @@ local function character(x, y, gamepad)
     return self:pickupItem(closestItem)
   end
 
-  local pickupDistance = 80
+  local pickupDistance = 75
   function self:pickupItem(item)
     if item then
       local distance  = vector.length(self.x - item.x, self.y - item.y)
