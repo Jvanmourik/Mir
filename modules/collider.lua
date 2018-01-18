@@ -33,6 +33,8 @@ local function collider(node, options)
   ----------------------------------------------
   -- methods
   ----------------------------------------------
+  
+  local collisionsThisFrame = {}
 
   function self:update(dt)
     local x, y = node:getWorldCoords()
@@ -48,14 +50,24 @@ local function collider(node, options)
     self.shape:moveTo(x + offsetX + cx, y + offsetY + cy)
     self.shape:setRotation(r)
 
-    self:handleCollisions(dt)
+    -- reset the active collisions
+    collisionsThisFrame = {}
+
+    -- check if a collision event has occured
+    self:handleEnteringCollisions()
+    self:handleExitingCollisions()
   end
 
-  function self:handleCollisions(dt)
-    -- check collision with other colliders
-    local collisionsThisFrame = {}
+  function self:setActive(boolean)
+    self.active = boolean
+    if boolean == false then
+      self.collisions = {}
+      self:handleExitingCollisions()
+    end
+  end
 
-    -- check if a collision has started
+  -- check if a collision has started
+  function self:handleEnteringCollisions()
     for shape, delta in pairs(HC.collisions(self.shape)) do
       for _, other in pairs(scene.collisionObjects) do
         local col = other.collider
@@ -72,8 +84,10 @@ local function collider(node, options)
         end
       end
     end
+  end
 
-    -- check if a collision has ended
+  -- check if a collision has ended
+  function self:handleExitingCollisions()
     for other, delta in pairs(self.collisions) do
       if not collisionsThisFrame[other] then
         if node.onCollisionExit then
@@ -84,13 +98,6 @@ local function collider(node, options)
           self.isColliding = false
         end
       end
-    end
-  end
-
-  function self:setActive(boolean)
-    self.active = boolean
-    if boolean == false then
-      self.collisions = {}
     end
   end
 
