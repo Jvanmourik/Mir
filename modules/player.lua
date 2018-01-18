@@ -72,7 +72,6 @@ local function character(x, y, gamepad)
 
     -- pickup item
     if not gamepad and input:isPressed('e') or gamepad and gamepad:isPressed('x') then
-      print(self.rotation)
       if self:pickupItem() then
         self:throwItem(1000)
       end
