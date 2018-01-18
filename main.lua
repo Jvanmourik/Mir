@@ -53,11 +53,6 @@ function love.load()
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
 
-	for i=1,20 do
-		local zwaard = Item(1, 100 + i * 10, 100 + i * 10)
-		scene.rootNode:addChild(zwaard)
-	end
-
 	-- iterate through all spawn locations
 	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
 		-- set amount to spawn

@@ -63,6 +63,17 @@ local function node(x, y, w, h, r, s, ax, ay, l)
     return children
   end
 
+  -- get children by tag
+  function self:getChildrenByTag(tag)
+    local children = {}
+    for _, child in pairs(getChildrenFrom(self)) do
+      if child.tag == tag then
+        children[#children + 1] = child
+      end
+    end
+    return children
+  end
+
   -- get child by name
   function self:getChildByName(name)
     for _, child in pairs(self:getChildren()) do
@@ -76,6 +87,15 @@ local function node(x, y, w, h, r, s, ax, ay, l)
   function self:getChildByType(type)
     for _, child in pairs(self:getChildren()) do
       if child.type == type then
+        return child
+      end
+    end
+  end
+
+  -- get child by tag
+  function self:getChildByTag(tag)
+    for _, child in pairs(self:getChildren()) do
+      if child.tag == tag then
         return child
       end
     end

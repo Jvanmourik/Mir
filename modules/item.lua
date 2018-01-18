@@ -21,17 +21,19 @@ local function item(id, x, y)
     end
   end
 
+  self.tag = "item"
+
 
   ----------------------------------------------
   -- components
   ----------------------------------------------
 
   -- collider component to collide with other collision objects
-  self:addComponent("collider", {
+  --[[self:addComponent("collider", {
     shapeType = "circle",
     radius = 50,
     sensor = true
-  })
+  })]]
 
   self:addComponent("spriteRenderer", {
     atlas = assets.items.atlas,

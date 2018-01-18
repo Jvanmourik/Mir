@@ -130,12 +130,15 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   function self:attack(callback)
     if not self.body.animator:isPlaying("sword-shield-stab") then
       -- enable hitbox
-      self.hitbox.collider.active = true
+      self.hitbox.collider:setActive(true)
 
       -- change animation
       self.body.animator:play("sword-shield-stab", 1, function()
         self.body.animator:play("sword-shield-idle", 0)
-        self.hitbox.collider.active = false
+        -- disable hitbox
+        self.hitbox.collider:setActive(false)
+
+        -- invoke callback
         if callback then callback() end
       end)
     end

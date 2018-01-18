@@ -5,7 +5,6 @@ local function collider(node, options)
 
   local x = node.x + (node.width * node.scale) * (0.5 - node.anchorX)
   local y = node.y + (node.height * node.scale) * (0.5 - node.anchorY)
-  local cx, cy = 0, 0
   local width = options.width or node.width
   local height = options.height or node.height
 
@@ -16,7 +15,9 @@ local function collider(node, options)
   self.active = true
   self.isSensor = options.sensor or false
   self.isColliding = false
+  self.collisions = {}
 
+  local cx, cy = 0, 0
   if shapeType == "polygon" then
     self.shape = HC.polygon(unpack(options.vertices))
     cx, cy = self.shape:center()
@@ -50,7 +51,6 @@ local function collider(node, options)
     self:handleCollisions(dt)
   end
 
-  local collisions = {}
   function self:handleCollisions(dt)
     -- check collision with other colliders
     local collisionsThisFrame = {}
@@ -61,27 +61,36 @@ local function collider(node, options)
         local col = other.collider
         if other.active and col and col.active and not col.isSensor and col.shape == shape then
           self.isColliding = true
-          if not collisions[shape] and node.onCollisionEnter then
+          if not self.collisions[other] and node.onCollisionEnter then
             node:onCollisionEnter(dt, other, delta)
           end
           if node.onCollision then
             node:onCollision(dt, other, delta)
           end
-          collisions[other] = delta
+          self.collisions[other] = delta
           collisionsThisFrame[other] = delta
         end
       end
     end
 
     -- check if a collision has ended
-    for other, delta in pairs(collisions) do
+    for other, delta in pairs(self.collisions) do
       if not collisionsThisFrame[other] then
-        self.isColliding = false
         if node.onCollisionExit then
           node:onCollisionExit(dt, other, delta)
         end
-        collisions[other] = nil
+        self.collisions[other] = nil
+        if #self.collisions == 0 then
+          self.isColliding = false
+        end
       end
+    end
+  end
+
+  function self:setActive(boolean)
+    self.active = boolean
+    if boolean == false then
+      self.collisions = {}
     end
   end
 

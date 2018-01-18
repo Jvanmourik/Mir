@@ -9,6 +9,7 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   self.name = "player"
+  self.health = 3
   self.rollSpeed = 800
   self.item = "regularSword"
 
@@ -18,6 +19,31 @@ local function character(x, y, gamepad)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
+    if input:isPressed('e') or gamepad and gamepad:isPressed('x') then
+
+      -- get items
+      local items = scene.rootNode:getChildrenByTag("item")
+
+      -- get closest item
+      local target
+      local d
+      for _, item in pairs(items) do
+        local distance = vector.length(self.x - item.x, self.y - item.y)
+        if not d or distance < d then
+          if item.active then
+            d = distance
+            target = item
+          end
+        end
+      end
+
+      -- check if item is in range
+      local range = 80
+      if target and d < range then
+        -- pick up item
+        self:pickUpItem(target)
+      end
+    end
 
     -- direction vector
     local dirX, dirY = 0, 0
@@ -72,6 +98,10 @@ local function character(x, y, gamepad)
 
     -- call base update method
     base.update(self, dt)
+  end
+
+  function self:pickUpItem(item)
+    item.active = false
   end
 
 
