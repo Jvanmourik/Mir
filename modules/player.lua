@@ -12,7 +12,7 @@ local function character(x, y, gamepad)
   self.name = "player"
   self.health = 3
   self.rollSpeed = 800
-  
+
 
   ----------------------------------------------
   -- methods
@@ -71,10 +71,12 @@ local function character(x, y, gamepad)
       self:attack()
     end
 
-    -- pickup item
+    -- pickup item on the ground
     if not gamepad and input:isPressed('e') or gamepad and gamepad:isPressed('x') then
-      if self:pickupItem() then
-        self:throwItem(1000)
+      local item = self:pickupAnyItem()
+      if item then
+        self:throwItem(Item(self.weapon.id, self.x, self.y), 1000)
+        self:equipItem(item)
       end
     end
 
@@ -82,8 +84,7 @@ local function character(x, y, gamepad)
     base.update(self, dt)
   end
 
-  local pickupDistance = 80
-  function self:pickupItem()
+  function self:pickupAnyItem()
     -- get items
     local items = scene.rootNode:getChildrenByTag("item")
 
@@ -100,16 +101,31 @@ local function character(x, y, gamepad)
       end
     end
 
-    -- check if item is in range
-    if closestItem and distance < pickupDistance then
-      -- finnaly pick up the item
-      closestItem.active = false
-      return closestItem
+    -- pickup item
+    return self:pickupItem(closestItem)
+  end
+
+  local pickupDistance = 80
+  function self:pickupItem(item)
+    if item then
+      local distance  = vector.length(self.x - item.x, self.y - item.y)
+
+      -- check if item is in range
+      if distance < pickupDistance then
+        item.active = false
+        return item
+      end
     end
   end
 
-  function self:throwItem(force)
-    local item = Item(1, self.x, self.y)
+  function self:equipItem(item)
+    self.weapon.id = item.id
+    self.weapon.name = item.name
+    self.weapon.damage = item.damage
+    self.weapon.type = item.type
+  end
+
+  function self:throwItem(item, force)
     local dirX, dirY = self.body:getForwardVector()
     item.velocityX, item.velocityY = dirX * force, dirY * force
     scene.rootNode:addChild(item)
