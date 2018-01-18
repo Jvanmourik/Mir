@@ -18,7 +18,7 @@ function love.load()
 	math.randomseed(lt.getTime())
 
 	-- set window to fullscreen in desktop mode
-	--lw.setFullscreen(true, "desktop")
+	lw.setFullscreen(true, "desktop")
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
@@ -37,6 +37,7 @@ function love.load()
   Tilemap = require "modules/tilemap"
   Player = require "modules/player"
   Enemy = require "modules/enemy"
+  Item = require "modules/item"
 
 	-- load controller mappings
 	local mappings = require "mappings"
@@ -47,6 +48,9 @@ function love.load()
 
   -- create scene
   scene = Scene(0, 0)
+
+	local item = Item(3, 150, 200)
+	scene.rootNode:addChild(item)
 
 	-- create tilemap
 	map = Tilemap("overworld")
