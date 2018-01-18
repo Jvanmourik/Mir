@@ -12,7 +12,7 @@ local function character(x, y, gamepad)
   self.name = "player"
   self.health = 3
   self.rollSpeed = 800
-  self.item = "regularSword"
+  
 
   ----------------------------------------------
   -- methods
