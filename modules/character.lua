@@ -87,7 +87,8 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   -- handle collision
   function self.hitbox:onCollisionEnter(dt, other, delta)
-    if other.damage then
+    if other.damage and type(other.damage) == "function" then
+      print("do damage")
       other:damage()
     end
   end
