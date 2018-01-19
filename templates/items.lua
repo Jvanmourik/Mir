@@ -12,7 +12,7 @@ local items = {
   {
     id = 2,
     name = "regularBow",
-    damage = 2,
+    damage = 5,
     type = "bow",
     asset = assets.items.regularBow
   },
@@ -36,6 +36,13 @@ local items = {
     damage = 10,
     type = "sword",
     asset = assets.items.bloodSword
+  },
+  {
+    id = 6,
+    name = "arrow",
+    damage = 3,
+    type = "projectile",
+    asset = assets.items.arrow
   }
 }
 

@@ -36,6 +36,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   -- child nodes
   ----------------------------------------------
 
+  -- create legs
   self.legs = Node()
   self.legs.scale = 0.5
 
@@ -55,6 +56,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   ----------------------------------------------
 
+  -- create body
   self.body = Node()
   self.body.scale = 0.5
 
@@ -74,22 +76,29 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   ----------------------------------------------
 
-  self.hitbox = Node(-20, 80, 25, 75)
-  self.hitbox.anchorX, self.hitbox.anchorY = 0.5, 0
+  -- create weapon
+  self.weapon = Node(-20, 80, 25, 75)
+  self.weapon.anchorX, self.weapon.anchorY = 0.5, 0
+
+  -- add weapon template
+  self.weapon.id = 1
+  self.weapon.name = "regularSword"
+  self.weapon.damage = 5
+  self.weapon.type = "sword"
 
   -- collider component to collide with other collision objects
-  self.hitbox:addComponent("collider")
-  self.hitbox.collider.active = false
-  self.hitbox.collider.isSensor = true
+  self.weapon:addComponent("collider")
+  self.weapon.collider.active = false
+  self.weapon.collider.isSensor = true
 
   -- handle collision
-  function self.hitbox:onCollisionEnter(dt, other, delta)
+  function self.weapon:onCollisionEnter(dt, other, delta)
     if other.damage and type(other.damage) == "function" then
-      other:damage()
+      other:damage(self.damage)
     end
   end
 
-  self.body:addChild(self.hitbox)
+  self.body:addChild(self.weapon)
 
 
   ----------------------------------------------
@@ -126,14 +135,14 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   function self:attack(callback)
     if not self.body.animator:isPlaying("sword-shield-stab") then
-      -- enable hitbox
-      self.hitbox.collider:setActive(true)
+      -- enable weapon
+      self.weapon.collider:setActive(true)
 
       -- change animation
       self.body.animator:play("sword-shield-stab", 1, function()
         self.body.animator:play("sword-shield-idle", 0)
-        -- disable hitbox
-        self.hitbox.collider:setActive(false)
+        -- disable weapon
+        self.weapon.collider:setActive(false)
 
         -- invoke callback
         if callback then callback() end
@@ -155,9 +164,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   -- kill character
   function self:kill()
-    local zwaard = Item(1, self.x, self.y)
-    scene.rootNode:addChild(zwaard)
-    self.hitbox.active = false
+    self.weapon.active = false
     self.body.active = false
     self.legs.active = false
     self.active = false
@@ -165,7 +172,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   -- revive character
   function self:revive()
-    self.hitbox.active = true
+    self.weapon.active = true
     self.body.active = true
     self.legs.active = true
     self.active = true

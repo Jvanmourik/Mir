@@ -2,7 +2,7 @@ local Character = require "modules/character"
 
 local function enemy(x, y)
   local self = Character(x, y)
-  local base = {}; base.update = self.update or function() end
+  local base = table.copy(self)
 
   ----------------------------------------------
   -- attributes
@@ -10,7 +10,7 @@ local function enemy(x, y)
 
   self.name = "enemy"
   self.speed = 400
-
+  self.health = 20
 
   ----------------------------------------------
   -- components
@@ -83,6 +83,20 @@ local function enemy(x, y)
 
     -- call base update method
     base.update(self, dt)
+  end
+
+  function self:kill()
+    local randomNumber = love.math.random()
+    local item
+    if randomNumber <= 0.5 then
+      item = Item(1, self.x, self.y)
+    elseif randomNumber > 0.5 and randomNumber <= 0.8 then
+      item = Item(2, self.x, self.y)
+    else
+      item = Item(5, self.x, self.y)
+    end 
+    scene.rootNode:addChild(item)
+    base.kill(self)
   end
 
   function self:moveToPoint(x, y, dt)

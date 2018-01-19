@@ -18,7 +18,7 @@ function love.load()
 	math.randomseed(lt.getTime())
 
 	-- set window to fullscreen in desktop mode
-	lw.setFullscreen(true, "desktop")
+	lw.setFullscreen(false, "desktop")
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
@@ -48,6 +48,9 @@ function love.load()
 
   -- create scene
   scene = Scene(0, 0)
+
+	local item = Item(3, 150, 200)
+	scene.rootNode:addChild(item)
 
 	-- create tilemap
 	map = Tilemap("overworld")
@@ -98,21 +101,29 @@ function love.load()
 end
 
 function love.update(dt)
-  -- update scene
+	-- update scene
   scene:update(dt)
 
-	local dx,dy = c.x - camera.x, c.y - camera.y
+	local players = scene.rootNode:getChildrenByName("player")
+
+	local averageX, averageY = 0, 0
+	for _, player in pairs(players) do
+		averageX = averageX + player.x
+		averageY = averageY + player.y
+	end
+	averageX = averageX / #players
+	averageY = averageY / #players
+
+	local dx, dy = averageX - camera.x, averageY - camera.y
 	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
 
 	if lk.isDown("r") then
-		for _, node in pairs(scene.rootNode:getChildren()) do
-			if node.name == "player" then
+		for _, player in pairs(players) do
 				local x, y = 120, 1200
-				node.x = x
-				node.y = y
-				node.collider.shape:moveTo(x, y)
-				node:revive()
-			end
+				player.x = x
+				player.y = y
+				player.collider.shape:moveTo(x, y)
+				player:revive()
 		end
 	end
 end

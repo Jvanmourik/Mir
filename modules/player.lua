@@ -1,4 +1,6 @@
 local Character = require "modules/character"
+local Item = require "modules/item"
+local Projectile = require "modules/projectile"
 
 local function character(x, y, gamepad)
   local self = Character(x, y)
@@ -11,7 +13,7 @@ local function character(x, y, gamepad)
   self.name = "player"
   self.health = 3
   self.rollSpeed = 800
-  self.item = "regularSword"
+  local shootTimer = 0
 
   ----------------------------------------------
   -- methods
@@ -19,6 +21,7 @@ local function character(x, y, gamepad)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
+
     -- direction vector
     local dirX, dirY = 0, 0
 
@@ -69,20 +72,34 @@ local function character(x, y, gamepad)
     if not gamepad and input:isPressed(1) or gamepad and gamepad:isPressed('rightshoulder') then
       self:attack()
     end
-
-    -- pickup item
+    -- pickup item on the ground
     if not gamepad and input:isPressed('e') or gamepad and gamepad:isPressed('x') then
-      if self:pickupItem() then
-        self:throwItem(1000)
+      local item = self:pickupAnyItem()
+      if item then
+        self:throwItem(Item(self.weapon.id, self.x, self.y), 1000)
+        self:equipItem(item)
       end
     end
 
+    -- lower time you have to wait till you can shoot again
+    shootTimer = shootTimer - 1
     -- call base update method
     base.update(self, dt)
   end
 
-  local pickupDistance = 80
-  function self:pickupItem()
+  function self:attack(callback)
+    if self.weapon.type == "sword" then
+      base.attack(self, callback)
+    elseif self.weapon.type == "bow" and shootTimer <= 0 then
+      dirX, dirY = self.body:getForwardVector()
+      spawnX , spawnY = self.x + dirX * 50, self.y + dirY * 50
+      shootTimer = 60
+      local arrow = Projectile(spawnX, spawnY, dirX, dirY, self.weapon.damage)
+      scene.rootNode:addChild(arrow)
+    end
+  end
+
+  function self:pickupAnyItem()
     -- get items
     local items = scene.rootNode:getChildrenByTag("item")
 
@@ -99,16 +116,31 @@ local function character(x, y, gamepad)
       end
     end
 
-    -- check if item is in range
-    if closestItem and distance < pickupDistance then
-      -- finnaly pick up the item
-      closestItem.active = false
-      return closestItem
+    -- pickup item
+    return self:pickupItem(closestItem)
+  end
+
+  local pickupDistance = 75
+  function self:pickupItem(item)
+    if item then
+      local distance  = vector.length(self.x - item.x, self.y - item.y)
+
+      -- check if item is in range
+      if distance < pickupDistance then
+        item.active = false
+        return item
+      end
     end
   end
 
-  function self:throwItem(force)
-    local item = Item(1, self.x, self.y)
+  function self:equipItem(item)
+    self.weapon.id = item.id
+    self.weapon.name = item.name
+    self.weapon.damage = item.damage
+    self.weapon.type = item.type
+  end
+
+  function self:throwItem(item, force)
     local dirX, dirY = self.body:getForwardVector()
     item.velocityX, item.velocityY = dirX * force, dirY * force
     scene.rootNode:addChild(item)

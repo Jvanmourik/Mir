@@ -107,12 +107,14 @@ local function tilemap(name, x, y)
 
         -- add collider component to collide with other collision objects
         if node.type == "trigger" or node.type == "fixture" then
-          if node.type == "trigger" then node.collider.isSensor = true end
           node:addComponent("collider", {
               shapeType = object.shape,
               vertices = vertices
             })
         end
+
+        -- is the collider a sensor?
+        if node.type == "trigger" then node.collider.isSensor = true end
 
         -- add child node to layer node
         layerNode:addChild(node)
