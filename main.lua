@@ -38,6 +38,7 @@ function love.load()
   Player = require "modules/player"
   Enemy = require "modules/enemy"
   Item = require "modules/item"
+	Boss = require "modules/boss"
 
 	-- load controller mappings
 	local mappings = require "mappings"
@@ -98,6 +99,9 @@ function love.load()
 		e.agent:followPath(path.vertices, true)
 		scene.rootNode:addChild(e)
 	end
+
+	local b = Boss(100, 100)
+	scene.rootNode:addChild(b)
 end
 
 function love.update(dt)

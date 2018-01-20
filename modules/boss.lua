@@ -1,4 +1,6 @@
 local Node = require "modules/node"
+local items = require "templates/items"
+local assets = require "templates/assets"
 
 local function boss(x,y)
   local self = Node(x,y)
@@ -22,30 +24,30 @@ local function boss(x,y)
   })
 
   --spriteRenderer (temp)
-  self.body = Node()
-  self.body.scale = 0.5
+  --[[self.body = Node()
+  self.body.scale = 0.5]]
 
   -- sprite renderer component to render the sprite
-  self.body:addComponent("spriteRenderer",
-  { atlas = assets.character.atlas,
-    asset = assets.character.sword_shield.idle,
-    layer = 1 })
+  self:addComponent("spriteRenderer",
+  { atlas = Assets.items.atlas,
+    asset = Assets.items.bloodSword,
+    layer = 0 })
 
   -- animator component to animate the sprite
-  self.body:addComponent("animator",
+  --[[self.body:addComponent("animator",
   { animations = assets.character.animations })
   self.body.animator:play("sword-shield-idle", 0)
 
-  self:addChild(self.body)
+  self:addChild(self.body)]]
 
   --collision
-  self.hitbox = Node(-20, 80, 25, 75)
+  --[[self.hitbox = Node(-20, 80, 25, 75)
   self.hitbox.anchorX, self.hitbox.anchorY = 0.5, 0
 
   -- collider component to collide with other collision objects
   self.hitbox:addComponent("collider")
   self.hitbox.collider.active = false
-  self.hitbox.collider.isSensor = true
+  self.hitbox.collider.isSensor = true/]]
 
   --Add some AI
   self:addComponent("agent")
@@ -61,3 +63,5 @@ local function boss(x,y)
   end
   return self
 end
+
+return boss
