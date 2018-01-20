@@ -114,6 +114,16 @@ local assets = {
       anchorX = 0.5,
       anchorY = 0.5
     }
+  },
+  boss = {
+    atlas = image("assets/images/boss.png"),
+    bossAsset = {
+      frames = {
+        quad(1, 1, 100, 100, 100, 100)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    }
   }
 }
 

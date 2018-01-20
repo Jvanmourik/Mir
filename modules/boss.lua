@@ -20,7 +20,7 @@ local function boss(x,y)
 
   self:addComponent("collider", {
     shapeType = "circle",
-    radius = 20
+    radius = 50
   })
 
   --spriteRenderer (temp)
@@ -29,8 +29,8 @@ local function boss(x,y)
 
   -- sprite renderer component to render the sprite
   self:addComponent("spriteRenderer",
-  { atlas = Assets.items.atlas,
-    asset = Assets.items.bloodSword,
+  { atlas = assets.boss.atlas,
+    asset = assets.boss.bossAsset,
     layer = 0 })
 
   -- animator component to animate the sprite
@@ -50,7 +50,7 @@ local function boss(x,y)
   self.hitbox.collider.isSensor = true/]]
 
   --Add some AI
-  self:addComponent("agent")
+  --self:addComponent("agent")
 
 
   --functions / attacks
