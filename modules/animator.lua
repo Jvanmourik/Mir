@@ -41,6 +41,7 @@ local function animator(node, animations)
             iterationCount = iterationCount - 1
             currentFrame = 1
           else
+            currentFrame = #sequence
             self:stop()
             if _callback then _callback() end
             return
@@ -83,14 +84,6 @@ local function animator(node, animations)
 
   -- stop animation
   function self:stop()
-
-    -- reset current frame
-    currentFrame = 1
-
-    -- update the sprite
-    local sequence = animation.sequence
-    node.spriteRenderer:setSprite(animation, sequence[currentFrame])
-
     isAnimating = false
   end
 

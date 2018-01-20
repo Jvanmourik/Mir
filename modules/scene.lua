@@ -52,7 +52,7 @@ local function scene(...)
     -- get all drawable nodes
     local drawableNodes = {}
     for _, child in pairs(self.rootNode:getChildren()) do
-      if child.active and child.visible and child.spriteRenderer then
+      if child.active and child.visible and (child.draw or child.spriteRenderer) then
         drawableNodes[#drawableNodes + 1] = child
       end
     end
@@ -64,7 +64,8 @@ local function scene(...)
 
     -- draw all drawable nodes
     for _, node in pairs(drawableNodes) do
-      node.spriteRenderer:draw()
+      if node.draw then node:draw() end
+      if node.spriteRenderer then node.spriteRenderer:draw() end
     end
   end
 
