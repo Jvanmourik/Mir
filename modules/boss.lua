@@ -72,7 +72,7 @@ local function boss(x,y)
       if d < aggroDistance then
         -- move to target
         --if d > 100 and not isAttacking then
-          self.agent:goToPoint(target.x, target.y)
+          --self.agent:goToPoint(target.x, target.y)
         --[[elseif self.agent.state == "walk" then
           self.agent:stop()
         end]]
