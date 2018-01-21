@@ -84,7 +84,7 @@ local function boss(x,y)
         end
       end
     end
-
+--hoi
     if target and target.active then
       local d = vector.length(target.x - self.x, target.y - self.y)
 
