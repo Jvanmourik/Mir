@@ -28,6 +28,7 @@ local function boss(x,y)
   self.weapon:addComponent("collider")
   self.weapon.collider.active = false
   self.weapon.collider.isSensor = true
+  self:addChild(self.weapon)
 
   self:addComponent("collider", {
     shapeType = "circle",
@@ -37,6 +38,13 @@ local function boss(x,y)
 
   function self:onCollisionEnter(dt, other, delta)
     if other.damage and type(other.damage) == "function"then
+      other:damage(damage)
+    end
+  end
+
+  -- handle collision
+  function self.weapon:onCollisionEnter(dt, other, delta)
+    if other.damage and type(other.damage) == "function" then
       other:damage(damage)
     end
   end
