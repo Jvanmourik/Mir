@@ -4,6 +4,7 @@ local function character(x, y, gamepad)
   local self = Node(x, y)
 
   local assets = require "templates/assets"
+  local hp = require "modules/health"
   local step = 0
   local id = score:addPlayer()
 
@@ -24,12 +25,14 @@ local function character(x, y, gamepad)
   self.dragY = 3
   self.speed = 400
   self.rollSpeed = 1200
-  self.health = 1
+  self.health = 5
   self.alive = true
 
   ----------------------------------------------
   -- components
   ----------------------------------------------
+
+
 
   -- collider component to collide with other collision objects
   self:addComponent("collider", {

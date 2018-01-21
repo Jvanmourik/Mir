@@ -78,5 +78,6 @@ character["sword-shield-idle"] = assets.character.sword_shield.idle
 character["sword-shield-stab"] = assets.character.sword_shield.stab
 character["legs-idle"] = assets.character.legs.idle
 character["legs-walk"] = assets.character.legs.walk
+heart = image("assets/images/heart.png")
 
 return assets
