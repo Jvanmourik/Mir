@@ -8,6 +8,24 @@ local function character(x, y, gamepad)
   local step = 0
   local id = score:addPlayer()
 
+  ----------------------------------------------
+  -- attributes
+  ----------------------------------------------
+
+  self.name = "character"
+  self.width = 40
+  self.height = 40
+  self.anchorX = 0.5
+  self.anchorY = 0.5
+
+  self.velocityX = 0
+  self.velocityY = 0
+  self.dragX = 3
+  self.dragY = 3
+  self.speed = 400
+  self.rollSpeed = 1200
+  self.health = 1
+  self.alive = true
 
   ----------------------------------------------
   -- attributes

@@ -52,13 +52,13 @@ function love.load()
 
 	-- create input handler
 	input = Input()
-  
+
  -- create gui
  gui = Gui()
-  
+
  -- create score
  score = Score()
- 
+
  -- create lifes
  lifes = Lifes()
 
@@ -119,21 +119,10 @@ function love.update(dt)
     -- update scene
     scene:update(dt)
 
-	   local dx,dy = c.x - camera.x, c.y - camera.y
-	   camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+    local dx,dy = c.x - camera.x, c.y - camera.y
+    camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
 
-					--[[if lk.isDown("r") then
-						for _, node in pairs(scene.rootNode:getChildren()) do
-							if node.name == "character" then
-								node.body.active = true
-								node.legs.active = true
-								node.active = true
-								print("He exists")
-							end
-						end
-						print("Hi")
-					end]]
-					if input:isPressed("escape") then
+    if input:isPressed("escape") then
       gameState = 2
     end
   end
@@ -144,11 +133,11 @@ function love.draw()
     -- draw GUI
     suit.draw()
   else
-				  -- draw scene
-					camera:attach()
-				  scene:draw()
-					drawCollisionShapes()
-					camera:detach()
+		-- draw scene
+		camera:attach()
+		scene:draw()
+		drawCollisionShapes()
+		camera:detach()
     score:draw()
     lifes:draw()
   end
