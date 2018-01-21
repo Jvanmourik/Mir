@@ -100,10 +100,10 @@ local function boss(x,y)
       if d < aggroDistance then
         if fase == "regular" then
           number = love.math.random(0, 100)
-          --[[if number == 5 then
+          if number == 5 then
             fase = "eyeballShooting"
             faseDuration = 0
-          else]]if number == 6 then
+          elseif number == 6 then
             fase = "spinningAttack"
             timer = 120
           end
