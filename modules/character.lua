@@ -153,7 +153,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   -- apply damage to character
   function self:damage(amount)
     local amount = amount or 1
-    self.health = self.health - amount
+      self.health = self.health - amount
     if self.health <= 0 then
       self:kill()
     end

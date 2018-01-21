@@ -124,6 +124,23 @@ local assets = {
       anchorX = 0.5,
       anchorY = 0.5
     }
+  },
+  projectiles = {
+    atlas = image("assets/images/projectiles.png"),
+    arrow = {
+      frames = {
+        quad(1, 1, 20, 32, 40, 32)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    eyeball = {
+      frames = {
+        quad(20, 1, 20, 32, 40, 32)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    }
   }
 }
 
