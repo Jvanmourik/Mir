@@ -18,10 +18,10 @@ local function input(...)
     end
   end
 
-  _love['update'] = love['update'] or function() end
-  love['update'] = function(...)
-    _love['update'](...)
-    self['update'](self, ...)
+  _love.update = love.update or function() end
+  love.update = function(...)
+    _love.update(...)
+    self.update(self, ...)
   end
 
   -- gamepad object to keep track of individual gamepad states
@@ -46,7 +46,7 @@ local function input(...)
 
   -- if key/button is down
   function self:isDown(key)
-    return state[key] and true or false
+    return state[key]
   end
 
   -- if gamepad button is pressed down this frame
@@ -56,7 +56,7 @@ local function input(...)
 
   -- if gamepad button is down
   function gamepad:isDown(button)
-    return self.state[button] and true or false
+    return self.state[button]
   end
 
   -- get direction of an axis

@@ -63,6 +63,17 @@ local function node(x, y, w, h, r, s, ax, ay, l)
     return children
   end
 
+  -- get children by tag
+  function self:getChildrenByTag(tag)
+    local children = {}
+    for _, child in pairs(getChildrenFrom(self)) do
+      if child.tag == tag then
+        children[#children + 1] = child
+      end
+    end
+    return children
+  end
+
   -- get child by name
   function self:getChildByName(name)
     for _, child in pairs(self:getChildren()) do
@@ -76,6 +87,15 @@ local function node(x, y, w, h, r, s, ax, ay, l)
   function self:getChildByType(type)
     for _, child in pairs(self:getChildren()) do
       if child.type == type then
+        return child
+      end
+    end
+  end
+
+  -- get child by tag
+  function self:getChildByTag(tag)
+    for _, child in pairs(self:getChildren()) do
+      if child.tag == tag then
         return child
       end
     end
@@ -119,6 +139,11 @@ local function node(x, y, w, h, r, s, ax, ay, l)
     end
   end
 
+  function self:getForwardVector()
+    local r = self.rotation + 0.5 * math.pi
+    return math.cos(r), math.sin(r)
+  end
+
   -- add component to self.components and self.<type>
   function self:addComponent(type, options)
     local options = options or {}
@@ -132,6 +157,7 @@ local function node(x, y, w, h, r, s, ax, ay, l)
     elseif type == "collider" then
       c = Collider(self, options)
       self.collider = c
+      scene.collisionObjects[#scene.collisionObjects + 1] = self
     elseif type == "agent" then
       c = Agent(self, options)
       self.agent = c

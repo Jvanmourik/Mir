@@ -20,6 +20,8 @@ function love.load()
   --set scale
   scale = love.window.getPixelScale( )
   love.graphics.scale(scale, scale)
+	-- set window to fullscreen in desktop mode
+	lw.setFullscreen(false, "desktop")
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
@@ -38,13 +40,14 @@ function love.load()
 	Input = require "modules/input"
   Scene = require "modules/scene"
   Tilemap = require "modules/tilemap"
-  Character = require "modules/character"
+  Player = require "modules/player"
   Enemy = require "modules/enemy"
   Audio = require "modules/audio"
   Gui = require "modules/gui"
   Score = require "modules/score"
   Lifes = require "modules/lifes"
-
+  Item = require "modules/item"
+	Boss = require "modules/boss"
 
 	-- load controller mappings
 	local mappings = require "mappings"
@@ -65,12 +68,16 @@ function love.load()
  -- create scene
  scene = Scene(0, 0)
 
+	local item = Item(3, 150, 200)
+	scene.rootNode:addChild(item)
+
 	-- create tilemap
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
 
 	-- iterate through all spawn locations
 	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
+		-- set amount to spawn
 		local spawncount = location.properties.spawncount or 1
 		for i = 1, spawncount do
 			local x = location.x
@@ -87,11 +94,12 @@ function love.load()
 
 			if location.properties.spawntype == "player" then
 				-- create player
-				c = Character(math.floor(x + 0.5), math.floor(y + 0.5))
+				c = Player(math.floor(x + 0.5), math.floor(y + 0.5))
 				scene.rootNode:addChild(c)
 
 				-- create camera
 				camera = Camera(c.x, c.y)
+				--camera:zoomTo(1.5)
 			elseif location.properties.spawntype == "enemy" then
 				-- create enemy
 				local e = Enemy(x, y)
@@ -100,15 +108,18 @@ function love.load()
 		end
 	end
 
-	-- iterate through all spawn locations
+	-- iterate through all paths
 	for _, path in pairs(scene.rootNode:getChildrenByType("path")) do
 		local x = path.vertices[1].x
 		local y = path.vertices[1].y
 
 		local e = Enemy(x, y)
-		e.agent:followPath(path, true)
+		e.agent:followPath(path.vertices, true)
 		scene.rootNode:addChild(e)
 	end
+
+	local b = Boss(100, 100)
+	scene.rootNode:addChild(b)
 end
 
 function love.update(dt)
@@ -116,11 +127,33 @@ function love.update(dt)
     -- update GUI
     gui:update(dt)
   else
-    -- update scene
-    scene:update(dt)
+		-- update scene
+		scene:update(dt)
 
-    local dx,dy = c.x - camera.x, c.y - camera.y
-    camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+		local players = scene.rootNode:getChildrenByName("player")
+
+		local averageX, averageY = 0, 0
+		for _, player in pairs(players) do
+			averageX = averageX + player.x
+			averageY = averageY + player.y
+		end
+		averageX = averageX / #players
+		averageY = averageY / #players
+
+		local dx, dy = averageX - camera.x, averageY - camera.y
+		camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+
+		if lk.isDown("r") then
+			if lifes:reviveAllowed() then
+				for _, player in pairs(players) do
+						local x, y = 120, 1200
+						player.x = x
+						player.y = y
+						player.collider.shape:moveTo(x, y)
+						player:revive()
+				end
+			end
+		end
 
     if input:isPressed("escape") then
       gameState = 2
@@ -147,7 +180,13 @@ function drawCollisionShapes()
 	-- draw all collision shapes
 	for _, node in pairs(scene.rootNode:getChildren()) do
 		if node.active and node.collider and node.collider.active then
-			if node.collider.isSensor then
+			if node.collider.isColliding then
+				lg.setColor(255, 0, 255, 100)
+				node.collider.shape:draw('fill')
+				lg.setColor(255, 0, 255, 255)
+				node.collider.shape:draw('line')
+				lg.setColor(255, 255, 255)
+			elseif node.collider.isSensor then
 				lg.setColor(255, 255, 0, 100)
 				node.collider.shape:draw('fill')
 				lg.setColor(255, 255, 0, 255)
@@ -168,7 +207,7 @@ function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
-		local c = Character(400, 300, gamepad)
+		c = Player(400, 300, gamepad)
 		scene.rootNode:addChild(c)
 	end
 end

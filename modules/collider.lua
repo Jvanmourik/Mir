@@ -5,19 +5,19 @@ local function collider(node, options)
 
   local x = node.x + (node.width * node.scale) * (0.5 - node.anchorX)
   local y = node.y + (node.height * node.scale) * (0.5 - node.anchorY)
-  local cx, cy = 0, 0
   local width = options.width or node.width
   local height = options.height or node.height
-
-  local collisions = {}
 
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
 
   self.active = true
-  self.isSensor = false
+  self.isSensor = options.sensor or false
+  self.isColliding = false
+  self.collisions = {}
 
+  local cx, cy = 0, 0
   if shapeType == "polygon" then
     self.shape = HC.polygon(unpack(options.vertices))
     cx, cy = self.shape:center()
@@ -33,6 +33,8 @@ local function collider(node, options)
   ----------------------------------------------
   -- methods
   ----------------------------------------------
+  
+  local collisionsThisFrame = {}
 
   function self:update(dt)
     local x, y = node:getWorldCoords()
@@ -48,37 +50,53 @@ local function collider(node, options)
     self.shape:moveTo(x + offsetX + cx, y + offsetY + cy)
     self.shape:setRotation(r)
 
-    self:handleCollisions(dt)
+    -- reset the active collisions
+    collisionsThisFrame = {}
+
+    -- check if a collision event has occured
+    self:handleEnteringCollisions()
+    self:handleExitingCollisions()
   end
 
-  function self:handleCollisions(dt)
-    -- check collision with other colliders
-    local collisionsThisFrame = {}
+  function self:setActive(boolean)
+    self.active = boolean
+    if boolean == false then
+      self.collisions = {}
+      self:handleExitingCollisions()
+    end
+  end
 
-    -- check if a collision has started
+  -- check if a collision has started
+  function self:handleEnteringCollisions()
     for shape, delta in pairs(HC.collisions(self.shape)) do
-      for _, other in pairs(scene.rootNode:getChildren()) do
-        if other.collider and other.collider.active
-          and other.collider.shape == shape then
-          if node.onCollisionEnter and not collisions[shape] then
+      for _, other in pairs(scene.collisionObjects) do
+        local col = other.collider
+        if other.active and col and col.active and not col.isSensor and col.shape == shape then
+          self.isColliding = true
+          if not self.collisions[other] and node.onCollisionEnter then
             node:onCollisionEnter(dt, other, delta)
           end
           if node.onCollision then
             node:onCollision(dt, other, delta)
           end
-          collisions[other] = delta
+          self.collisions[other] = delta
           collisionsThisFrame[other] = delta
         end
       end
     end
+  end
 
-    -- check if a collision has ended
-    for other, delta in pairs(collisions) do
+  -- check if a collision has ended
+  function self:handleExitingCollisions()
+    for other, delta in pairs(self.collisions) do
       if not collisionsThisFrame[other] then
         if node.onCollisionExit then
           node:onCollisionExit(dt, other, delta)
         end
-        collisions[other] = nil
+        self.collisions[other] = nil
+        if #self.collisions == 0 then
+          self.isColliding = false
+        end
       end
     end
   end

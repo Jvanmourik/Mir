@@ -69,6 +69,61 @@ local assets = {
       }
     },
     animations = character
+  },
+  items = {
+    atlas = image("assets/images/items.png"),
+    regularSword = {
+      frames = {
+        quad(43, 1, 19, 42, 84, 44)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    regularBow = {
+      frames = {
+        quad(22, 1, 19, 42, 84, 44)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    regularDamageStaff = {
+      frames = {
+        quad(22, 1, 19, 42, 84, 44)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    regularHealingStaff = {
+      frames = {
+        quad(22, 1, 19, 42, 84, 44)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    bloodSword = {
+      frames = {
+        quad(1, 1, 19, 42, 84, 44)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    arrow = {
+      frames = {
+        quad(64, 1, 19, 42, 84, 44)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    }
+  },
+  boss = {
+    atlas = image("assets/images/boss.png"),
+    bossAsset = {
+      frames = {
+        quad(1, 1, 100, 100, 100, 100)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    }
   }
 }
 
