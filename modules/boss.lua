@@ -2,6 +2,7 @@ local Node = require "modules/node"
 local items = require "templates/items"
 local assets = require "templates/assets"
 local Projectile = require "modules/projectile"
+local BossMinion = require "modules/bossMinion"
 --local Character = require "modules/character"
 
 local function boss(x,y)
@@ -14,6 +15,10 @@ local function boss(x,y)
   local fase = "regular"
   local timer = 0
   local faseDuration = 0
+  local timer2 = 0
+  local lockx, locky = 0, 0
+  local lock = false
+  local shake = false
 
   self.weapon = Node(-20, 80, 25, 200)
   self.weapon.anchorX, self.weapon.anchorY = 0.5, 0
@@ -74,7 +79,7 @@ local function boss(x,y)
   self.hitbox.collider.active = false
   self.hitbox.collider.isSensor = true/]]
 
-  local aggroDistance = 300
+  local aggroDistance = 500
   --update
   function self:update(dt)
     if not players then
@@ -88,8 +93,8 @@ local function boss(x,y)
         local d = vector.length(player.x - self.x, player.y - self.y)
         if not distance or d < distance then
           distance = d
-          target = player
-        end
+            target = player
+          end
       end
     end
 --hoi
@@ -105,7 +110,15 @@ local function boss(x,y)
             faseDuration = 0
           elseif number == 6 then
             fase = "spinningAttack"
-            timer = 120
+            timer = 300
+          elseif number == 7 then
+            fase = "spawnMinion"
+            timer = 300
+          elseif number == 8 then
+            fase = "chargeAttack"
+            timer = 90
+            timer2 = 40
+            shake = true
           end
         elseif fase == "eyeballShooting" then
           if faseDuration >= 5 then
@@ -146,6 +159,47 @@ local function boss(x,y)
             fase = "regular"
             self.weapon.collider.active = false
           end
+        elseif fase == "spawnMinion" then
+          for i=1, 4 do
+            local x = self.x - 200 + i * 100
+            local y = self.y - 200 + i * 100
+            local minion = BossMinion(x, y)
+            scene.rootNode:addChild(minion)
+          end
+          fase = "regular"
+        elseif fase == "chargeAttack" then
+        timer = timer - 1
+        if shake == true then
+          if timer%10 == 0 then
+            self.x = self.x - 5
+          end
+          if timer%10 == 5 then
+            self.x = self.x + 5
+          end
+        end
+        if timer <= 0 then
+          timer2 = timer2 - 1
+          shake = false
+        end
+        if  lock == false then
+          if timer2 <= 20 then
+            lock = true
+            lockx, locky = target.x, target.y
+          end
+        end
+        if timer2 <= 0 then
+          local dX = lockx - self.x
+          local dY = locky - self.y
+
+          local dirX, dirY = vector.normalize(dX, dY)
+
+          self.x, self.y = self.x + dirX * self.speed * 5 * dt, self.y + dirY * self.speed * 5 * dt
+
+          if vector.length(dX, dY) < 10 then
+            lock = false
+            fase = "regular"
+          end
+        end
         end
       end
     end
@@ -165,6 +219,8 @@ local function boss(x,y)
 
   -- kill character
   function self:kill()
+    self.weapon.collider.active = false
+    self.weapon = false
     self.active = false
   end
 
