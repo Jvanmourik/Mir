@@ -124,6 +124,16 @@ local assets = {
       anchorX = 0.5,
       anchorY = 0.5
     }
+  },
+  heart = {
+    atlas = image("assets/images/heart.png"),
+    heartAsset = {
+      frames = {
+        quad(1, 1, 100, 100, 100, 100)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    }
   }
 }
 
@@ -133,6 +143,5 @@ character["sword-shield-idle"] = assets.character.sword_shield.idle
 character["sword-shield-stab"] = assets.character.sword_shield.stab
 character["legs-idle"] = assets.character.legs.idle
 character["legs-walk"] = assets.character.legs.walk
-heart = image("assets/images/heart.png")
 
 return assets

@@ -1,7 +1,8 @@
 local Node = require "modules/node"
+local assets = require "templates/assets"
 
-local function health()
-  local self = {}
+local function health(x, y, target)
+  local self = Node(x, y, target)
 
   ----------------------------------------------
   -- attributes
@@ -14,11 +15,11 @@ local function health()
   local body = Node()
 
   -- sprite renderer component to render the sprite
-  for i=1,health do
-    body:addComponent("spriteRenderer",
-    { atlas = heart,
-    asset = heart,
-    layer = 1 })
+  for i=1,5 do
+    self:addComponent("spriteRenderer",
+    { atlas = assets.heart.atlas,
+      asset = assets.heart.heartAsset,
+      layer = 0 })
   end
 
   ----------------------------------------------

@@ -8,24 +8,15 @@ local function score()
   local font = love.graphics.newFont(14 * scale)
   local players = 0
 
-  ----------------------------------------------
-  -- components
-  ----------------------------------------------
-
 
   ----------------------------------------------
   -- methods
   ----------------------------------------------
-
-  function self:update(dt)
-    
-  end
-  
   function self:addPlayer()
     players = players + 1
     return players
   end
-  
+
   function self:scoreUp(id)
     if id == 1 then
       score1 = score1 + 100
@@ -49,7 +40,7 @@ local function score()
       score4 = score4 - 100
     end
   end
-  
+
   function self:draw()
     lg.print("player1: " .. score1, 1, 1)
     lg.print("player2: " .. score2, 1, font:getHeight())

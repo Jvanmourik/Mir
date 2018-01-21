@@ -5,7 +5,6 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   local self = Node(x, y, w, h, r, s, ax, ay, l)
 
   local assets = require "templates/assets"
-  local hp = require "modules/health"
   local step = 0
 
   ----------------------------------------------

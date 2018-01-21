@@ -1,6 +1,7 @@
 local Character = require "modules/character"
 local Item = require "modules/item"
 local Projectile = require "modules/projectile"
+local Health = require "modules/health"
 
 local function character(x, y, gamepad)
   local self = Character(x, y)
@@ -15,7 +16,8 @@ local function character(x, y, gamepad)
   self.rollSpeed = 800
   local shootTimer = 0
   self.id = score:addPlayer()
-
+  local hp = Health(self.x, self.y, self)
+  --scene.rootNode:addChild(health)
 
   ----------------------------------------------
   -- methods
