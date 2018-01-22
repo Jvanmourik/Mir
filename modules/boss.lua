@@ -136,14 +136,14 @@ local function boss(x,y)
             end
           end
         elseif fase == "eyeballShooting" then
-          if faseDuration >= 5 then
+          if faseDuration >= 10 then
             fase = "regular"
             timer = 120
           end
           if timer <= 0 then
             faseDuration = faseDuration + 1
             timer = 30
-            for i=1, 10 do
+            for i=1, 20 do
               local x, y = love.math.random(0, 10) - 5, love.math.random(0, 10) - 5
               local dirX, dirY = vector.normalize(x, y)
               local eyeball = Projectile(self.x, self.y, dirX, dirY, damage, "eyeball")
