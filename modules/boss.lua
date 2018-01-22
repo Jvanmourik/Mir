@@ -252,7 +252,7 @@ self:addChild(self.body)
 
           local dirX, dirY = vector.normalize(dX, dY)
 
-          self.x, self.y = self.x + dirX * self.speed * 5 * dt, self.y + dirY * self.speed * 5 * dt
+          self.x, self.y = self.x + dirX * self.speed * 10 * dt, self.y + dirY * self.speed * 10 * dt
 
           if vector.length(dX, dY) < 10 then
             lock = false
