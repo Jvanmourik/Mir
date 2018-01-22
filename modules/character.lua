@@ -100,17 +100,18 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   self.body:addChild(self.weapon)
 
-  self.healthMultiplier = 100/self.health
-  self.healthBar = Node(-50, -40, 100, 25)
+  self.healthMultiplier = 20/self.health
+  self.healthBar = Node(-50, -40, 20, 10)
   self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
   self.healthBar.visible = true
+  self.healthBar.layer = 10
   function self.healthBar:draw()
-    print("hoi")
+    local x, y = self:getWorldCoords()
     lg.setColor(255, 0 ,0)
-    lg.rectangle("fill", self.x, self.y, self.width, self.height)
+    lg.rectangle("fill", x, y, self.width, self.height)
     lg.setColor(0, 255, 0)
     local barWidth = self.parent.health * self.parent.healthMultiplier
-    lg.rectangle("fill", self.x, self.y, barWidth, self.height)
+    lg.rectangle("fill", x, y, barWidth, self.height)
     lg.setColor(255, 255, 255)
   end
   self:addChild(self.healthBar)
