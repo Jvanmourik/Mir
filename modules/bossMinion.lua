@@ -11,7 +11,6 @@ local function bossMinion(x, y)
   self.name = "bossMinion"
   self.speed = 150
   self.health = 1
-  self.maxhealth = 1
   local damage = 40
   local timer = 30
   local aggroDistance = 500
@@ -120,7 +119,6 @@ local function bossMinion(x, y)
 
   -- kill character
   function self:kill()
-    self.healthBar.active = false
     self.active = false
   end
 
