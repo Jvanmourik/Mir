@@ -121,11 +121,21 @@ function love.update(dt)
 	end
 	if #activePlayers > 0 then
 		averageX = averageX / #activePlayers
+		nextX = averageX
 		averageY = averageY / #activePlayers
+		nextY = averageY
 	end
 
-	local dx, dy = averageX - camera.x, averageY - camera.y
-	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+	if #activePlayers == 0 then
+		local dx, dy = nextX - camera.x, nextY - camera.y
+		camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+	end
+
+
+	if #activePlayers > 0 then
+		local dx, dy = averageX - camera.x, averageY - camera.y
+		camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+	end
 
 	if lk.isDown("r") then
 		for _, player in pairs(players) do
