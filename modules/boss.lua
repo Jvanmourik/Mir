@@ -174,6 +174,7 @@ local function boss(x,y)
           if timer <= 0 then
             fase = "regular"
             timer = 120
+            self.rotation = 0
             self.weapon.collider.active = false
           end
         elseif fase == "spawnMinion" then
