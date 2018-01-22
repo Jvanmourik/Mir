@@ -14,6 +14,8 @@ local function bossMinion(x, y)
   local damage = 40
   local timer = 30
   local aggroDistance = 500
+
+  -- the explosion object for after the minions hit someone
   self.explosion = Node(0, 0, 10, 10)
   self.explosion.anchorX, self.explosion.anchorY = 0.5, 0.5
   self:addChild(self.explosion)
@@ -37,13 +39,17 @@ local function bossMinion(x, y)
   function self:onCollisionEnter(dt, other, delta)
     boss = scene.rootNode:getChildByName("boss")
     bossMinions = scene.rootNode:getChildrenByName("bossMinion")
+    -- if the minions collide with something that is not the boss
     if other.damage and type(other.damage) == "function" and other ~= boss and timer <= 0 then
       --other:damage(damage)
+
+      -- return if collision is with other minion
       for i=1, #bossMinions do
         if bossMinions[i] == other then
           return
         end
       end
+      -- add the collider component for the explosion
       self.explosion:addComponent("collider", {
         shapeType = "circle",
         radius = 100,
@@ -52,6 +58,7 @@ local function bossMinion(x, y)
     end
   end
 
+  -- the explosion collider TODO make explosion visible
   function self.explosion:onCollisionEnter(dt, other, delta)
     boss = scene.rootNode:getChildByName("boss")
     if other.damage and type(other.damage) == "function" and other ~= boss then
@@ -69,6 +76,8 @@ local function bossMinion(x, y)
     if timer > 0 then
       timer = timer - 1
     end
+
+    -- get the table of the players
     if not players then
       players = scene.rootNode:getChildrenByName("player")
     end
@@ -98,6 +107,7 @@ local function bossMinion(x, y)
       end
   end
 
+  -- damage function for if this object takes damage
   function self:damage(amount)
     local amount = amount or 1
       self.health = self.health - amount
@@ -105,9 +115,6 @@ local function bossMinion(x, y)
       self:kill()
     end
   end
-
-  -- TODO: create inherit system for boolean 'active', so we don't need
-  --       dedicated kill and revive methods for activationg and deactivation
 
   -- kill character
   function self:kill()

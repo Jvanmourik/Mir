@@ -20,6 +20,7 @@ local function boss(x,y)
   local lock = false
   local shake = false
 
+  -- create an object for the beam from the spinningAttack fase
   self.weapon = Node(0, 120, 25, 200)
   self.weapon.anchorX, self.weapon.anchorY = 0.5, 0
 
@@ -29,6 +30,7 @@ local function boss(x,y)
   self.weapon.damage = 5
   self.weapon.type = "sword"
 
+  -- add the beam sprite to the object
   self.weapon:addComponent("spriteRenderer",
   { atlas = assets.boss.atlas,
     asset = assets.boss.beamAsset,
@@ -51,6 +53,7 @@ local function boss(x,y)
   function self:onCollisionEnter(dt, other, delta)
     bossMinions = scene.rootNode:getChildrenByName("bossMinion")
     if other.damage and type(other.damage) == "function" then
+      -- return if collision is with a minion
       for i=1, #bossMinions do
         if bossMinions[i] == other then
           return
@@ -60,10 +63,11 @@ local function boss(x,y)
     end
   end
 
-  -- handle collision
+  -- handle the beam collision
   function self.weapon:onCollisionEnter(dt, other, delta)
     bossMinions = scene.rootNode:getChildrenByName("bossMinion")
     if other.damage and type(other.damage) == "function" then
+      -- return if collision is with a minion
       for i=1, #bossMinions do
         if bossMinions[i] == other then
           return
@@ -72,9 +76,6 @@ local function boss(x,y)
       other:damage(damage)
     end
   end
-  --spriteRenderer (temp)
-  --[[self.body = Node()
-  self.body.scale = 0.5]]
 
   -- sprite renderer component to render the sprite
   self:addComponent("spriteRenderer",
@@ -82,22 +83,7 @@ local function boss(x,y)
     asset = assets.boss.bossAsset,
     layer = 0 })
 
-  -- animator component to animate the sprite
-  --[[self.body:addComponent("animator",
-  { animations = assets.character.animations })
-  self.body.animator:play("sword-shield-idle", 0)
-
-  self:addChild(self.body)]]
-
-  --collision
-  --[[self.hitbox = Node(-20, 80, 25, 75)
-  self.hitbox.anchorX, self.hitbox.anchorY = 0.5, 0
-
-  -- collider component to collide with other collision objects
-  self.hitbox:addComponent("collider")
-  self.hitbox.collider.active = false
-  self.hitbox.collider.isSensor = true/]]
-
+  -- if a player comes within this distance then the boss will focus this player
   local aggroDistance = 500
   --update
   function self:update(dt)
@@ -116,15 +102,17 @@ local function boss(x,y)
           end
       end
     end
---hoi
+
     if target and target.active then
       local d = vector.length(target.x - self.x, target.y - self.y)
 
       -- if target in range
       if d < aggroDistance then
+        -- if the boss is not attacking
         if fase == "regular" then
           timer = timer - 1
           if timer <= 0 then
+            -- go to the different fases
             number = love.math.random(1, 4)
             if number == 1 then
               fase = "eyeballShooting"
@@ -142,6 +130,7 @@ local function boss(x,y)
               shake = true
             end
           end
+          -- shoot eyeball projectiles in a random circle around the boss
         elseif fase == "eyeballShooting" then
           if faseDuration >= 10 then
             fase = "regular"
@@ -163,20 +152,10 @@ local function boss(x,y)
               local dirX, dirY = vector.normalize(x, y)
               local eyeball = Projectile(self.x, self.y, dirX, dirY, damage, "eyeball")
               scene.rootNode:addChild(eyeball)
-              --[[if i < 3 then
-                dirX = dirX - 1
-              elseif i > 3 and i < 6 then
-                dirX = dirX + 1
-              elseif i == 3 then
-                dirY = 0
-              elseif i == 6 then
-                dirY = -1
-              else
-                dirX = dirX - 1
-              end]]
             end
           end
           timer = timer - 1
+          -- move towards the target and spin around while a beam comes out of the eye of the boss
         elseif fase == "spinningAttack" then
           self.weapon.collider.active = true
           self.weapon.visible = true
@@ -201,6 +180,7 @@ local function boss(x,y)
             end
             self.weapon.collider.active = false
           end
+          -- spawn minions around the boss that explode upon collision with a player
         elseif fase == "spawnMinion" then
           for i=1, 4 do
             local x = self.x - 200 + i * 100
@@ -218,6 +198,7 @@ local function boss(x,y)
           else
             timer = 5
           end
+          -- charge at the target, while dealing damage to all enemies in its path
         elseif fase == "chargeAttack" then
         timer = timer - 1
         if shake == true then
@@ -273,9 +254,6 @@ local function boss(x,y)
       self:kill()
     end
   end
-
-  -- TODO: create inherit system for boolean 'active', so we don't need
-  --       dedicated kill and revive methods for activationg and deactivation
 
   -- kill character
   function self:kill()
