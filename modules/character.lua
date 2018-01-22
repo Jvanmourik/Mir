@@ -100,7 +100,18 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   self.body:addChild(self.weapon)
 
-
+  self.healthMultiplier = 100/self.health
+  self.healthBar = Node(-50, -40, 100, 25)
+  self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
+  function self.healthBar:draw()
+    lg.setColor(255, 0 ,0)
+    lg.rectangle("fill", self.x, self.y, self.width, self.height)
+    lg.setColor(0, 255, 0)
+    local barWidth = self.parent.health * self.parent.healthMultiplier
+    lg.rectangle("fill", self.x, self.y, barWidth, self.height)
+    lg.setColor(255, 255, 255)
+  end
+  self:addChild(self.healthBar)
   ----------------------------------------------
   -- methods
   ----------------------------------------------
