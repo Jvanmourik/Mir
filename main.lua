@@ -119,8 +119,10 @@ function love.update(dt)
 			averageY = averageY + player.y
 		end
 	end
-	averageX = averageX / #activePlayers
-	averageY = averageY / #activePlayers
+	if #activePlayers > 0 then
+		averageX = averageX / #activePlayers
+		averageY = averageY / #activePlayers
+	end
 
 	local dx, dy = averageX - camera.x, averageY - camera.y
 	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
