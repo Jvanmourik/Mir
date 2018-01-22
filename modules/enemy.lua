@@ -39,6 +39,10 @@ local function enemy(x, y)
       players = scene.rootNode:getChildrenByName("player")
     end
 
+    if self.health < self.maxhealth then
+      aggroDistance = 1000
+    end
+
     -- set closest player as target
     local distance
     for _, player in pairs(players) do
