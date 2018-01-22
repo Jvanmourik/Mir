@@ -119,14 +119,21 @@ local assets = {
     atlas = image("assets/images/boss.png"),
     bossAsset = {
       frames = {
-        quad(1, 1, 95, 100, 130, 100)
+        quad(1, 1, 120, 115, 250, 200)
       },
       anchorX = 0.5,
       anchorY = 0.5
     },
     minionAsset = {
       frames = {
-        quad(95, 1, 35, 100, 130, 100)
+        quad(126, 1, 74, 115, 250, 200)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    beamAsset = {
+      frames = {
+        quad(215, 1, 30, 200, 250, 200)
       },
       anchorX = 0.5,
       anchorY = 0.5

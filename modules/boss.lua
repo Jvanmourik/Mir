@@ -20,7 +20,7 @@ local function boss(x,y)
   local lock = false
   local shake = false
 
-  self.weapon = Node(0, 40, 25, 200)
+  self.weapon = Node(0, 120, 25, 200)
   self.weapon.anchorX, self.weapon.anchorY = 0.5, 0
 
   -- add weapon template
@@ -28,6 +28,13 @@ local function boss(x,y)
   self.weapon.name = "regularSword"
   self.weapon.damage = 5
   self.weapon.type = "sword"
+
+  self.weapon:addComponent("spriteRenderer",
+  { atlas = assets.boss.atlas,
+    asset = assets.boss.beamAsset,
+    layer = 0 })
+  self.weapon.visible = false
+
 
   -- collider component to collide with other collision objects
   self.weapon:addComponent("collider")
@@ -138,7 +145,15 @@ local function boss(x,y)
         elseif fase == "eyeballShooting" then
           if faseDuration >= 10 then
             fase = "regular"
-            timer = 120
+            if self.health > 75 then
+              timer = 180
+            elseif self.health > 50 and self.health <= 75 then
+              timer = 120
+            elseif self.health > 25 and self.health <= 50 then
+              timer = 60
+            else
+              timer = 5
+            end
           end
           if timer <= 0 then
             faseDuration = faseDuration + 1
@@ -164,6 +179,7 @@ local function boss(x,y)
           timer = timer - 1
         elseif fase == "spinningAttack" then
           self.weapon.collider.active = true
+          self.weapon.visible = true
           self.rotation = self.rotation + math.pi *dt
           local dX = target.x - self.x
           local dY = target.y - self.y
@@ -173,8 +189,16 @@ local function boss(x,y)
           timer = timer - 1
           if timer <= 0 then
             fase = "regular"
-            timer = 120
-            self.rotation = 0
+            self.weapon.visible = false
+            if self.health > 75 then
+              timer = 180
+            elseif self.health > 50 and self.health <= 75 then
+              timer = 120
+            elseif self.health > 25 and self.health <= 50 then
+              timer = 60
+            else
+              timer = 5
+            end
             self.weapon.collider.active = false
           end
         elseif fase == "spawnMinion" then
@@ -185,7 +209,15 @@ local function boss(x,y)
             scene.rootNode:addChild(minion)
           end
           fase = "regular"
-          timer = 120
+          if self.health > 75 then
+            timer = 180
+          elseif self.health > 50 and self.health <= 75 then
+            timer = 120
+          elseif self.health > 25 and self.health <= 50 then
+            timer = 60
+          else
+            timer = 5
+          end
         elseif fase == "chargeAttack" then
         timer = timer - 1
         if shake == true then
@@ -217,7 +249,15 @@ local function boss(x,y)
           if vector.length(dX, dY) < 10 then
             lock = false
             fase = "regular"
-            timer = 120
+            if self.health > 75 then
+              timer = 180
+            elseif self.health > 50 and self.health <= 75 then
+              timer = 120
+            elseif self.health > 25 and self.health <= 50 then
+              timer = 60
+            else
+              timer = 5
+            end
           end
         end
         end
@@ -240,7 +280,7 @@ local function boss(x,y)
   -- kill character
   function self:kill()
     self.weapon.collider.active = false
-    self.weapon = false
+    self.weapon.active = false
     self.active = false
   end
 
