@@ -20,6 +20,19 @@ local function boss(x,y)
   local lockx, locky = 0, 0
   local lock = false
   local shake = false
+-- components
+self.body = Node()
+self.body:addComponent("spriteRenderer",
+{ atlas = assets.boss.atlas,
+  asset = assets.boss.bossAsset,
+  layer = 0 })
+
+  self:addComponent("collider", {
+    shapeType = "circle",
+    radius = 50
+  })
+
+self:addChild(self.body)
 
   -- create an object for the beam from the spinningAttack fase
   self.weapon = Node(0, 145, 25, 200)
@@ -43,12 +56,8 @@ local function boss(x,y)
   self.weapon:addComponent("collider")
   self.weapon.collider.active = false
   self.weapon.collider.isSensor = true
-  self:addChild(self.weapon)
+  self.body:addChild(self.weapon)
 
-  self:addComponent("collider", {
-    shapeType = "circle",
-    radius = 50
-  })
 
   self.healthBar = Node(-80, -70, 160, 10)
   self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
@@ -81,7 +90,8 @@ local function boss(x,y)
   -- handle the beam collision
   function self.weapon:onCollisionEnter(dt, other, delta)
     bossMinions = scene.rootNode:getChildrenByName("bossMinion")
-    if other.damage and type(other.damage) == "function" then
+    boss = scene.rootNode:getChildByName("boss")
+    if other.damage and type(other.damage) == "function" and other ~= boss then
       -- return if collision is with a minion
       for i=1, #bossMinions do
         if bossMinions[i] == other then
@@ -93,10 +103,10 @@ local function boss(x,y)
   end
 
   -- sprite renderer component to render the sprite
-  self:addComponent("spriteRenderer",
+  --[[self:addComponent("spriteRenderer",
   { atlas = assets.boss.atlas,
     asset = assets.boss.bossAsset,
-    layer = 0 })
+    layer = 0 })]]
 
   -- if a player comes within this distance then the boss will focus this player
   local aggroDistance = 500
@@ -174,7 +184,7 @@ local function boss(x,y)
         elseif fase == "spinningAttack" then
           self.weapon.collider.active = true
           self.weapon.visible = true
-          self.rotation = self.rotation + math.pi *dt
+          self.body.rotation = self.body.rotation + math.pi *dt
           local dX = target.x - self.x
           local dY = target.y - self.y
           local dirX, dirY = vector.normalize(dX, dY)
@@ -278,6 +288,7 @@ local function boss(x,y)
     self.weapon.collider.active = false
     self.weapon.active = false
     self.healthBar.active = false
+    self.body.active = false
     self.active = false
   end
 
