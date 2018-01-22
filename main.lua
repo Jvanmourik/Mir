@@ -118,7 +118,7 @@ function love.load()
 		scene.rootNode:addChild(e)
 	end
 
-	local b = Boss(100, 100)
+	local b = Boss(500, 500)
 	scene.rootNode:addChild(b)
 end
 
