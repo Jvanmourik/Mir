@@ -21,7 +21,7 @@ local function boss(x,y)
   local shake = false
 
   -- create an object for the beam from the spinningAttack fase
-  self.weapon = Node(0, 120, 25, 200)
+  self.weapon = Node(0, 145, 25, 200)
   self.weapon.anchorX, self.weapon.anchorY = 0.5, 0
 
   -- add weapon template
@@ -182,12 +182,14 @@ local function boss(x,y)
           end
           -- spawn minions around the boss that explode upon collision with a player
         elseif fase == "spawnMinion" then
-          for i=1, 4 do
-            local x = self.x - 200 + i * 100
-            local y = self.y - 200 + i * 100
-            local minion = BossMinion(x, y)
-            scene.rootNode:addChild(minion)
-          end
+          local minion = BossMinion(self.x - 100, self.y - 100)
+          scene.rootNode:addChild(minion)
+          minion = BossMinion(self.x + 100, self.y - 100)
+          scene.rootNode:addChild(minion)
+          minion = BossMinion(self.x - 100, self.y + 100)
+          scene.rootNode:addChild(minion)
+          minion = BossMinion(self.x + 100, self.y + 100)
+          scene.rootNode:addChild(minion)
           fase = "regular"
           if self.health > 75 then
             timer = 180
@@ -248,6 +250,7 @@ local function boss(x,y)
 
   -- apply damage to character
   function self:damage(amount)
+    aggroDistance = 2000
     local amount = amount or 1
     self.health = self.health - amount
     if self.health <= 0 then

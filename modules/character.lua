@@ -104,6 +104,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   self.healthBar = Node(-50, -40, 100, 25)
   self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
   function self.healthBar:draw()
+    print("hoi")
     lg.setColor(255, 0 ,0)
     lg.rectangle("fill", self.x, self.y, self.width, self.height)
     lg.setColor(0, 255, 0)
