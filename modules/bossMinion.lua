@@ -25,20 +25,6 @@ local function bossMinion(x, y)
   self.explosion.anchorX, self.explosion.anchorY = 0.5, 0.5
   self:addChild(self.explosion)
 
-  self.healthBar = Node(-40, -70, 80, 10)
-  self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
-  self.healthBar.visible = true
-  function self.healthBar:draw()
-    local x, y = self:getWorldCoords()
-    lg.setColor(255, 0 ,0)
-    lg.rectangle("fill", x, y, self.width, self.height)
-    lg.setColor(0, 255, 0)
-    local barWidth = (self.parent.health/self.parent.maxhealth) * self.width
-    lg.rectangle("fill", x, y, barWidth, self.height)
-    lg.setColor(255, 255, 255)
-  end
-  self:addChild(self.healthBar)
-
   -- agent component to implement AI
   self:addComponent("spriteRenderer",
   { atlas = assets.boss.atlas,
@@ -126,7 +112,7 @@ local function bossMinion(x, y)
   -- damage function for if this object takes damage
   function self:damage(amount)
     local amount = amount or 1
-      self.health = self.health - amount
+    self.health = self.health - amount
     if self.health <= 0 then
       self:kill()
     end
