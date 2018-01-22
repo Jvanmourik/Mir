@@ -111,12 +111,16 @@ function love.update(dt)
 	local players = scene.rootNode:getChildrenByName("player")
 
 	local averageX, averageY = 0, 0
+	local activePlayers = {}
 	for _, player in pairs(players) do
-		averageX = averageX + player.x
-		averageY = averageY + player.y
+		if player.active then
+			activePlayers[#activePlayers + 1] = player
+			averageX = averageX + player.x
+			averageY = averageY + player.y
+		end
 	end
-	averageX = averageX / #players
-	averageY = averageY / #players
+	averageX = averageX / #activePlayers
+	averageY = averageY / #activePlayers
 
 	local dx, dy = averageX - camera.x, averageY - camera.y
 	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
