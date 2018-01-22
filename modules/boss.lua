@@ -10,6 +10,7 @@ local function boss(x,y)
   ---attributes
   local damage = 40
   self.health = 100
+  self.maxhealth = 100
   self.name = "boss"
   self.speed = 100
   local fase = "regular"
@@ -48,6 +49,20 @@ local function boss(x,y)
     shapeType = "circle",
     radius = 50
   })
+
+  self.healthBar = Node(-80, -70, 160, 10)
+  self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
+  self.healthBar.visible = true
+  function self.healthBar:draw()
+    local x, y = self:getWorldCoords()
+    lg.setColor(255, 0 ,0)
+    lg.rectangle("fill", x, y, self.width, self.height)
+    lg.setColor(0, 255, 0)
+    local barWidth = (self.parent.health/self.parent.maxhealth) * self.width
+    lg.rectangle("fill", x, y, barWidth, self.height)
+    lg.setColor(255, 255, 255)
+  end
+  self:addChild(self.healthBar)
   --self:addComponent("agent")
 
   function self:onCollisionEnter(dt, other, delta)
@@ -262,6 +277,7 @@ local function boss(x,y)
   function self:kill()
     self.weapon.collider.active = false
     self.weapon.active = false
+    self.healthBar.active = false
     self.active = false
   end
 

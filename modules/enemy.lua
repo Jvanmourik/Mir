@@ -11,6 +11,7 @@ local function enemy(x, y)
   self.name = "enemy"
   self.speed = 400
   self.health = 20
+  self.maxhealth = 20
 
   ----------------------------------------------
   -- components
@@ -94,7 +95,7 @@ local function enemy(x, y)
       item = Item(2, self.x, self.y)
     else
       item = Item(5, self.x, self.y)
-    end 
+    end
     scene.rootNode:addChild(item)
     base.kill(self)
   end
