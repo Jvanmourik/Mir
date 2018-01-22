@@ -12,6 +12,7 @@ local function bossMinion(x, y)
   self.speed = 150
   self.health = 1
   local damage = 40
+  local timer = 30
   local aggroDistance = 500
   self.explosion = Node(0, 0, 10, 10)
   self.explosion.anchorX, self.explosion.anchorY = 0.5, 0.5
@@ -35,8 +36,14 @@ local function bossMinion(x, y)
   -- handle collision
   function self:onCollisionEnter(dt, other, delta)
     boss = scene.rootNode:getChildByName("boss")
-    if other.damage and type(other.damage) == "function" and other ~= boss then
+    bossMinions = scene.rootNode:getChildrenByName("bossMinion")
+    if other.damage and type(other.damage) == "function" and other ~= boss and timer <= 0 then
       --other:damage(damage)
+      for i=1, #bossMinions do
+        if bossMinions[i] == other then
+          return
+        end
+      end
       self.explosion:addComponent("collider", {
         shapeType = "circle",
         radius = 100,
@@ -59,6 +66,9 @@ local function bossMinion(x, y)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
+    if timer > 0 then
+      timer = timer - 1
+    end
     if not players then
       players = scene.rootNode:getChildrenByName("player")
     end

@@ -52,7 +52,13 @@ local function projectile(x, y, dirX, dirY, damage, id)
       end
     elseif id == "eyeball" then
       boss = scene.rootNode:getChildByName("boss")
+      bossMinions = scene.rootNode:getChildrenByName("bossMinion")
       if other.damage and type(other.damage) == "function" and other ~= boss then
+        for i=1, #bossMinions do
+          if bossMinions[i] == other then
+            return
+          end
+        end
         other:damage(damage)
         timer = 2
       end

@@ -13,14 +13,14 @@ local function boss(x,y)
   self.name = "boss"
   self.speed = 100
   local fase = "regular"
-  local timer = 0
+  local timer = 60
   local faseDuration = 0
   local timer2 = 0
   local lockx, locky = 0, 0
   local lock = false
   local shake = false
 
-  self.weapon = Node(-20, 80, 25, 200)
+  self.weapon = Node(0, 40, 25, 200)
   self.weapon.anchorX, self.weapon.anchorY = 0.5, 0
 
   -- add weapon template
@@ -42,14 +42,26 @@ local function boss(x,y)
   --self:addComponent("agent")
 
   function self:onCollisionEnter(dt, other, delta)
-    if other.damage and type(other.damage) == "function"then
+    bossMinions = scene.rootNode:getChildrenByName("bossMinion")
+    if other.damage and type(other.damage) == "function" then
+      for i=1, #bossMinions do
+        if bossMinions[i] == other then
+          return
+        end
+      end
       other:damage(damage)
     end
   end
 
   -- handle collision
   function self.weapon:onCollisionEnter(dt, other, delta)
+    bossMinions = scene.rootNode:getChildrenByName("bossMinion")
     if other.damage and type(other.damage) == "function" then
+      for i=1, #bossMinions do
+        if bossMinions[i] == other then
+          return
+        end
+      end
       other:damage(damage)
     end
   end
@@ -104,25 +116,29 @@ local function boss(x,y)
       -- if target in range
       if d < aggroDistance then
         if fase == "regular" then
-          number = love.math.random(0, 100)
-          if number == 5 then
-            fase = "eyeballShooting"
-            faseDuration = 0
-          elseif number == 6 then
-            fase = "spinningAttack"
-            timer = 300
-          elseif number == 7 then
-            fase = "spawnMinion"
-            timer = 300
-          elseif number == 8 then
-            fase = "chargeAttack"
-            timer = 90
-            timer2 = 40
-            shake = true
+          timer = timer - 1
+          if timer <= 0 then
+            number = love.math.random(1, 4)
+            if number == 1 then
+              fase = "eyeballShooting"
+              faseDuration = 0
+            elseif number == 2 then
+              fase = "spinningAttack"
+              timer = 300
+            elseif number == 3 then
+              fase = "spawnMinion"
+              timer = 300
+            elseif number == 4 then
+              fase = "chargeAttack"
+              timer = 90
+              timer2 = 40
+              shake = true
+            end
           end
         elseif fase == "eyeballShooting" then
           if faseDuration >= 5 then
             fase = "regular"
+            timer = 120
           end
           if timer <= 0 then
             faseDuration = faseDuration + 1
@@ -157,6 +173,7 @@ local function boss(x,y)
           timer = timer - 1
           if timer <= 0 then
             fase = "regular"
+            timer = 120
             self.weapon.collider.active = false
           end
         elseif fase == "spawnMinion" then
@@ -167,6 +184,7 @@ local function boss(x,y)
             scene.rootNode:addChild(minion)
           end
           fase = "regular"
+          timer = 120
         elseif fase == "chargeAttack" then
         timer = timer - 1
         if shake == true then
@@ -198,6 +216,7 @@ local function boss(x,y)
           if vector.length(dX, dY) < 10 then
             lock = false
             fase = "regular"
+            timer = 120
           end
         end
         end
