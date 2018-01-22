@@ -9,8 +9,8 @@ local function boss(x,y)
   local self = Node(x, y)
   ---attributes
   local damage = 40
-  self.health = 100
-  self.maxhealth = 100
+  self.health = 1000
+  self.maxhealth = 1000
   self.name = "boss"
   self.speed = 100
   local fase = "regular"
@@ -252,7 +252,7 @@ self:addChild(self.body)
 
           local dirX, dirY = vector.normalize(dX, dY)
 
-          self.x, self.y = self.x + dirX * self.speed * 10 * dt, self.y + dirY * self.speed * 10 * dt
+          self.x, self.y = self.x + dirX * self.speed * 5 * dt, self.y + dirY * self.speed * 5 * dt
 
           if vector.length(dX, dY) < 10 then
             lock = false

@@ -94,7 +94,7 @@ local function character(x, y, gamepad)
     elseif self.weapon.type == "bow" and shootTimer <= 0 then
       dirX, dirY = self.body:getForwardVector()
       spawnX , spawnY = self.x + dirX * 50, self.y + dirY * 50
-      shootTimer = 35
+      shootTimer = 20
       local arrow = Projectile(spawnX, spawnY, dirX, dirY, self.weapon.damage)
       scene.rootNode:addChild(arrow)
     end
