@@ -103,6 +103,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   self.healthMultiplier = 100/self.health
   self.healthBar = Node(-50, -40, 100, 25)
   self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
+  self.healthBar.visible = true
   function self.healthBar:draw()
     print("hoi")
     lg.setColor(255, 0 ,0)
