@@ -94,6 +94,7 @@ local function bossMinion(x, y)
         local deltaY = target.y - self.y
         local dirX, dirY = vector.normalize(deltaX, deltaY)
         self.x, self.y = self.x + dirX * self.speed * dt, self.y + dirY * self.speed * dt
+        self:lookAt(target.x, target.y)
       end
   end
 
