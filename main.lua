@@ -56,6 +56,10 @@ function love.load()
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
 
+
+	-- create camera
+	camera = Camera(0, 0)
+
 	-- iterate through all spawn locations
 	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
 		-- set amount to spawn
@@ -75,12 +79,8 @@ function love.load()
 
 			if location.properties.spawntype == "player" then
 				-- create player
-				c = Player(math.floor(x + 0.5), math.floor(y + 0.5))
+				local c = Player(math.floor(x + 0.5), math.floor(y + 0.5))
 				scene.rootNode:addChild(c)
-
-				-- create camera
-				camera = Camera(c.x, c.y)
-				--camera:zoomTo(1.5)
 			elseif location.properties.spawntype == "enemy" then
 				-- create enemy
 				local e = Enemy(x, y)
@@ -107,12 +107,14 @@ function love.update(dt)
 	local players = scene.rootNode:getChildrenByName("player")
 
 	local averageX, averageY = 0, 0
-	for _, player in pairs(players) do
-		averageX = averageX + player.x
-		averageY = averageY + player.y
+	if #players > 0 then
+		for _, player in pairs(players) do
+			averageX = averageX + player.x
+			averageY = averageY + player.y
+		end
+		averageX = averageX / #players
+		averageY = averageY / #players
 	end
-	averageX = averageX / #players
-	averageY = averageY / #players
 
 	local dx, dy = averageX - camera.x, averageY - camera.y
 	camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
