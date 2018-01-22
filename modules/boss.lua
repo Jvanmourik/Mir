@@ -41,7 +41,7 @@ self:addChild(self.body)
   -- add weapon template
   self.weapon.id = 1
   self.weapon.name = "regularSword"
-  self.weapon.damage = 5
+  self.weapon.damage = 20
   self.weapon.type = "sword"
 
   -- add the beam sprite to the object
@@ -98,7 +98,7 @@ self:addChild(self.body)
           return
         end
       end
-      other:damage(damage)
+      other:damage(self.damage)
     end
   end
 

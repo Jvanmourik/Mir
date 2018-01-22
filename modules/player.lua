@@ -11,8 +11,8 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   self.name = "player"
-  self.health = 3
-  self.maxhealth = 3
+  self.health = 30
+  self.maxhealth = 30
   self.rollSpeed = 800
   local shootTimer = 0
 

@@ -59,7 +59,7 @@ local function projectile(x, y, dirX, dirY, damage, id)
             return
           end
         end
-        other:damage(damage)
+        other:damage(damage/4)
         timer = 2
       end
     end
