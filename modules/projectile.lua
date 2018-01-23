@@ -9,7 +9,7 @@ local function projectile(x, y, dirX, dirY, damage, id)
   ----------------------------------------------
   angle = vector.angle(0, -1, dirX, dirY)
   self.rotation = angle
-  local timer = 450
+  local timer = 180
   id = id or "arrow"
   ----------------------------------------------
   -- components

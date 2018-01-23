@@ -20,7 +20,6 @@ local function layer(...)
       local y = (camera.y/self.height) * (self.height - self.height * self.scale)
       self.x = math.floor(x + 0.5)
       self.y = math.floor(y + 0.5)
-      print(self.x, self.y)
     end
   end
 

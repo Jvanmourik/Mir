@@ -72,7 +72,7 @@ local function tilemap(name, x, y)
       for _, object in pairs(layer.objects) do
         -- create node
         local node = Node(object.x, object.y, object.width, object.height)
-
+        
         -- add properties
         node.name = object.name
         node.type = object.type
