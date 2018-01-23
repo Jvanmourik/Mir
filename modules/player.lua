@@ -12,8 +12,8 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   self.name = "player"
-  self.health = 30
-  self.maxhealth = 30
+  self.health = 300
+  self.maxhealth = 300
   self.rollSpeed = 800
   local shootTimer = 0
   self.id = score:addPlayer()

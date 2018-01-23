@@ -17,7 +17,7 @@ local function lifes()
   ----------------------------------------------
 
   function self:update(dt)
-    
+
   end
 
   function self:reviveAllowed()
@@ -27,15 +27,15 @@ local function lifes()
       return false
     end
   end
-  
+
   function self:lifeDown()
     if lifes > 0 then
       lifes = lifes - 1
     end
   end
-  
+
   function self:draw()
-    lg.print("lifes: " .. lifes, 1, font:getHeight() * 5)
+    lg.print("lifes: " .. lifes, 1, font:getHeight() * 4)
   end
 
 

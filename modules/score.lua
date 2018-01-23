@@ -47,7 +47,7 @@ local function score()
     lg.print("player3: " .. score3, 1, font:getHeight() * 2)
     lg.print("player4: " .. score4, 1, font:getHeight() * 3)
     -- debug amount of players
-    lg.print("players: " .. players, 1, font:getHeight() * 4)
+    --lg.print("players: " .. players, 1, font:getHeight() * 4)
   end
 
 

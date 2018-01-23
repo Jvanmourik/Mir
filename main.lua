@@ -184,7 +184,7 @@ function love.draw()
 		-- draw scene
 		camera:attach()
 		scene:draw()
-		drawCollisionShapes()
+		--drawCollisionShapes()
 		camera:detach()
     score:draw()
     lifes:draw()
