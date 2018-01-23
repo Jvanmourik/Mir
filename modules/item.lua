@@ -23,7 +23,7 @@ local function item(id, x, y, dirX, dirY, speed)
 
   self.tag = "item"
   self.rotation = math.random() * 2 * math.pi
-
+  self.scale = 0.3
   self.velocityX, self.velocityY = 0, 0
   self.dragX, self.dragY = 8, 8
 

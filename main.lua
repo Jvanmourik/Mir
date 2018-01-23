@@ -21,7 +21,7 @@ function love.load()
   scale = love.window.getPixelScale( )
   love.graphics.scale(scale, scale)
 	-- set window to fullscreen in desktop mode
-	lw.setFullscreen(false, "desktop")
+	lw.setFullscreen(true, "desktop")
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
