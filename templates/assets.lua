@@ -74,14 +74,14 @@ local assets = {
     atlas = image("assets/images/items.png"),
     regularSword = {
       frames = {
-        quad(43, 1, 19, 42, 84, 44)
+        quad(1, 1, 187, 200, 660, 208)
       },
       anchorX = 0.5,
       anchorY = 0.5
     },
     regularBow = {
       frames = {
-        quad(22, 1, 19, 42, 84, 44)
+        quad(188, 1, 281, 200, 660, 208)
       },
       anchorX = 0.5,
       anchorY = 0.5
@@ -102,7 +102,7 @@ local assets = {
     },
     bloodSword = {
       frames = {
-        quad(1, 1, 19, 42, 84, 44)
+        quad(484, 1, 187, 200, 660, 208)
       },
       anchorX = 0.5,
       anchorY = 0.5
