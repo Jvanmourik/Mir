@@ -16,13 +16,14 @@ local function bossMinion(x, y)
   local aggroDistance = 500
   self.id = 99
 
+  ----------------------------------------------
+  -- components
+  ----------------------------------------------
+
   -- the explosion object for after the minions hit someone
   self.explosion = Node(0, 0, 10, 10)
   self.explosion.anchorX, self.explosion.anchorY = 0.5, 0.5
   self:addChild(self.explosion)
-  ----------------------------------------------
-  -- components
-  ----------------------------------------------
 
   -- agent component to implement AI
   self:addComponent("spriteRenderer",
@@ -111,7 +112,7 @@ local function bossMinion(x, y)
   -- damage function for if this object takes damage
   function self:damage(amount)
     local amount = amount or 1
-      self.health = self.health - amount
+    self.health = self.health - amount
     if self.health <= 0 then
       self:kill()
     end

@@ -19,8 +19,9 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   self.velocityX, self.velocityY = 0, 0
   self.dragX, self.dragY = 3, 3
   self.speed = 400
-  self.health = 5
   self.id = 99
+  self.health = 1
+  self.maxhealth = 1
 
 
   ----------------------------------------------
@@ -105,7 +106,19 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   self.body:addChild(self.weapon)
 
-
+  self.healthBar = Node(-40, -70, 80, 10)
+  self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
+  self.healthBar.visible = true
+  function self.healthBar:draw()
+    local x, y = self:getWorldCoords()
+    lg.setColor(255, 0 ,0)
+    lg.rectangle("fill", x, y, self.width, self.height)
+    lg.setColor(0, 255, 0)
+    local barWidth = (self.parent.health/self.parent.maxhealth) * self.width
+    lg.rectangle("fill", x, y, barWidth, self.height)
+    lg.setColor(255, 255, 255)
+  end
+  self:addChild(self.healthBar)
   ----------------------------------------------
   -- methods
   ----------------------------------------------
@@ -170,6 +183,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   -- kill character
   function self:kill()
     self.weapon.active = false
+    self.healthBar.active = false
     self.body.active = false
     self.legs.active = false
     self.active = false
@@ -178,12 +192,14 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   -- revive character
   function self:revive()
     self.weapon.active = true
+    self.healthBar.active = true
     self.body.active = true
     self.legs.active = true
     self.active = true
     if self.name == "player" then
       lifes:lifeDown()
     end
+    self.health = self.maxhealth
   end
 
   -- handle collision

@@ -12,7 +12,8 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   self.name = "player"
-  self.health = 3
+  self.health = 30
+  self.maxhealth = 30
   self.rollSpeed = 800
   local shootTimer = 0
   self.id = score:addPlayer()
@@ -97,7 +98,7 @@ local function character(x, y, gamepad)
     elseif self.weapon.type == "bow" and shootTimer <= 0 then
       dirX, dirY = self.body:getForwardVector()
       spawnX , spawnY = self.x + dirX * 50, self.y + dirY * 50
-      shootTimer = 60
+      shootTimer = 20
       local arrow = Projectile(spawnX, spawnY, dirX, dirY, self.weapon.damage)
       scene.rootNode:addChild(arrow)
     end

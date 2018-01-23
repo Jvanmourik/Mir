@@ -9,7 +9,8 @@ local function boss(x,y)
   local self = Node(x, y)
   ---attributes
   local damage = 40
-  self.health = 100
+  self.health = 1000
+  self.maxhealth = 1000
   self.name = "boss"
   self.speed = 100
   local fase = "regular"
@@ -20,15 +21,28 @@ local function boss(x,y)
   local lock = false
   local shake = false
   self.id = 99
+-- components
+self.body = Node()
+self.body:addComponent("spriteRenderer",
+{ atlas = assets.boss.atlas,
+  asset = assets.boss.bossAsset,
+  layer = 0 })
+
+  self:addComponent("collider", {
+    shapeType = "circle",
+    radius = 50
+  })
+
+self:addChild(self.body)
 
   -- create an object for the beam from the spinningAttack fase
-  self.weapon = Node(0, 120, 25, 200)
+  self.weapon = Node(0, 145, 25, 200)
   self.weapon.anchorX, self.weapon.anchorY = 0.5, 0
 
   -- add weapon template
   self.weapon.id = 1
   self.weapon.name = "regularSword"
-  self.weapon.damage = 5
+  self.weapon.damage = 20
   self.weapon.type = "sword"
 
   -- add the beam sprite to the object
@@ -43,12 +57,22 @@ local function boss(x,y)
   self.weapon:addComponent("collider")
   self.weapon.collider.active = false
   self.weapon.collider.isSensor = true
-  self:addChild(self.weapon)
+  self.body:addChild(self.weapon)
 
-  self:addComponent("collider", {
-    shapeType = "circle",
-    radius = 50
-  })
+
+  self.healthBar = Node(-80, -70, 160, 10)
+  self.healthBar.anchorX, self.healthBar.anchorY = 0.5, 0.5
+  self.healthBar.visible = true
+  function self.healthBar:draw()
+    local x, y = self:getWorldCoords()
+    lg.setColor(255, 0 ,0)
+    lg.rectangle("fill", x, y, self.width, self.height)
+    lg.setColor(0, 255, 0)
+    local barWidth = (self.parent.health/self.parent.maxhealth) * self.width
+    lg.rectangle("fill", x, y, barWidth, self.height)
+    lg.setColor(255, 255, 255)
+  end
+  self:addChild(self.healthBar)
   --self:addComponent("agent")
 
   function self:onCollisionEnter(dt, other, delta)
@@ -67,22 +91,23 @@ local function boss(x,y)
   -- handle the beam collision
   function self.weapon:onCollisionEnter(dt, other, delta)
     bossMinions = scene.rootNode:getChildrenByName("bossMinion")
-    if other.damage and type(other.damage) == "function" then
+    boss = scene.rootNode:getChildByName("boss")
+    if other.damage and type(other.damage) == "function" and other ~= boss then
       -- return if collision is with a minion
       for i=1, #bossMinions do
         if bossMinions[i] == other then
           return
         end
       end
-      other:damage(damage)
+      other:damage(self.damage)
     end
   end
 
   -- sprite renderer component to render the sprite
-  self:addComponent("spriteRenderer",
+  --[[self:addComponent("spriteRenderer",
   { atlas = assets.boss.atlas,
     asset = assets.boss.bossAsset,
-    layer = 0 })
+    layer = 0 })]]
 
   -- if a player comes within this distance then the boss will focus this player
   local aggroDistance = 500
@@ -160,7 +185,7 @@ local function boss(x,y)
         elseif fase == "spinningAttack" then
           self.weapon.collider.active = true
           self.weapon.visible = true
-          self.rotation = self.rotation + math.pi *dt
+          self.body.rotation = self.body.rotation + math.pi *dt
           local dX = target.x - self.x
           local dY = target.y - self.y
           local dirX, dirY = vector.normalize(dX, dY)
@@ -183,12 +208,14 @@ local function boss(x,y)
           end
           -- spawn minions around the boss that explode upon collision with a player
         elseif fase == "spawnMinion" then
-          for i=1, 4 do
-            local x = self.x - 200 + i * 100
-            local y = self.y - 200 + i * 100
-            local minion = BossMinion(x, y)
-            scene.rootNode:addChild(minion)
-          end
+          local minion = BossMinion(self.x - 100, self.y - 100)
+          scene.rootNode:addChild(minion)
+          minion = BossMinion(self.x + 100, self.y - 100)
+          scene.rootNode:addChild(minion)
+          minion = BossMinion(self.x - 100, self.y + 100)
+          scene.rootNode:addChild(minion)
+          minion = BossMinion(self.x + 100, self.y + 100)
+          scene.rootNode:addChild(minion)
           fase = "regular"
           if self.health > 75 then
             timer = 180
@@ -249,6 +276,7 @@ local function boss(x,y)
 
   -- apply damage to character
   function self:damage(amount)
+    aggroDistance = 2000
     local amount = amount or 1
     self.health = self.health - amount
     if self.health <= 0 then
@@ -260,6 +288,8 @@ local function boss(x,y)
   function self:kill()
     self.weapon.collider.active = false
     self.weapon.active = false
+    self.healthBar.active = false
+    self.body.active = false
     self.active = false
   end
 

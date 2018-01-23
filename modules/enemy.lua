@@ -11,6 +11,7 @@ local function enemy(x, y)
   self.name = "enemy"
   self.speed = 400
   self.health = 20
+  self.maxhealth = 20
 
   ----------------------------------------------
   -- components
@@ -36,6 +37,10 @@ local function enemy(x, y)
     -- get players
     if not players then
       players = scene.rootNode:getChildrenByName("player")
+    end
+
+    if self.health < self.maxhealth then
+      aggroDistance = 1000
     end
 
     -- set closest player as target

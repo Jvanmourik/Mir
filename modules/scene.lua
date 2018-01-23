@@ -46,27 +46,28 @@ local function scene(...)
   end
 
   function self:draw()
-    -- TODO: sort drawableNodes only when node.layer gets set
-    --       instead of every frame
+      -- TODO: sort drawableNodes only when node.layer gets set
+      --       instead of every frame
 
-    -- get all drawable nodes
-    local drawableNodes = {}
-    for _, child in pairs(self.rootNode:getChildren()) do
-      if child.active and child.visible and child.spriteRenderer then
-        drawableNodes[#drawableNodes + 1] = child
+      -- get all drawable nodes
+      local drawableNodes = {}
+      for _, child in pairs(self.rootNode:getChildren()) do
+        if child.active and child.visible and (child.draw or child.spriteRenderer) then
+          drawableNodes[#drawableNodes + 1] = child
+        end
+      end
+
+      -- sort all drawable nodes by layer
+      table.sort(drawableNodes, function (a,b)
+        return a.layer < b.layer
+      end)
+
+      -- draw all drawable nodes
+      for _, node in pairs(drawableNodes) do
+        if node.draw then node:draw() end
+        if node.spriteRenderer then node.spriteRenderer:draw() end
       end
     end
-
-    -- sort all drawable nodes by layer
-    table.sort(drawableNodes, function (a,b)
-      return a.layer < b.layer
-    end)
-
-    -- draw all drawable nodes
-    for _, node in pairs(drawableNodes) do
-      node.spriteRenderer:draw()
-    end
-  end
 
 
   ----------------------------------------------
