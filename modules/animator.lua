@@ -1,11 +1,21 @@
-local function animator(node, animations, animationName, startingFrame)
+local function animator(node, animations)
   local self = {}
 
-  local animation = animations[animationName]
-  local currentFrame = startingFrame or 1
+  local animation
+  local currentFrame = 1
   local frameTime = 0
 
-  local isAnimating = true
+  local isAnimating = false
+  local isLooping = false
+  local iterationCount = 0
+  local _callback
+
+  ----------------------------------------------
+  -- attributes
+  ----------------------------------------------
+
+  self.active = true
+
 
   ----------------------------------------------
   -- methods
@@ -14,59 +24,85 @@ local function animator(node, animations, animationName, startingFrame)
   function self:update(dt)
     if isAnimating then
       local frames = animation.frames
+      local sequence = animation.sequence
       local interval = animation.interval
 
       -- frame timer
-      frameTime = frameTime + dt;
+      frameTime = frameTime + dt
       if frameTime >= interval then
-          frameTime = frameTime - interval;
-          currentFrame = currentFrame + 1
-          if currentFrame > #frames then currentFrame = 1 end
+        frameTime = frameTime - interval;
+        currentFrame = currentFrame + 1
+
+        -- if sequence overflows
+        if currentFrame > #sequence then
+          if isLooping then
+            currentFrame = 1
+          elseif iterationCount > 1 then
+            iterationCount = iterationCount - 1
+            currentFrame = 1
+          else
+            self:stop()
+            if _callback then _callback() end
+            return
+          end
+        end
       end
 
       -- update the sprite
-      node.sprite = frames[currentFrame]
+      node.spriteRenderer:setSprite(animation, sequence[currentFrame])
     end
   end
 
-  -- start animating
-  function self:start(startingFrame)
-    local startingFrame = startingFrame or currentFrame
-    local frames = animation.frames
+  -- play animation
+  function self:play(animationName, amount, callback)
+    self.animationName = animationName
 
-    -- make sure that the given frame is in range
-    if startingFrame > #frames then
-      currentFrame = #frames
-    else
-      currentFrame = startingFrame
-    end
+    -- reset current frame
+    currentFrame = 1
+
+    -- set animation
+    animation = animations[animationName]
+
+    -- set amount of times to play, 0 = infinite loop
+    isLooping = (amount == 0) and true or false
+    iterationCount = amount or 1
+
+    -- set callback
+    _callback = callback
 
     -- update the sprite
-    node.sprite = frames[currentFrame]
+    local sequence = animation.sequence
+    node.spriteRenderer:setSprite(animation, sequence[currentFrame])
 
     isAnimating = true
   end
 
-  -- pause animating
+  -- pause animation
   function self:pause()
     isAnimating = false
   end
 
-  -- stop animating
+  -- stop animation
   function self:stop()
-    local frames = animation.frames
 
     -- reset current frame
     currentFrame = 1
 
     -- update the sprite
-    node.sprite = frames[currentFrame]
+    local sequence = animation.sequence
+    node.spriteRenderer:setSprite(animation, sequence[currentFrame])
 
     isAnimating = false
   end
 
-  function self:setAnimation(animationName)
-    animation = animations[animationName]
+  function self:isPlaying(animationName)
+    if animationName then
+      if animation == animations[animationName] then
+        return isAnimating
+      end
+      return false
+    end
+    return isAnimating
   end
 
 
