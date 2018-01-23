@@ -14,6 +14,7 @@ local function bossMinion(x, y)
   local damage = 40
   local timer = 30
   local aggroDistance = 500
+  self.id = 99
 
   -- the explosion object for after the minions hit someone
   self.explosion = Node(0, 0, 10, 10)

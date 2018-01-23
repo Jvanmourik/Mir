@@ -19,6 +19,7 @@ local function boss(x,y)
   local lockx, locky = 0, 0
   local lock = false
   local shake = false
+  self.id = 99
 
   -- create an object for the beam from the spinningAttack fase
   self.weapon = Node(0, 120, 25, 200)
