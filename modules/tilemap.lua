@@ -47,8 +47,10 @@ local function tilemap(name, x, y)
     layerNode.width = exportedTable.width * exportedTable.tilewidth
     layerNode.height = exportedTable.height * exportedTable.tileheight
     layerNode.scale = scale
+    layerNode.layer = depth
 
     if layer.type == "tilelayer" then
+      layerNode.tilesetBatch = love.graphics.newSpriteBatch(tiles[1].atlas, layer.width * layer.height)
       for i, n in ipairs(layer.data) do
         if n ~= 0 then
           local tile = tiles[n]
@@ -63,18 +65,7 @@ local function tilemap(name, x, y)
             anchorY = 0
           }
 
-          -- create node
-          local node = Node(x * tile.width, y * tile.height)
-
-          -- sprite renderer component to render the sprite
-          node:addComponent("spriteRenderer", {
-            atlas = tile.atlas,
-            asset = asset,
-            layer = depth
-          })
-
-          -- add child node to layer node
-          layerNode:addChild(node)
+          layerNode.tilesetBatch:add(tile.quad, x * tile.width, y * tile.height)
         end
       end
     elseif layer.type == "objectgroup" then

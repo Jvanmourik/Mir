@@ -24,6 +24,8 @@ local function collider(node, options)
     self.shape:moveTo(x + cx, y + cy)
   elseif shapeType == "circle" then
     self.shape = HC.circle(x, y, options.radius)
+  elseif shapeType == "ellipse" then
+    self.shape = HC.circle(x, y, 0.5 * width)
   elseif shapeType == "rectangle" then
     self.shape = HC.rectangle(x, y, width, height)
   end
@@ -33,7 +35,7 @@ local function collider(node, options)
   ----------------------------------------------
   -- methods
   ----------------------------------------------
-  
+
   local collisionsThisFrame = {}
 
   function self:update(dt)

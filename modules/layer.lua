@@ -8,6 +8,8 @@ local function layer(...)
   -- attributes
   ----------------------------------------------
 
+  self.visible = true
+
   ----------------------------------------------
   -- methods
   ----------------------------------------------
@@ -18,7 +20,14 @@ local function layer(...)
       local y = (camera.y/self.height) * (self.height - self.height * self.scale)
       self.x = math.floor(x + 0.5)
       self.y = math.floor(y + 0.5)
+      print(self.x, self.y)
     end
+  end
+
+  function self:draw()
+    if self.tilesetBatch then
+    lg.draw(self.tilesetBatch, self.x, self.y, r, self.scale, self.scale)
+  end
   end
 
   ----------------------------------------------
