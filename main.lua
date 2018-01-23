@@ -104,6 +104,10 @@ function love.load()
 				-- create enemy
 				local e = Enemy(x, y)
 				scene.rootNode:addChild(e)
+			elseif location.properties.spawntype == "boss" then
+				-- create boss
+				local b = Boss(x, y)
+				scene.rootNode:addChild(b)
 			end
 		end
 	end
@@ -117,9 +121,6 @@ function love.load()
 		e.agent:followPath(path.vertices, true)
 		scene.rootNode:addChild(e)
 	end
-
-	local b = Boss(500, 500)
-	scene.rootNode:addChild(b)
 end
 
 function love.update(dt)
@@ -161,11 +162,11 @@ function love.update(dt)
 
 		if lk.isDown("r") then
 			for _, player in pairs(players) do
-					local x, y = 120, 1200
-					player.x = x
-					player.y = y
-					player.collider.shape:moveTo(x, y)
-					player:revive()
+				local x, y = 8574.48, 2246.12
+				player.x = x
+				player.y = y
+				player.collider.shape:moveTo(x, y)
+				player:revive()
 			end
 		end
 
