@@ -5,7 +5,9 @@ local Projectile = require "modules/projectile"
 local function character(x, y, gamepad)
   local self = Character(x, y)
   local base = table.copy(self)
-
+  local arrow = Projectile(self.x, self.y, 1, 1, self.weapon.damage)
+  arrow.active = false
+  scene.rootNode:addChild(arrow)
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
@@ -94,11 +96,11 @@ local function character(x, y, gamepad)
     if self.weapon.type == "sword" then
       base.attack(self, callback)
     elseif self.weapon.type == "bow" and shootTimer <= 0 then
-      dirX, dirY = self.body:getForwardVector()
-      spawnX , spawnY = self.x + dirX * 50, self.y + dirY * 50
+      arrow.dirX, arrow.dirY = self.body:getForwardVector()
+      arrow.x , arrow.y = self.x + arrow.dirX * 50, self.y + arrow.dirY * 50
       shootTimer = 20
-      local arrow = Projectile(spawnX, spawnY, dirX, dirY, self.weapon.damage)
-      scene.rootNode:addChild(arrow)
+      arrow.timer = 120
+      arrow.active = true
     end
   end
 

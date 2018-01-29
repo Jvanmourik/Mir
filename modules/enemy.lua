@@ -17,6 +17,10 @@ local function enemy(x, y)
   self.maxhealth = 20
   local shootTimer = 0
 
+  local arrow = Projectile(self.x, self.y, 1, 1, self.weapon.damage)
+  arrow.active = false
+  scene.rootNode:addChild(arrow)
+  
   local weaponRandom = love.math.random()
   if weaponRandom < 0.3 then
     self.weapon.id = 2
@@ -24,7 +28,7 @@ local function enemy(x, y)
     self.weapon.damage = 5
     self.weapon.type = "bow"
   end
-  
+
   if self.weapon.type == "bow" then
     self.body.animator:play("bow-idle", 0)
   else
@@ -121,10 +125,11 @@ local function enemy(x, y)
     elseif self.weapon.type == "bow" then
       local deltaX = target.x - self.x
       local deltaY = target.y - self.y
-      local dirX, dirY = vector.normalize(deltaX, deltaY)
-      spawnX , spawnY = self.x + dirX * 50, self.y + dirY * 50
-      local arrow = Projectile(spawnX, spawnY, dirX, dirY, self.weapon.damage)
-      scene.rootNode:addChild(arrow)
+      arrow.dirX, arrow.dirY = vector.normalize(deltaX, deltaY)
+      arrow.x , arrow.y = self.x + arrow.dirX * 50, self.y + arrow.dirY * 50
+      shootTimer = 20
+      arrow.timer = 120
+      arrow.active = true
       -- invoke callback
       if callback then callback() end
     end

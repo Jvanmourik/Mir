@@ -7,9 +7,8 @@ local function projectile(x, y, dirX, dirY, damage, id)
   ----------------------------------------------
   -- attributes
   ----------------------------------------------
-  angle = vector.angle(0, -1, dirX, dirY)
-  self.rotation = angle
-  local timer = 120
+  self.dirX, self.dirY = dirX, dirY
+  self.timer = 120
   id = id or "arrow"
   ----------------------------------------------
   -- components
@@ -48,7 +47,7 @@ local function projectile(x, y, dirX, dirY, damage, id)
     if id == "arrow" then
       if other.damage and type(other.damage) == "function" then
         other:damage(damage)
-        timer = 2
+        self.timer = 2
       end
     elseif id == "eyeball" then
       boss = scene.rootNode:getChildByName("boss")
@@ -60,7 +59,7 @@ local function projectile(x, y, dirX, dirY, damage, id)
           end
         end
         other:damage(damage/4)
-        timer = 2
+        self.timer = 2
       end
     end
   end
@@ -68,17 +67,18 @@ local function projectile(x, y, dirX, dirY, damage, id)
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
     if id == "arrow" then
-      self.x = self.x + dirX * dt * 1000
-      self.y = self.y + dirY * dt * 1000
+      self.rotation = vector.angle(0, -1, self.dirX, self.dirY)
+      self.x = self.x + self.dirX * dt * 1000
+      self.y = self.y + self.dirY * dt * 1000
     elseif id == "eyeball" then
-      self.x = self.x + dirX * dt * 200
-      self.y = self.y + dirY * dt * 200
+      self.x = self.x + self.dirX * dt * 200
+      self.y = self.y + self.dirY * dt * 200
     end
-    timer = timer - 1
-    if timer <= 0 then
+    self.timer = self.timer - 1
+    if self.timer <= 0 then
       self.active = false
     end
-    if dirX == 0 and dirY == 0 then
+    if self.dirX == 0 and self.dirY == 0 then
       self.active = false
     end
   end
