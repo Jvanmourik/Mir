@@ -78,10 +78,8 @@ local function projectile(x, y, dirX, dirY, damage, id)
     if timer <= 0 then
       self.active = false
     end
-    if dirX == 0 and dirY == 0 then
-      self.active = false
-    end
   end
+
   ----------------------------------------------
   return self
 end

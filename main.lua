@@ -50,9 +50,6 @@ function love.load()
   -- create scene
   scene = Scene(0, 0)
 
-	local item = Item(3, 150, 200)
-	scene.rootNode:addChild(item)
-
 	-- create tilemap
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
@@ -78,12 +75,8 @@ function love.load()
 
 			-- create entity
 			if location.properties.spawntype == "player" then
-				-- create player
-				local player = Player(math.floor(x + 0.5), math.floor(y + 0.5))
-				scene.rootNode:addChild(player)
-
-				-- add player to players table
-				players[#players + 1] = player
+				-- set spawn point
+				spawnPoint = location
 			elseif location.properties.spawntype == "enemy" then
 				-- create enemy
 				local enemy = Enemy(x, y)
@@ -96,8 +89,17 @@ function love.load()
 		end
 	end
 
+
+	-- create player
+	local player = Player(math.floor(spawnPoint.x + 0.5), math.floor(spawnPoint.y + 0.5))
+	scene.rootNode:addChild(player)
+
+	-- add player to players table
+	players[#players + 1] = player
+
+
 	-- create camera
-	camera = Camera(players[1].x, players[1].y)
+	camera = Camera(math.floor(spawnPoint.x + 0.5), math.floor(spawnPoint.y + 0.5))
 
 	-- iterate through all paths
 	for _, path in pairs(scene.rootNode:getChildrenByType("path")) do
@@ -191,7 +193,15 @@ function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
-		local c = Player(400, 300, gamepad)
-		scene.rootNode:addChild(c)
+		local player = Player(spawnPoint.x, spawnPoint.y, gamepad)
+		scene.rootNode:addChild(player)
+
+		-- add player to players table
+		players[joystick] = player
 	end
+end
+
+function love.joystickremoved(joystick)
+	players[joystick]:kill()
+	players[joystick] = nil
 end

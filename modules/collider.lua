@@ -13,6 +13,7 @@ local function collider(node, options)
   ----------------------------------------------
 
   self.active = true
+  self.isKinematic = true
   self.isSensor = options.sensor or false
   self.isColliding = false
   self.collisions = {}
@@ -39,25 +40,27 @@ local function collider(node, options)
   local collisionsThisFrame = {}
 
   function self:update(dt)
-    local x, y = node:getWorldCoords()
-    local r = node:getWorldRotation()
-    local offsetX = (node.width * node.scale) * (0.5 - node.anchorX)
-    local offsetY = (node.height * node.scale) * (0.5 - node.anchorY)
+    if self.isKinematic then
+      local x, y = node:getWorldCoords()
+      local r = node:getWorldRotation()
+      local offsetX = (node.width * node.scale) * (0.5 - node.anchorX)
+      local offsetY = (node.height * node.scale) * (0.5 - node.anchorY)
 
-    -- change offset based on rotation
-    local c, s = math.cos(r), math.sin(r)
-    offsetX, offsetY = offsetX * c - offsetY * s, offsetX * s + offsetY * c
+      -- change offset based on rotation
+      local c, s = math.cos(r), math.sin(r)
+      offsetX, offsetY = offsetX * c - offsetY * s, offsetX * s + offsetY * c
 
-    -- set position and rotation of the physic body
-    self.shape:moveTo(x + offsetX + cx, y + offsetY + cy)
-    self.shape:setRotation(r)
+      -- set position and rotation of the physic body
+      self.shape:moveTo(x + offsetX + cx, y + offsetY + cy)
+      self.shape:setRotation(r)
 
-    -- reset the active collisions
-    collisionsThisFrame = {}
+      -- reset the active collisions
+      collisionsThisFrame = {}
 
-    -- check if a collision event has occured
-    self:handleEnteringCollisions()
-    self:handleExitingCollisions()
+      -- check if a collision event has occured
+      self:handleEnteringCollisions()
+      self:handleExitingCollisions()
+    end
   end
 
   function self:setActive(boolean)
