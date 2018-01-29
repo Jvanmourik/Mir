@@ -105,6 +105,8 @@ function love.load()
 	end
 end
 
+-- set teamlives
+teamLives = 5
 function love.update(dt)
 	-- update scene
   scene:update(dt)
@@ -147,12 +149,14 @@ function love.update(dt)
 			player:revive()
 		end
 	end
+
 end
 
 function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
+	lg.print("Lives: " .. teamLives, camera.x, camera.y - 400, 0, 1)
   --drawCollisionShapes()
 	camera:detach()
 end
@@ -188,7 +192,21 @@ function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
-		c = Player(400, 300, gamepad)
+		c = Player(8574.48, 2246.12, gamepad)
 		scene.rootNode:addChild(c)
 	end
 end
+
+--[[function love.joystickremoved(joystick)
+	if joystick:isGamepad() then
+		print("hi")
+		local gamepad = input:getGamepad(joystick)
+		for _, player in pairs(scene.rootNode:getChildren()) do
+			print(gamepad.id)
+			print(player.gamepad.id)
+			if player.active and gamepad.id == player.gamepad.id then
+				player.active = false
+			end
+		end
+	end
+end]]

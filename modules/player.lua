@@ -102,6 +102,14 @@ local function character(x, y, gamepad)
     end
   end
 
+  function self:kill()
+    base.kill(self)
+    teamLives = teamLives - 1
+    if teamLives > 0 then
+      base.revive(self)
+    end
+  end
+
   function self:pickupAnyItem()
     -- get items
     local items = scene.rootNode:getChildrenByTag("item")
@@ -153,6 +161,7 @@ local function character(x, y, gamepad)
     item.velocityX, item.velocityY = dirX * force, dirY * force
     scene.rootNode:addChild(item)
   end
+
 
 
   ----------------------------------------------
