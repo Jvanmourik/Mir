@@ -57,15 +57,17 @@ function love.load()
 	map = Tilemap("overworld")
 	scene.rootNode:addChild(map)
 
+	-- create table to keep track of all players
+	players = {}
+
 	-- iterate through all spawn locations
 	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
 		-- set amount to spawn
 		local spawncount = location.properties.spawncount or 1
 		for i = 1, spawncount do
+			-- set spawn position
 			local x = location.x
 			local y = location.y
-
-			-- set spawn position
 			if location.properties.spawnposition == "center" then
 				x = location.x + location.width * 0.5
 				y = location.y + location.height * 0.5
@@ -74,25 +76,28 @@ function love.load()
 				y = location.y + location.height * math.random()
 			end
 
+			-- create entity
 			if location.properties.spawntype == "player" then
 				-- create player
-				c = Player(math.floor(x + 0.5), math.floor(y + 0.5))
-				scene.rootNode:addChild(c)
+				local player = Player(math.floor(x + 0.5), math.floor(y + 0.5))
+				scene.rootNode:addChild(player)
 
-				-- create camera
-				camera = Camera(c.x, c.y)
-				--camera:zoomTo(1.5)
+				-- add player to players table
+				players[#players + 1] = player
 			elseif location.properties.spawntype == "enemy" then
 				-- create enemy
-				local e = Enemy(x, y)
-				scene.rootNode:addChild(e)
+				local enemy = Enemy(x, y)
+				scene.rootNode:addChild(enemy)
 			elseif location.properties.spawntype == "boss" then
 				-- create boss
-				local b = Boss(x, y)
-				scene.rootNode:addChild(b)
+				local boss = Boss(x, y)
+				scene.rootNode:addChild(boss)
 			end
 		end
 	end
+
+	-- create camera
+	camera = Camera(players[1].x, players[1].y)
 
 	-- iterate through all paths
 	for _, path in pairs(scene.rootNode:getChildrenByType("path")) do
@@ -108,8 +113,6 @@ end
 function love.update(dt)
 	-- update scene
   scene:update(dt)
-
-	local players = scene.rootNode:getChildrenByName("player")
 
 	local averageX, averageY = 0, 0
 	local activePlayers = {}
@@ -188,7 +191,7 @@ function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
-		c = Player(400, 300, gamepad)
+		local c = Player(400, 300, gamepad)
 		scene.rootNode:addChild(c)
 	end
 end
