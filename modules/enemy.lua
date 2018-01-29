@@ -24,7 +24,12 @@ local function enemy(x, y)
     self.weapon.damage = 5
     self.weapon.type = "bow"
   end
-  print(self.weapon.type)
+  
+  if self.weapon.type == "bow" then
+    self.body.animator:play("bow-idle", 0)
+  else
+    self.body.animator:play("sword-shield-idle", 0)
+  end
   ----------------------------------------------
   -- components
   ----------------------------------------------

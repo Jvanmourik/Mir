@@ -141,6 +141,11 @@ local function character(x, y, gamepad)
     self.weapon.name = item.name
     self.weapon.damage = item.damage
     self.weapon.type = item.type
+    if self.weapon.type == "bow" then
+      self.body.animator:play("bow-idle", 0)
+    else
+      self.body.animator:play("sword-shield-idle", 0)
+    end
   end
 
   function self:throwItem(item, force)
