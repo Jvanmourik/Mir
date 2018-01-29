@@ -44,6 +44,28 @@ self:addChild(self.body)
   self.weapon.damage = 20
   self.weapon.type = "sword"
 
+  -- add eyeball projectiles
+  local eyeballTable = {}
+  for i=1, 200 do
+    local eyeball = Projectile(self.x, self.y, 1, 1, damage, "eyeball")
+    eyeball.active = false
+    scene.rootNode:addChild(eyeball)
+    eyeballTable[#eyeballTable + 1] = eyeball
+  end
+
+  -- add bossminions
+  local minion1 = BossMinion(self.x - 100, self.y - 100)
+  minion1.active = false
+  scene.rootNode:addChild(minion1)
+  local minion2 = BossMinion(self.x - 100, self.y - 100)
+  minion2.active = false
+  scene.rootNode:addChild(minion2)
+  local minion3 = BossMinion(self.x - 100, self.y - 100)
+  minion3.active = false
+  scene.rootNode:addChild(minion3)
+  local minion4 = BossMinion(self.x - 100, self.y - 100)
+  minion4.active = false
+  scene.rootNode:addChild(minion4)
   -- add the beam sprite to the object
   self.weapon:addComponent("spriteRenderer",
   { atlas = assets.boss.atlas,
@@ -170,14 +192,16 @@ self:addChild(self.body)
             end
           end
           if timer <= 0 then
+            for i=1, 20 do
+              local eyeball = eyeballTable[i + faseDuration * 20]
+              eyeball.x, eyeball.y = self.x, self.y
+              eyeball.timer = 120
+              local x, y = love.math.random(0, 10) - 5, love.math.random(0, 10) - 5
+              eyeball.dirX, eyeball.dirY = vector.normalize(x, y)
+              eyeball.active = true
+            end
             faseDuration = faseDuration + 1
             timer = 30
-            for i=1, 20 do
-              local x, y = love.math.random(0, 10) - 5, love.math.random(0, 10) - 5
-              local dirX, dirY = vector.normalize(x, y)
-              local eyeball = Projectile(self.x, self.y, dirX, dirY, damage, "eyeball")
-              scene.rootNode:addChild(eyeball)
-            end
           end
           timer = timer - 1
           -- move towards the target and spin around while a beam comes out of the eye of the boss
@@ -207,14 +231,19 @@ self:addChild(self.body)
           end
           -- spawn minions around the boss that explode upon collision with a player
         elseif fase == "spawnMinion" then
-          local minion = BossMinion(self.x - 100, self.y - 100)
-          scene.rootNode:addChild(minion)
+          minion1.x, minion1.y, minion1.active = self.x - 100, self.y - 100, true
+          print(self.x)
+          print(minion1.active)
+          minion2.x, minion2.y, minion2.active = self.x + 100, self.y - 100, true
+          minion3.x, minion3.y, minion3.active = self.x - 100, self.y + 100, true
+          minion4.x, minion4.y, minion4.active = self.x + 100, self.y + 100, true
+          --[[scene.rootNode:addChild(minion)
           minion = BossMinion(self.x + 100, self.y - 100)
           scene.rootNode:addChild(minion)
           minion = BossMinion(self.x - 100, self.y + 100)
           scene.rootNode:addChild(minion)
           minion = BossMinion(self.x + 100, self.y + 100)
-          scene.rootNode:addChild(minion)
+          scene.rootNode:addChild(minion)]]
           fase = "regular"
           if self.health > 75 then
             timer = 180
