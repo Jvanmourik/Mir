@@ -228,18 +228,22 @@ function drawCollisionShapes()
 end
 
 function love.joystickadded(joystick)
-	-- add player character when a controller gets connected
-	if joystick:isGamepad() then
-		local gamepad = input:getGamepad(joystick)
-		local player = Player(spawnPoint.x, spawnPoint.y, gamepad)
-		scene.rootNode:addChild(player)
+	if teamLives > 0 then
+		-- add player character when a controller gets connected
+		if joystick:isGamepad() then
+			local gamepad = input:getGamepad(joystick)
+			local player = Player(spawnPoint.x, spawnPoint.y, gamepad)
+			scene.rootNode:addChild(player)
 
-		-- add player to players table
-		players[joystick] = player
+			-- add player to players table
+			players[joystick] = player
+		end
 	end
 end
 
 function love.joystickremoved(joystick)
-	players[joystick]:kill()
-	players[joystick] = nil
+	if players[joystick] then
+		players[joystick]:kill()
+		players[joystick] = nil
+	end
 end
