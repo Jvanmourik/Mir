@@ -94,6 +94,7 @@ local function character(x, y, gamepad)
     if self.weapon.type == "sword" then
       base.attack(self, callback)
     elseif self.weapon.type == "bow" and shootTimer <= 0 then
+      efMusic["hit"]:play()
       dirX, dirY = self.body:getForwardVector()
       spawnX , spawnY = self.x + dirX * 50, self.y + dirY * 50
       shootTimer = 20
@@ -101,7 +102,7 @@ local function character(x, y, gamepad)
       scene.rootNode:addChild(arrow)
     end
   end
-  
+
   function self:kill()
     base.kill(self)
     teamLives = teamLives - 1

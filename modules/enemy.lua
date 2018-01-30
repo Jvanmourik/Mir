@@ -124,6 +124,7 @@ local function enemy(x, y)
     if self.weapon.type == "sword" then
       base.attack(self, callback)
     elseif self.weapon.type == "bow" then
+      efMusic["hit"]:play()
       local deltaX = target.x - self.x
       local deltaY = target.y - self.y
       arrow.dirX, arrow.dirY = vector.normalize(deltaX, deltaY)
