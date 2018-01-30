@@ -188,9 +188,10 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   function self:attack(callback)
     if not self.body.animator:isPlaying("sword-shield-stab") then
+      -- play soundeffect
+      efMusic["hit"]:play()
       -- enable weapon
       self.weapon.collider:setActive(true)
-
       -- change animation
       self.body.animator:play("sword-shield-stab", 1, function()
         self.body.animator:play("sword-shield-idle", 0)
@@ -204,6 +205,9 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   end
 
   function self:dash(x, y, callback)
+    -- play soundeffect
+    efMusic["dash"..math.random(1,6)]:play()
+    
     -- remember current animation
     previousAnimation = self.body.animator.animationName
 
@@ -233,8 +237,11 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   function self:damage(amount)
     local amount = amount or 1
     self.health = self.health - amount
-    if self.health <= 0 then
+    if self.health > 0 then
+      efMusic["hurt-0"..math.random(1,3)]:play()
+    elseif self.health <= 0 then
       self:kill()
+      efMusic["hurtdie"..math.random(1,4)]:play()
     end
   end
 
