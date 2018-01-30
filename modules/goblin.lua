@@ -176,7 +176,9 @@ local function goblin(x, y, w, h, r, s, ax, ay, l)
   function self:damage(amount)
     local amount = amount or 1
     self.health = self.health - amount
-    if self.health <= 0 then
+    if self.health > 0 then
+      efMusic["hurt-0"..math.random(1,3)]:play()
+    else
       self:kill()
     end
   end
@@ -186,6 +188,7 @@ local function goblin(x, y, w, h, r, s, ax, ay, l)
 
   -- kill character
   function self:kill()
+    efMusic["hitdie"..math.random(1,4)]:play()
     self.weapon.active = false
     self.healthBar.active = false
     self.body.active = false

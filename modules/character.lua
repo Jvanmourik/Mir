@@ -239,8 +239,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
     self.health = self.health - amount
     if self.health > 0 then
       efMusic["hurt-0"..math.random(1,3)]:play()
-    elseif self.health <= 0 then
-      efMusic["hitdie"..math.random(1,4)]:play()
+    else
       self:kill()
     end
   end
@@ -250,6 +249,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   -- kill character
   function self:kill()
+    efMusic["hitdie"..math.random(1,4)]:play()
     self.weapon.active = false
     self.healthBar.active = false
     self.body.active = false
