@@ -11,7 +11,7 @@ local function bossMinion(x, y)
   self.name = "bossMinion"
   self.speed = 150
   self.health = 1
-  local damage = 40
+  local damage = 2
   local timer = 30
   local aggroDistance = 500
   self.id = 99
@@ -43,20 +43,21 @@ local function bossMinion(x, y)
     bossMinions = scene.rootNode:getChildrenByName("bossMinion")
     -- if the minions collide with something that is not the boss
     if other.damage and type(other.damage) == "function" and other ~= boss and timer <= 0 then
-      --other:damage(damage)
-
       -- return if collision is with other minion
       for i=1, #bossMinions do
         if bossMinions[i] == other then
           return
         end
       end
-      -- add the collider component for the explosion
+
+      other:damage(damage)
+
+      --[[add the collider component for the explosion
       self.explosion:addComponent("collider", {
         shapeType = "circle",
         radius = 100,
         sensor = true
-      })
+      })]]
     end
   end
 

@@ -48,6 +48,7 @@ function love.load()
   Lifes = require "modules/lifes"
   Item = require "modules/item"
 	Boss = require "modules/boss"
+	Lives = require "modules/lives"
 
 	-- load controller mappings
 	local mappings = require "mappings"
@@ -121,6 +122,8 @@ function love.load()
 		e.agent:followPath(path.vertices, true)
 		scene.rootNode:addChild(e)
 	end
+	lives = Lives(10, 10)
+	scene.rootNode:addChild(lives)
 end
 
 function love.update(dt)
@@ -173,7 +176,9 @@ function love.update(dt)
     if input:isPressed("escape") then
       gameState = 2
     end
-  end
+	end
+	lives.x = camera.x
+	lives.y = camera.y - 400
 end
 
 function love.draw()
@@ -222,7 +227,21 @@ function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
-		c = Player(400, 300, gamepad)
+		c = Player(8574.48, 2246.12, gamepad)
 		scene.rootNode:addChild(c)
 	end
 end
+
+--[[function love.joystickremoved(joystick)
+	if joystick:isGamepad() then
+		print("hi")
+		local gamepad = input:getGamepad(joystick)
+		for _, player in pairs(scene.rootNode:getChildren()) do
+			print(gamepad.id)
+			print(player.gamepad.id)
+			if player.active and gamepad.id == player.gamepad.id then
+				player.active = false
+			end
+		end
+	end
+end]]

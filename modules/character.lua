@@ -1,5 +1,6 @@
 local Node = require "modules/node"
 local Item = require "modules/item"
+local ParticleSystem = require "modules/particleSystem"
 
 local function character(x, y, w, h, r, s, ax, ay, l)
   local self = Node(x, y, w, h, r, s, ax, ay, l)
@@ -18,10 +19,13 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   self.velocityX, self.velocityY = 0, 0
   self.dragX, self.dragY = 3, 3
+  self.walkSpeed = 200
   self.speed = 400
   self.id = 99
+  self.rollSpeed = 1200
   self.health = 1
   self.maxhealth = 1
+  self.isDashing = false
 
 
   ----------------------------------------------
@@ -79,6 +83,21 @@ local function character(x, y, w, h, r, s, ax, ay, l)
 
   ----------------------------------------------
 
+  local img = lg.newImage('assets/images/particle.png')
+
+	self.ps = ParticleSystem(img, 32)
+	self.ps.system:setParticleLifetime(0.3, 0.5) -- Particles live at least 2s and at most 5s.
+	self.ps.system:setEmissionRate(15)
+	self.ps.system:setSizeVariation(1)
+	self.ps.system:setLinearAcceleration(0, -600, 0, -1000) -- Random movement in all directions.
+	self.ps.system:setColors(255, 255, 255, 255, 255, 255, 255, 0) -- Fade to transparency.
+  self.ps.visible = false
+
+  self.legs:addChild(self.ps)
+
+
+  ----------------------------------------------
+
   -- create weapon
   self.weapon = Node(-20, 80, 25, 75)
   self.weapon.anchorX, self.weapon.anchorY = 0.5, 0
@@ -119,10 +138,12 @@ local function character(x, y, w, h, r, s, ax, ay, l)
     lg.setColor(255, 255, 255)
   end
   self:addChild(self.healthBar)
+
   ----------------------------------------------
   -- methods
   ----------------------------------------------
 
+  local dashCallback
   local prevX, prevY = self.x, self.y
 
   -- update function called each frame, dt is time since last frame
@@ -135,17 +156,35 @@ local function character(x, y, w, h, r, s, ax, ay, l)
     self.velocityX = self.velocityX * (1 - self.dragX * dt)
     self.velocityY = self.velocityY * (1 - self.dragY * dt)
 
-    -- animate legs
-    if vector.length(self.x - prevX, self.y - prevY) > 0 then
-      if not self.legs.animator:isPlaying("legs-walk") then
-        self.legs.animator:play("legs-walk", 0)
-      end
-    elseif not self.legs.animator:isPlaying("legs-idle") then
-      self.legs.animator:play("legs-idle", 0)
-    end
+    --animate legs
+    if not self.isDashing then
+      local deltaX, deltaY = self.x - prevX, self.y - prevY
+      if (deltaX ~= 0 or deltaY ~= 0) then
+        -- walk animation
+        if not self.legs.animator:isPlaying("legs-walk") then
+          self.legs.animator:play("legs-walk", 0)
+        end
 
-    -- rotate legs at walking direction
-    self.legs.rotation = vector.angle(0, 1, self.x - prevX, self.y - prevY)
+        -- rotate legs at walking direction
+        self.legs.rotation = vector.angle(0, 1, deltaX, deltaY)
+
+      elseif not self.legs.animator:isPlaying("legs-idle") then
+        -- idle animation
+        self.legs.animator:play("legs-idle", 0)
+      end
+    else
+      -- is character speed below or equal to max speed?
+      if vector.length(self.velocityX, self.velocityY) <= self.speed then
+        -- stop dashing
+        self.isDashing = false
+
+        -- hide particleSystem
+        self.ps.visible = false
+
+        self.body.animator:play("sword-shield-idle", 1)
+        if dashCallback then dashCallback() end
+      end
+    end
 
     -- set previous x, y
     prevX, prevY = self.x, self.y
@@ -168,10 +207,33 @@ local function character(x, y, w, h, r, s, ax, ay, l)
     end
   end
 
+  function self:dash(x, y, callback)
+    -- start dashing
+    self.isDashing = true
+
+    -- show particleSystem
+    self.ps.visible = true
+
+    -- apply velocity
+    self.velocityX, self.velocityY = x * self.rollSpeed, y * self.rollSpeed
+
+    -- play animation
+    self.body.animator:play("unarmed-dash", 1)
+    self.legs.animator:play("legs-dash", 1)
+
+    -- rotate to dash direction
+    local rotation = vector.angle(0, 1, self.velocityX, self.velocityY)
+    self.body.rotation = rotation
+    self.legs.rotation = rotation
+
+    -- set callback
+    dashCallback = callback
+  end
+
   -- apply damage to character
   function self:damage(amount)
     local amount = amount or 1
-      self.health = self.health - amount
+    self.health = self.health - amount
     if self.health <= 0 then
       self:kill()
     end
@@ -186,6 +248,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
     self.healthBar.active = false
     self.body.active = false
     self.legs.active = false
+    self.ps.active = false
     self.active = false
   end
 
@@ -195,6 +258,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
     self.healthBar.active = true
     self.body.active = true
     self.legs.active = true
+    self.ps.active = true
     self.active = true
     if self.name == "player" then
       lifes:lifeDown()

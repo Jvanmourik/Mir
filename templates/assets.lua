@@ -5,6 +5,8 @@ local image = love.graphics.newImage
 -- makes referencing specific animations easier
 local character = {}
 
+--<sprite n="Sword Idle" x="2" y="359" w="119" h="132" pX="0.5" pY="0.5"/>
+
 -- stores all assets
 local assets = {
   character = {
@@ -12,10 +14,32 @@ local assets = {
     unarmed = {
       idle = {
         frames = {
-          quad(0, 377, 126, 90, 705, 493)
+          quad(2, 2, 127, 76, 242, 2094)
         },
         anchorX = 0.50,
         anchorY = 0.46,
+        sequence = {1},
+        interval = 0.25
+      },
+      dash = {
+        frames = {
+          quad(123, 359, 117, 139, 242, 2094),
+          quad(2, 500, 117, 139, 242, 2094),
+          quad(121, 500, 117, 139, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    bow = {
+      idle = {
+        frames = {
+          quad(2, 1926, 238, 166, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
         sequence = {1},
         interval = 0.25
       }
@@ -23,7 +47,7 @@ local assets = {
     sword_shield = {
       idle = {
         frames = {
-          quad(0, 0, 232, 372, 705, 493)
+          quad(2, 1549, 231, 375, 242, 2094)
         },
         anchorX = 0.49,
         anchorY = 0.36,
@@ -32,9 +56,9 @@ local assets = {
       },
       stab = {
         frames = {
-          quad(0, 0, 232, 372, 705, 493),
-          quad(237, 0, 232, 372, 705, 493),
-          quad(473, 0, 232, 372, 705, 493)
+          quad(2, 1549, 231, 375, 242, 2094),
+          quad(2, 1172, 231, 375, 242, 2094),
+          quad(2, 795, 231, 375, 242, 2094)
         },
         anchorX = 0.49,
         anchorY = 0.36,
@@ -45,7 +69,7 @@ local assets = {
     legs = {
       idle = {
         frames = {
-          quad(136, 377, 70, 116, 705, 493)
+          quad(130, 121, 62, 117, 242, 2094)
         },
         anchorX = 0.5,
         anchorY = 0.4,
@@ -54,18 +78,29 @@ local assets = {
       },
       walk = {
         frames = {
-          quad(136, 377, 70, 116, 705, 493),
-          quad(211, 377, 70, 116, 705, 493),
-          quad(286, 377, 70, 116, 705, 493),
-          quad(361, 377, 70, 116, 705, 493),
-          quad(436, 377, 70, 116, 705, 493),
-          quad(511, 377, 70, 116, 705, 493),
-          quad(586, 377, 70, 116, 705, 493)
+          quad(130, 121, 62, 117, 242, 2094),
+          quad(2, 121, 62, 117, 242, 2094),
+          quad(66, 121, 62, 117, 242, 2094),
+          quad(131, 2, 62, 117, 242, 2094),
+          quad(2, 240, 62, 117, 242, 2094),
+          quad(66, 240, 62, 117, 242, 2094),
+          quad(130, 240, 62, 117, 242, 2094)
         },
         anchorX = 0.5,
         anchorY = 0.4,
         sequence = {1, 2, 4, 6, 6, 4, 2, 1, 3, 5, 7, 7, 5, 3},
         interval = 0.05
+      },
+      dash = {
+        frames = {
+          quad(74, 641, 70, 152, 242, 2094),
+          quad(146, 641, 70, 152, 242, 2094),
+          quad(2, 641, 70, 152, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
       }
     },
     animations = character
@@ -156,11 +191,46 @@ local assets = {
       anchorY = 0.5
     }
   },
-  heart = {
-    atlas = image("assets/images/heart.png"),
-    heartAsset = {
+  lives = {
+    atlas = image("assets/images/lives3.png"),
+    five = {
       frames = {
-        quad(1, 1, 100, 100, 100, 100)
+        quad(1, 1, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    four = {
+      frames = {
+        quad(1, 57, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    three = {
+      frames = {
+        quad(1, 118, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    two = {
+      frames = {
+        quad(1, 178, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    one = {
+      frames = {
+        quad(1, 235, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    zero = {
+      frames = {
+        quad(1, 295, 300, 56, 300, 356)
       },
       anchorX = 0.5,
       anchorY = 0.5
@@ -170,9 +240,12 @@ local assets = {
 
 -- populate the newly created tables with animation references
 character["unarmed-idle"] = assets.character.unarmed.idle
+character["unarmed-dash"] = assets.character.unarmed.dash
+character["bow-idle"] = assets.character.bow.idle
 character["sword-shield-idle"] = assets.character.sword_shield.idle
 character["sword-shield-stab"] = assets.character.sword_shield.stab
 character["legs-idle"] = assets.character.legs.idle
 character["legs-walk"] = assets.character.legs.walk
+character["legs-dash"] = assets.character.legs.dash
 
 return assets
