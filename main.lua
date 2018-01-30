@@ -39,6 +39,7 @@ function love.load()
   Enemy = require "modules/enemy"
   Item = require "modules/item"
 	Boss = require "modules/boss"
+	Lives = require "modules/lives"
 
 	-- load controller mappings
 	local mappings = require "mappings"
@@ -103,10 +104,10 @@ function love.load()
 		e.agent:followPath(path.vertices, true)
 		scene.rootNode:addChild(e)
 	end
+	lives = Lives(10, 10)
+	scene.rootNode:addChild(lives)
 end
 
--- set teamlives
-teamLives = 5
 function love.update(dt)
 	-- update scene
   scene:update(dt)
@@ -149,14 +150,15 @@ function love.update(dt)
 			player:revive()
 		end
 	end
-
+	lives.x = camera.x
+	lives.y = camera.y - 400
 end
 
 function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
-	lg.print("Lives: " .. teamLives, camera.x, camera.y - 400, 0, 1)
+	--lg.print("Lives: " .. teamLives, camera.x, camera.y - 400, 0, 1)
   --drawCollisionShapes()
 	camera:detach()
 end
