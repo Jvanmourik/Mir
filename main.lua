@@ -145,10 +145,9 @@ function love.update(dt)
 
 	if lk.isDown("r") then
 		for _, player in pairs(players) do
-			local x, y = 8574.48, 2246.12
-			player.x = x
-			player.y = y
-			player.collider.shape:moveTo(x, y)
+			player.x = spawnPoint.x
+			player.y = spawnPoint.y
+			player.collider.shape:moveTo(spawnPoint.x, spawnPoint.y)
 			player:revive()
 		end
 	end
@@ -158,7 +157,7 @@ function love.draw()
   -- draw scene
 	camera:attach()
   scene:draw()
-  --drawCollisionShapes()
+  drawCollisionShapes()
 	camera:detach()
 end
 

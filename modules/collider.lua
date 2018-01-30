@@ -28,7 +28,7 @@ local function collider(node, options)
   elseif shapeType == "ellipse" then
     self.shape = HC.circle(x, y, 0.5 * width)
   elseif shapeType == "rectangle" then
-    self.shape = HC.rectangle(x, y, width, height)
+    self.shape = HC.rectangle(x - width * 0.5, y - height * 0.5, width, height)
   end
   self.shape:scale(node.scale)
 
