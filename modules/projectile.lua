@@ -8,7 +8,7 @@ local function projectile(x, y, dirX, dirY, damage, id)
   -- attributes
   ----------------------------------------------
   self.dirX, self.dirY = dirX, dirY
-  self.timer = 120
+  self.timer = 3000
   id = id or "arrow"
   ----------------------------------------------
   -- components
@@ -47,7 +47,7 @@ local function projectile(x, y, dirX, dirY, damage, id)
     if id == "arrow" then
       if other.damage and type(other.damage) == "function" then
         other:damage(damage)
-        self.timer = 2
+        self.timer = 50
       end
     elseif id == "eyeball" then
       boss = scene.rootNode:getChildByName("boss")
@@ -59,7 +59,7 @@ local function projectile(x, y, dirX, dirY, damage, id)
           end
         end
         other:damage(damage/4)
-        self.timer = 2
+        self.timer = 50
       end
     end
   end
@@ -74,7 +74,7 @@ local function projectile(x, y, dirX, dirY, damage, id)
       self.x = self.x + self.dirX * dt * 200
       self.y = self.y + self.dirY * dt * 200
     end
-    self.timer = self.timer - 1
+    self.timer = self.timer - 1000 * dt
     if self.timer <= 0 then
       self.active = false
     end

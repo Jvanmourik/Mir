@@ -14,7 +14,7 @@ local function boss(x,y)
   self.name = "boss"
   self.speed = 100
   local fase = "regular"
-  local timer = 60
+  local timer = 1000
   local faseDuration = 0
   local timer2 = 0
   local lockx, locky = 0, 0
@@ -157,7 +157,7 @@ self:addChild(self.body)
       if d < aggroDistance then
         -- if the boss is not attacking
         if fase == "regular" then
-          timer = timer - 1
+          timer = timer - 1000 * dt
           if timer <= 0 then
             -- go to the different fases
             number = love.math.random(1, 4)
@@ -166,14 +166,14 @@ self:addChild(self.body)
               faseDuration = 0
             elseif number == 2 then
               fase = "spinningAttack"
-              timer = 300
+              timer = 5000
             elseif number == 3 then
               fase = "spawnMinion"
-              timer = 300
+              timer = 5000
             elseif number == 4 then
               fase = "chargeAttack"
-              timer = 90
-              timer2 = 40
+              timer = 1333
+              timer = 666
               shake = true
             end
           end
@@ -182,28 +182,28 @@ self:addChild(self.body)
           if faseDuration >= 10 then
             fase = "regular"
             if self.health > 75 then
-              timer = 180
+              timer = 3000
             elseif self.health > 50 and self.health <= 75 then
-              timer = 120
+              timer = 2000
             elseif self.health > 25 and self.health <= 50 then
-              timer = 60
+              timer = 1000
             else
-              timer = 5
+              timer = 50
             end
           end
           if timer <= 0 then
             for i=1, 20 do
               local eyeball = eyeballTable[i + faseDuration * 20]
               eyeball.x, eyeball.y = self.x, self.y
-              eyeball.timer = 120
+              eyeball.timer = 2000
               local x, y = love.math.random(0, 10) - 5, love.math.random(0, 10) - 5
               eyeball.dirX, eyeball.dirY = vector.normalize(x, y)
               eyeball.active = true
             end
             faseDuration = faseDuration + 1
-            timer = 30
+            timer = 500
           end
-          timer = timer - 1
+          timer = timer - 1000 * dt
           -- move towards the target and spin around while a beam comes out of the eye of the boss
         elseif fase == "spinningAttack" then
           self.weapon.collider.active = true
@@ -214,18 +214,18 @@ self:addChild(self.body)
           local dirX, dirY = vector.normalize(dX, dY)
 
           self.x, self.y = self.x + dirX * self.speed * dt, self.y + dirY * self.speed * dt
-          timer = timer - 1
+          timer = timer - 1000 * dt
           if timer <= 0 then
             fase = "regular"
             self.weapon.visible = false
             if self.health > 75 then
-              timer = 180
+              timer = 3000
             elseif self.health > 50 and self.health <= 75 then
-              timer = 120
+              timer = 2000
             elseif self.health > 25 and self.health <= 50 then
-              timer = 60
+              timer = 1000
             else
-              timer = 5
+              timer = 50
             end
             self.weapon.collider.active = false
           end
@@ -246,31 +246,39 @@ self:addChild(self.body)
           scene.rootNode:addChild(minion)]]
           fase = "regular"
           if self.health > 75 then
-            timer = 180
+            timer = 3000
           elseif self.health > 50 and self.health <= 75 then
-            timer = 120
+            timer = 2000
           elseif self.health > 25 and self.health <= 50 then
-            timer = 60
+            timer = 1000
           else
-            timer = 5
+            timer = 50
           end
           -- charge at the target, while dealing damage to all enemies in its path
         elseif fase == "chargeAttack" then
-        timer = timer - 1
+        timer = timer - 1000 * dt
         if shake == true then
-          if timer%10 == 0 then
+          for i=1, 18 do
+            if i%2 == 0 then
+              self.x = self.x - 5
+            else
+              self.x = self.x + 5
+            end
+          end
+        end
+          --[[if timer%10 == 0 then
             self.x = self.x - 5
           end
           if timer%10 == 5 then
             self.x = self.x + 5
           end
-        end
+        end]]
         if timer <= 0 then
-          timer2 = timer2 - 1
+          timer2 = timer2 - 1000 * dt
           shake = false
         end
         if  lock == false then
-          if timer2 <= 20 then
+          if timer2 <= 333 then
             lock = true
             lockx, locky = target.x, target.y
           end
@@ -287,13 +295,13 @@ self:addChild(self.body)
             lock = false
             fase = "regular"
             if self.health > 75 then
-              timer = 180
+              timer = 3000
             elseif self.health > 50 and self.health <= 75 then
-              timer = 120
+              timer = 2000
             elseif self.health > 25 and self.health <= 50 then
-              timer = 60
+              timer = 1000
             else
-              timer = 5
+              timer = 50
             end
           end
         end

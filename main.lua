@@ -18,7 +18,7 @@ function love.load()
 	math.randomseed(lt.getTime())
 
 	-- set window to fullscreen in desktop mode
-	lw.setFullscreen(true, "desktop")
+	lw.setFullscreen(false, "desktop")
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
@@ -106,6 +106,8 @@ function love.load()
 	end
 	lives = Lives(10, 10)
 	scene.rootNode:addChild(lives)
+	deathTimer = 0
+	deathBoolean = false
 end
 
 function love.update(dt)
@@ -139,6 +141,19 @@ function love.update(dt)
 	if #activePlayers > 0 then
 		local dx, dy = averageX - camera.x, averageY - camera.y
 		camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+	end
+
+	if deathBoolean then
+		deathTimer = deathTimer - 1000 * dt
+	end
+
+	if deathBoolean and deathTimer <= 0 then
+		deathBoolean = false
+		for _, player in pairs(players) do
+			if not player.active then
+				player.revive(player)
+			end
+		end
 	end
 
 	if lk.isDown("r") then
