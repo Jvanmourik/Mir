@@ -15,12 +15,11 @@ local function enemy(x, y)
   self.speed = 400
   self.health = 20
   self.maxhealth = 20
-  local shootTimer = 0
 
   local arrow = Projectile(self.x, self.y, 1, 1, self.weapon.damage)
   arrow.active = false
   scene.rootNode:addChild(arrow)
-  
+
   local weaponRandom = love.math.random()
   if weaponRandom < 0.3 then
     self.weapon.id = 2
@@ -127,8 +126,7 @@ local function enemy(x, y)
       local deltaY = target.y - self.y
       arrow.dirX, arrow.dirY = vector.normalize(deltaX, deltaY)
       arrow.x , arrow.y = self.x + arrow.dirX * 50, self.y + arrow.dirY * 50
-      shootTimer = 20
-      arrow.timer = 120
+      arrow.timer = 2000
       arrow.active = true
       -- invoke callback
       if callback then callback() end

@@ -21,7 +21,7 @@ function love.load()
   scale = love.window.getPixelScale( )
   love.graphics.scale(scale, scale)
 	-- set window to fullscreen in desktop mode
-	lw.setFullscreen(true, "desktop")
+	lw.setFullscreen(false, "desktop")
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
@@ -124,6 +124,8 @@ function love.load()
 	end
 	lives = Lives(10, 10)
 	scene.rootNode:addChild(lives)
+	deathTimer = 0
+	deathBoolean = false
 end
 
 function love.update(dt)
@@ -163,15 +165,29 @@ function love.update(dt)
 			camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
 		end
 
-		if lk.isDown("r") then
-			for _, player in pairs(players) do
-				local x, y = 8574.48, 2246.12
-				player.x = x
-				player.y = y
-				player.collider.shape:moveTo(x, y)
-				player:revive()
+
+	if deathBoolean then
+		deathTimer = deathTimer - 1000 * dt
+	end
+
+	if deathBoolean and deathTimer <= 0 then
+		deathBoolean = false
+		for _, player in pairs(players) do
+			if not player.active then
+				player.revive(player)
 			end
 		end
+	end
+
+	if lk.isDown("r") then
+		for _, player in pairs(players) do
+			local x, y = 8574.48, 2246.12
+			player.x = x
+			player.y = y
+			player.collider.shape:moveTo(x, y)
+			player:revive()
+		end
+	end
 
     if input:isPressed("escape") then
       gameState = 2

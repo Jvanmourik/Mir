@@ -191,6 +191,16 @@ local assets = {
       anchorY = 0.5
     }
   },
+  heart = {
+    atlas = image("assets/images/heart.png"),
+    heartAsset = {
+      frames = {
+        quad(1, 1, 100, 100, 100, 100)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    }
+  },
   lives = {
     atlas = image("assets/images/lives3.png"),
     five = {

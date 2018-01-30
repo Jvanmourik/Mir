@@ -21,7 +21,7 @@ local function lives(x, y, w, h, r, s, ax, ay, l)
   self:addComponent("spriteRenderer",
   { atlas = assets.lives.atlas,
     asset = assets.lives.five,
-    layer = 100 })
+    layer = 1000 })
 
   self.scale = 0.5
 

@@ -92,7 +92,7 @@ local function character(x, y, gamepad)
     end
 
     -- lower time you have to wait till you can shoot again
-    shootTimer = shootTimer - 1
+    shootTimer = shootTimer - 1000 * dt
     -- call base update method
     base.update(self, dt)
   end
@@ -103,8 +103,8 @@ local function character(x, y, gamepad)
     elseif self.weapon.type == "bow" and shootTimer <= 0 then
       arrow.dirX, arrow.dirY = self.body:getForwardVector()
       arrow.x , arrow.y = self.x + arrow.dirX * 50, self.y + arrow.dirY * 50
-      shootTimer = 20
-      arrow.timer = 120
+      shootTimer = 500
+      arrow.timer = 2000
       arrow.active = true
     end
   end
@@ -113,7 +113,9 @@ local function character(x, y, gamepad)
     base.kill(self)
     teamLives = teamLives - 1
     if teamLives > 0 then
-      base.revive(self)
+      --base.revive(self)
+      deathBoolean = true
+      deathTimer = 2000
     end
   end
 

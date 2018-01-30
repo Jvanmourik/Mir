@@ -12,7 +12,7 @@ local function bossMinion(x, y)
   self.speed = 150
   self.health = 1
   local damage = 2
-  local timer = 30
+  local timer = 500
   local aggroDistance = 500
   self.id = 99
 
@@ -77,7 +77,7 @@ local function bossMinion(x, y)
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
     if timer > 0 then
-      timer = timer - 1
+      timer = timer - 1000 * dt
     end
 
     -- get the table of the players
