@@ -1,11 +1,13 @@
-local Character = require "modules/character"
+local Goblin = require "modules/goblin"
 local Item = require "modules/item"
 local Projectile = require "modules/projectile"
 
 
 local function enemy(x, y)
-  local self = Character(x, y)
+  local self = Goblin(x, y)
   local base = table.copy(self)
+
+  local assets = require "templates/assets"
 
   ----------------------------------------------
   -- attributes
@@ -31,7 +33,7 @@ local function enemy(x, y)
   if self.weapon.type == "bow" then
     self.body.animator:play("bow-idle", 0)
   else
-    self.body.animator:play("sword-shield-idle", 0)
+    self.body.animator:play("sword-idle", 0)
   end
   ----------------------------------------------
   -- components

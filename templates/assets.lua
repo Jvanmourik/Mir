@@ -4,8 +4,7 @@ local image = love.graphics.newImage
 
 -- makes referencing specific animations easier
 local character = {}
-
---<sprite n="Sword Idle" x="2" y="359" w="119" h="132" pX="0.5" pY="0.5"/>
+local enemy = {}
 
 -- stores all assets
 local assets = {
@@ -72,7 +71,7 @@ local assets = {
           quad(130, 121, 62, 117, 242, 2094)
         },
         anchorX = 0.5,
-        anchorY = 0.4,
+        anchorY = 0.5,
         sequence = {1},
         interval = 0.25
       },
@@ -87,7 +86,7 @@ local assets = {
           quad(130, 240, 62, 117, 242, 2094)
         },
         anchorX = 0.5,
-        anchorY = 0.4,
+        anchorY = 0.5,
         sequence = {1, 2, 4, 6, 6, 4, 2, 1, 3, 5, 7, 7, 5, 3},
         interval = 0.05
       },
@@ -104,6 +103,69 @@ local assets = {
       }
     },
     animations = character
+  },
+  enemy = {
+    atlas = image("assets/images/enemy.png"),
+    bow = {
+      idle = {
+        frames = {
+          quad(2, 237, 447, 289, 1012, 1611)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1},
+        interval = 0.25
+      }
+    },
+    sword = {
+      idle = {
+        frames = {
+          quad(451, 237, 503, 685, 1012, 1611)
+        },
+        anchorX = 0.56,
+        anchorY = 0.28,
+        sequence = {1},
+        interval = 0.25
+      },
+      stab = {
+        frames = {
+          quad(451, 237, 503, 685, 1012, 1611),
+          quad(2, 924, 503, 685, 1012, 1611),
+          quad(507, 924, 503, 685, 1012, 1611)
+        },
+        anchorX = 0.56,
+        anchorY = 0.28,
+        sequence = {1, 2, 2, 3, 3, 3, 3, 2, 1},
+        interval = 0.05
+      }
+    },
+    legs = {
+      idle = {
+        frames = {
+          quad(466, 2, 114, 233, 1012, 1611)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1},
+        interval = 0.25
+      },
+      walk = {
+        frames = {
+          quad(466, 2, 114, 233, 1012, 1611),
+          quad(698, 2, 114, 233, 1012, 1611),
+          quad(350, 2, 114, 233, 1012, 1611),
+          quad(118, 2, 114, 233, 1012, 1611),
+          quad(582, 2, 114, 233, 1012, 1611),
+          quad(234, 2, 114, 233, 1012, 1611),
+          quad(2, 2, 114, 233, 1012, 1611)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1, 2, 4, 6, 6, 4, 2, 1, 3, 5, 7, 7, 5, 3},
+        interval = 0.05
+      }
+    },
+    animations = enemy
   },
   items = {
     atlas = image("assets/images/items.png"),
@@ -247,5 +309,11 @@ character["sword-shield-stab"] = assets.character.sword_shield.stab
 character["legs-idle"] = assets.character.legs.idle
 character["legs-walk"] = assets.character.legs.walk
 character["legs-dash"] = assets.character.legs.dash
+
+enemy["bow-idle"] = assets.enemy.bow.idle
+enemy["sword-idle"] = assets.enemy.sword.idle
+enemy["sword-stab"] = assets.enemy.sword.stab
+enemy["legs-idle"] = assets.enemy.legs.idle
+enemy["legs-walk"] = assets.enemy.legs.walk
 
 return assets
