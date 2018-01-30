@@ -55,6 +55,7 @@ local function animator(node, animations)
 
   -- play animation
   function self:play(animationName, amount, callback)
+    self.animationName = animationName
 
     -- reset current frame
     currentFrame = 1

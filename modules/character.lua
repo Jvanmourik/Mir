@@ -143,6 +143,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   -- methods
   ----------------------------------------------
 
+  local previousAnimation
   local dashCallback
   local prevX, prevY = self.x, self.y
 
@@ -181,7 +182,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
         -- hide particleSystem
         self.ps.visible = false
 
-        self.body.animator:play("sword-shield-idle", 1)
+        self.body.animator:play(previousAnimation, 1)
         if dashCallback then dashCallback() end
       end
     end
@@ -208,6 +209,9 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   end
 
   function self:dash(x, y, callback)
+    -- remember current animation
+    previousAnimation = self.body.animator.animationName
+
     -- start dashing
     self.isDashing = true
 

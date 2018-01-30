@@ -23,6 +23,12 @@ function love.load()
 	-- set window to fullscreen in desktop mode
 	lw.setFullscreen(false, "desktop")
 
+	-- set random seed so initial math.random() will always be different
+	math.randomseed(lt.getTime())
+
+	-- set window to fullscreen in desktop mode
+	lw.setFullscreen(true, "desktop")
+
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
 
@@ -97,6 +103,7 @@ function love.load()
 				-- create player
 				c = Player(math.floor(x + 0.5), math.floor(y + 0.5))
 				scene.rootNode:addChild(c)
+				spawnPoint = location
 
 				-- create camera
 				camera = Camera(c.x, c.y)
@@ -166,35 +173,31 @@ function love.update(dt)
 		end
 
 
-	if deathBoolean then
-		deathTimer = deathTimer - 1000 * dt
-	end
+		if deathBoolean then
+			deathTimer = deathTimer - 1000 * dt
+		end
 
-	if deathBoolean and deathTimer <= 0 then
-		deathBoolean = false
-		for _, player in pairs(players) do
-			if not player.active then
-				player.revive(player)
+		if deathBoolean and deathTimer <= 0 then
+			deathBoolean = false
+			for _, player in pairs(players) do
+				if not player.active then
+					player.revive(player)
+				end
 			end
 		end
-	end
 
-	if lk.isDown("r") then
-		for _, player in pairs(players) do
-			local x, y = 8574.48, 2246.12
-			player.x = x
-			player.y = y
-			player.collider.shape:moveTo(x, y)
-			player:revive()
+		if lk.isDown("r") then
+			for _, player in pairs(players) do
+				player.x = spawnPoint.x
+				player.y = spawnPoint.y
+				player.collider.shape:moveTo(spawnPoint.x, spawnPoint.y)
+				player:revive()
+			end
+		end
+		if input:isPressed("escape") then
+			gameState = 2
 		end
 	end
-
-    if input:isPressed("escape") then
-      gameState = 2
-    end
-	end
-	lives.x = camera.x
-	lives.y = camera.y - 400
 end
 
 function love.draw()
@@ -243,9 +246,17 @@ function love.joystickadded(joystick)
 	-- add player character when a controller gets connected
 	if joystick:isGamepad() then
 		local gamepad = input:getGamepad(joystick)
-		c = Player(8574.48, 2246.12, gamepad)
-		scene.rootNode:addChild(c)
+		local player = Player(spawnPoint.x, spawnPoint.y, gamepad)
+		scene.rootNode:addChild(player)
+
+		-- add player to players table
+		players[joystick] = player
 	end
+end
+
+function love.joystickremoved(joystick)
+	players[joystick]:kill()
+	players[joystick] = nil
 end
 
 --[[function love.joystickremoved(joystick)

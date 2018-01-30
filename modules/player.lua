@@ -70,7 +70,7 @@ local function character(x, y, gamepad)
 
         -- character dash
         if vector.length(dirX, dirY) > 0.3 then
-          if input:isPressed("space") or gamepad and gamepad:isPressed('b') then
+          if not gamepad and input:isPressed("space") or gamepad and gamepad:isPressed('b') then
             self:dash(dirX, dirY)
           end
         end
@@ -170,7 +170,6 @@ local function character(x, y, gamepad)
     item.velocityX, item.velocityY = dirX * force, dirY * force
     scene.rootNode:addChild(item)
   end
-
 
 
   ----------------------------------------------
