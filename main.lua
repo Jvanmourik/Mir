@@ -178,15 +178,6 @@ function love.update(dt)
 			end
 		end
 
-		if lk.isDown("r") then
-			for _, player in pairs(players) do
-				player.x = spawnPoint.x
-				player.y = spawnPoint.y
-				player.collider.shape:moveTo(spawnPoint.x, spawnPoint.y)
-				player:revive()
-			end
-		end
-
 		if input:isPressed("escape") then
 			gameState = 2
 		end
