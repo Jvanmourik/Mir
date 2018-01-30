@@ -77,7 +77,7 @@ local function input(...)
   -- remove an already existing gamepad from the table self.gamepads
   function self:removeGamepad(joystick)
     for i = 1, #self.gamepads, 1 do
-      if self.gamepads[i].joystick == joystick then
+      if self.gamepads[i] and self.gamepads[i].joystick == joystick then
         self.gamepads[i] = nil
       end
     end
