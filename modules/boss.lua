@@ -172,7 +172,7 @@ self:addChild(self.body)
           if timer <= 0 then
             faseDuration = faseDuration + 1
             timer = 30
-            for i=1, 20 do
+            for i=1, 10 do
               local x, y = love.math.random(0, 10) - 5, love.math.random(0, 10) - 5
               local dirX, dirY = vector.normalize(x, y)
               local eyeball = Projectile(self.x, self.y, dirX, dirY, damage, "eyeball")
