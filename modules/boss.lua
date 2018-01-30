@@ -138,7 +138,7 @@ self:addChild(self.body)
           timer = timer - 1
           if timer <= 0 then
             -- go to the different fases
-            number = love.math.random(4, 4)
+            number = love.math.random(1, 4)
             if number == 1 then
               fase = "eyeballShooting"
               faseDuration = 0
@@ -249,7 +249,6 @@ self:addChild(self.body)
           end
         end
         if timer2 <= 0 then
-          efMusic["dash"..math.random(1,6)]:play()
           local dX = lockx - self.x
           local dY = locky - self.y
 
