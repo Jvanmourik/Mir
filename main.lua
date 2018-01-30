@@ -17,8 +17,9 @@ function love.load()
 	-- set random seed so initial math.random() will always be different
 	math.randomseed(lt.getTime())
 
-	-- set window to fullscreen in desktop mode
-	lw.setFullscreen(true, "desktop")
+  -- set scale
+  scale = love.window.getPixelScale()
+  love.graphics.scale(scale, scale)
 
   -- set background color
   lg.setBackgroundColor(19, 19, 19)
@@ -30,6 +31,7 @@ function love.load()
   vector = require "lib/vector"
 	HC = require "lib/HC"
 	Camera = require "lib/camera"
+  suit = require "lib/suit"
 
   -- load modules
 	Input = require "modules/input"
@@ -39,6 +41,9 @@ function love.load()
   Enemy = require "modules/enemy"
   Item = require "modules/item"
 	Boss = require "modules/boss"
+  Audio = require "modules/audio"
+  Gui = require "modules/gui"
+	Lives = require "modules/lives"
 
 	-- load controller mappings
 	local mappings = require "mappings"
@@ -46,6 +51,9 @@ function love.load()
 
 	-- create input handler
 	input = Input()
+
+	-- create gui
+	gui = Gui()
 
   -- create scene
   scene = Scene(0, 0)
@@ -110,55 +118,95 @@ function love.load()
 		e.agent:followPath(path.vertices, true)
 		scene.rootNode:addChild(e)
 	end
+
+	-- create lives indicator
+	lives = Lives(10, 10)
+	scene.rootNode:addChild(lives)
+	deathTimer = 0
+	deathBoolean = false
 end
 
 function love.update(dt)
-	-- update scene
-  scene:update(dt)
+	-- get window dimensions
+	windowWidth = lg.getWidth()
+	windowHeight = lg.getHeight()
 
-	local averageX, averageY = 0, 0
-	local activePlayers = {}
-	for _, player in pairs(players) do
-		if player.active then
-			activePlayers[#activePlayers + 1] = player
-			averageX = averageX + player.x
-			averageY = averageY + player.y
-		end
-	end
-	if #activePlayers > 0 then
-		averageX = averageX / #activePlayers
-		nextX = averageX
-		averageY = averageY / #activePlayers
-		nextY = averageY
-	end
+  if gameState == 0 or gameState == 2 then
+    -- update GUI
+    gui:update(dt)
+  else
+		-- update scene
+	  scene:update(dt)
 
-	if #activePlayers == 0 then
-		local dx, dy = nextX - camera.x, nextY - camera.y
-		camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
-	end
-
-
-	if #activePlayers > 0 then
-		local dx, dy = averageX - camera.x, averageY - camera.y
-		camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
-	end
-
-	if lk.isDown("r") then
+		local averageX, averageY = 0, 0
+		local activePlayers = {}
 		for _, player in pairs(players) do
-			player.x = spawnPoint.x
-			player.y = spawnPoint.y
-			player.collider.shape:moveTo(spawnPoint.x, spawnPoint.y)
-			player:revive()
+			if player.active then
+				activePlayers[#activePlayers + 1] = player
+				averageX = averageX + player.x
+				averageY = averageY + player.y
+			end
 		end
+		if #activePlayers > 0 then
+			averageX = averageX / #activePlayers
+			nextX = averageX
+			averageY = averageY / #activePlayers
+			nextY = averageY
+		end
+
+		if #activePlayers == 0 then
+			local dx, dy = nextX - camera.x, nextY - camera.y
+			camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+		end
+
+
+		if #activePlayers > 0 then
+			local dx, dy = averageX - camera.x, averageY - camera.y
+			camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
+		end
+
+		if deathBoolean then
+			deathTimer = deathTimer - 1000 * dt
+		end
+
+		if deathBoolean and deathTimer <= 0 then
+			deathBoolean = false
+			for _, player in pairs(players) do
+				if not player.active then
+					player.revive(player)
+				end
+			end
+		end
+
+		if lk.isDown("r") then
+			for _, player in pairs(players) do
+				player.x = spawnPoint.x
+				player.y = spawnPoint.y
+				player.collider.shape:moveTo(spawnPoint.x, spawnPoint.y)
+				player:revive()
+			end
+		end
+
+		if input:isPressed("escape") then
+			gameState = 2
+		end
+
+		lives.x = camera.x
+		lives.y = camera.y - windowHeight * 0.5 + 40
 	end
 end
 
 function love.draw()
-  -- draw scene
-	camera:attach()
-  scene:draw()
-  drawCollisionShapes()
-	camera:detach()
+  if gameState == 0 or gameState == 2 then
+    -- draw GUI
+    suit.draw()
+  else
+	  -- draw scene
+		camera:attach()
+	  scene:draw()
+	  drawCollisionShapes()
+		camera:detach()
+	end
 end
 
 function drawCollisionShapes()

@@ -101,6 +101,16 @@ local function character(x, y, gamepad)
       scene.rootNode:addChild(arrow)
     end
   end
+  
+  function self:kill()
+    base.kill(self)
+    teamLives = teamLives - 1
+    if teamLives > 0 then
+      --base.revive(self)
+      deathBoolean = true
+      deathTimer = 2000
+    end
+  end
 
   function self:pickupAnyItem()
     -- get items

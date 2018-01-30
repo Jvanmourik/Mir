@@ -190,6 +190,51 @@ local assets = {
       anchorX = 0.5,
       anchorY = 0.5
     }
+  },
+  lives = {
+    atlas = image("assets/images/lives3.png"),
+    five = {
+      frames = {
+        quad(1, 1, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    four = {
+      frames = {
+        quad(1, 57, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    three = {
+      frames = {
+        quad(1, 118, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    two = {
+      frames = {
+        quad(1, 178, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    one = {
+      frames = {
+        quad(1, 235, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    },
+    zero = {
+      frames = {
+        quad(1, 295, 300, 56, 300, 356)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    }
   }
 }
 
