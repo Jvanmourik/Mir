@@ -138,7 +138,7 @@ self:addChild(self.body)
           timer = timer - 1
           if timer <= 0 then
             -- go to the different fases
-            number = love.math.random(1, 4)
+            number = love.math.random(4, 4)
             if number == 1 then
               fase = "eyeballShooting"
               faseDuration = 0
@@ -173,6 +173,7 @@ self:addChild(self.body)
             faseDuration = faseDuration + 1
             timer = 30
             for i=1, 10 do
+              efMusic["hit"]:play()
               local x, y = love.math.random(0, 10) - 5, love.math.random(0, 10) - 5
               local dirX, dirY = vector.normalize(x, y)
               local eyeball = Projectile(self.x, self.y, dirX, dirY, damage, "eyeball")
@@ -244,9 +245,11 @@ self:addChild(self.body)
           if timer2 <= 20 then
             lock = true
             lockx, locky = target.x, target.y
+
           end
         end
         if timer2 <= 0 then
+          efMusic["dash"..math.random(1,6)]:play()
           local dX = lockx - self.x
           local dY = locky - self.y
 
@@ -278,13 +281,16 @@ self:addChild(self.body)
     aggroDistance = 2000
     local amount = amount or 1
     self.health = self.health - amount
-    if self.health <= 0 then
+    if self.health > 0 then
+      efMusic["hurt-0"..math.random(1,3)]:play()
+    else
       self:kill()
     end
   end
 
   -- kill character
   function self:kill()
+    efMusic["hitdie"..math.random(1,4)]:play()
     self.weapon.collider.active = false
     self.weapon.active = false
     self.healthBar.active = false
