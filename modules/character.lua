@@ -207,7 +207,7 @@ local function character(x, y, w, h, r, s, ax, ay, l)
   function self:dash(x, y, callback)
     -- play soundeffect
     efMusic["dash"..math.random(1,6)]:play()
-    
+
     -- remember current animation
     previousAnimation = self.body.animator.animationName
 
@@ -240,8 +240,8 @@ local function character(x, y, w, h, r, s, ax, ay, l)
     if self.health > 0 then
       efMusic["hurt-0"..math.random(1,3)]:play()
     elseif self.health <= 0 then
+      efMusic["hitdie"..math.random(1,4)]:play()
       self:kill()
-      efMusic["hurtdie"..math.random(1,4)]:play()
     end
   end
 
