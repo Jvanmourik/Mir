@@ -44,6 +44,7 @@ function love.load()
   Audio = require "modules/audio"
   Gui = require "modules/gui"
 	Lives = require "modules/lives"
+	Chooseclassgui = require "modules/chooseclassgui"
 
 	-- load controller mappings
 	local mappings = require "mappings"
@@ -54,9 +55,13 @@ function love.load()
 
 	-- create gui
 	gui = Gui()
+	chooseclassgui = Chooseclassgui()
 
   -- create scene
   scene = Scene(0, 0)
+
+	--create scene for picking class
+	pickclassScene = Scene(0, 0)
 
 	-- create tilemap
 	map = Tilemap("overworld")
@@ -124,6 +129,11 @@ function love.load()
 	scene.rootNode:addChild(lives)
 	deathTimer = 0
 	deathBoolean = false
+
+	--create the ui to choose class
+	--[[
+	pickclassScene.rootNode:addChild(chooseclassgui)
+	]]
 end
 
 function love.update(dt)
@@ -134,7 +144,10 @@ function love.update(dt)
   if gameState == 0 or gameState == 2 then
     -- update GUI
     gui:update(dt)
-  else
+  elseif gameState == 3 then
+		chooseclassgui:update(dt)
+		pickclassScene:update(dt)
+	elseif gameState == 1 then
 		-- update scene
 	  scene:update(dt)
 
@@ -143,6 +156,9 @@ function love.update(dt)
 		for _, player in pairs(players) do
 			if player.active then
 				activePlayers[#activePlayers + 1] = player
+				--non finished code
+				if #activePlayers == 1 then player.playertype = "healer" end
+				if #activePlayers == 2 then player.playertype = "warrior" end
 				averageX = averageX + player.x
 				averageY = averageY + player.y
 			end
@@ -188,14 +204,14 @@ function love.update(dt)
 end
 
 function love.draw()
-  if gameState == 0 or gameState == 2 then
+  if gameState == 0 or gameState == 2 or gamestate == 3 then
     -- draw GUI
     suit.draw()
-  else
+  elseif gameState == 1 then
 	  -- draw scene
 		camera:attach()
 	  scene:draw()
-	  --drawCollisionShapes()
+	  drawCollisionShapes()
 		camera:detach()
 	end
 end

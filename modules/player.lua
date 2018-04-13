@@ -1,6 +1,8 @@
 local Character = require "modules/character"
 local Item = require "modules/item"
 local Projectile = require "modules/projectile"
+local HealAura = require "modules/healAura"
+local Boss = require "modules/boss"
 
 local function character(x, y, gamepad)
   local self = Character(x, y)
@@ -11,10 +13,15 @@ local function character(x, y, gamepad)
   ----------------------------------------------
 
   self.name = "player"
+  self.playertype = ""
   self.health = 30
   self.maxhealth = 30
   local shootTimer = 0
+  local healtimer = 90
+  local healamount = 0
 
+  --cooldowns
+  local healCDtimer = 0
 
   ----------------------------------------------
   -- methods
@@ -74,6 +81,17 @@ local function character(x, y, gamepad)
         self:attack()
       end
 
+      -- character skill button
+      if not gamepad and input:isPressed('r') or gamepad and gamepad:isPressed('a') then
+        if self.playertype == "healer" then
+          if healCDtimer <= 0 then
+            local healAura = HealAura(self.x, self.y)
+            scene.rootNode:addChild(healAura)
+            healCDtimer = 1000
+          end
+        end
+      end
+
       -- pickup item on the ground
       if not gamepad and input:isPressed('e') or gamepad and gamepad:isPressed('x') then
         local item = self:pickupAnyItem()
@@ -86,9 +104,52 @@ local function character(x, y, gamepad)
 
     -- lower time you have to wait till you can shoot again
     shootTimer = shootTimer - 1
+    -- Reduce time until you can use skills again
+    healCDtimer = healCDtimer - 1
+
+    --make players able to be healed
+    if ishealing == true then
+      if healtimer ~= nil then healtimer = healtimer - 1
+      else healtimer = 90
+      end
+      if healtimer <= 0 then
+        if self.health < self.maxhealth then
+          self.health = self.health + healamount
+          healtimer = 90
+        elseif self.health >= self.maxhealth then
+          self.health = self.maxhealth
+          healtimer = 90
+        end
+      end
+    end
+
     -- call base update method
     base.update(self, dt)
   end
+
+  --set values to start healing player
+  function self:healing(heal, healTimer)
+    healamount = heal
+    healtimer = healTimer
+    ishealing = true
+  end
+  --end the healing of a player
+  function self:endhealing(healTimer)
+    ishealing = false
+    healtimer = healTimer
+  end
+
+  --[[function self:healing(healamount, healtimer)
+      if healtimer <= 0 then
+        if self.health < self.maxhealth then
+          self.health = self.health + healamount
+          healtimer = 30
+        elseif self.health >= self.maxhealth then
+          self.health = self.maxhealth
+          healtimer = 30
+        end
+      end
+  end]]
 
   function self:attack(callback)
     if self.weapon.type == "sword" then
@@ -102,6 +163,8 @@ local function character(x, y, gamepad)
       scene.rootNode:addChild(arrow)
     end
   end
+
+
 
   function self:kill()
     base.kill(self)
@@ -150,7 +213,12 @@ local function character(x, y, gamepad)
   function self:equipItem(item)
     self.weapon.id = item.id
     self.weapon.name = item.name
-    self.weapon.damage = item.damage
+    --non finished code
+    if self.playertype ~= "warrior" then
+      self.weapon.damage = item.damage
+    elseif self.playertype == "warrior" then
+      self.weapon.damage = item.damage * 2
+    end
     self.weapon.type = item.type
     if self.weapon.type == "bow" then
       self.body.animator:play("bow-idle", 0)
