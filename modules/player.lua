@@ -19,11 +19,13 @@ local function character(x, y, gamepad)
   local shootTimer = 0
   local healtimer = 90
   local healamount = 0
+  local speedbuffTimer = 0
+  local speedbuff = false
 
   --cooldowns
   local stunCDtimer = 0
   local healCDtimer = 0
-
+  local speedCDtimer = 0
   ----------------------------------------------
   -- methods
   ----------------------------------------------
@@ -97,6 +99,12 @@ local function character(x, y, gamepad)
             scene.rootNode:addChild(stunprojectile)
             stunCDtimer = 300
           end
+        elseif self.playertype == "speedBuffer" then
+          if speedCDtimer <= 0 then
+            speedbuff = true
+            speedCDtimer = 600
+            speedbuffTimer = 420
+          end
         end
       end
 
@@ -112,10 +120,31 @@ local function character(x, y, gamepad)
 
     -- lower time you have to wait till you can shoot again
     shootTimer = shootTimer - 1
+    --reduce duration speed boost
+    speedbuffTimer = speedbuffTimer - 1
     -- Reduce time until you can use skills again
     healCDtimer = healCDtimer - 1
     stunCDtimer = stunCDtimer - 1
+    speedCDtimer = speedCDtimer - 1
 
+    --apply speed boost to all players within distance
+    if speedbuff == true then
+      if self.playertype == "speedBuffer" then
+        for _, player in pairs(players) do
+          local d = vector.length(player.x - self.x, player.y - self.y)
+          if d <= 600 then
+            player.speed = 800
+          end
+        end
+        speedbuff = false;
+      end
+    end
+    --reset speed from buff
+    if speedbuffTimer <= 0 and speedCDtimer > 0 then
+      for _, player in pairs(players) do
+        player.speed = 400
+      end
+    end
     --make players able to be healed
     if ishealing == true then
       if healtimer ~= nil then healtimer = healtimer - 1
@@ -147,18 +176,6 @@ local function character(x, y, gamepad)
     ishealing = false
     healtimer = healTimer
   end
-
-  --[[function self:healing(healamount, healtimer)
-      if healtimer <= 0 then
-        if self.health < self.maxhealth then
-          self.health = self.health + healamount
-          healtimer = 30
-        elseif self.health >= self.maxhealth then
-          self.health = self.maxhealth
-          healtimer = 30
-        end
-      end
-  end]]
 
   function self:attack(callback)
     if self.weapon.type == "sword" then

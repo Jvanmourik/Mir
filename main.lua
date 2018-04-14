@@ -105,7 +105,7 @@ function love.load()
 
 	-- create player
 	local player = Player(math.floor(spawnPoint.x + 0.5), math.floor(spawnPoint.y + 0.5))
-	player.playertype = "stunner"
+	player.playertype = "speedBuffer"
 	scene.rootNode:addChild(player)
 
 	-- add player to players table
