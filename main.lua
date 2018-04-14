@@ -105,6 +105,7 @@ function love.load()
 
 	-- create player
 	local player = Player(math.floor(spawnPoint.x + 0.5), math.floor(spawnPoint.y + 0.5))
+	player.playertype = "stunner"
 	scene.rootNode:addChild(player)
 
 	-- add player to players table
@@ -156,9 +157,6 @@ function love.update(dt)
 		for _, player in pairs(players) do
 			if player.active then
 				activePlayers[#activePlayers + 1] = player
-				--non finished code
-				if #activePlayers == 1 then player.playertype = "healer" end
-				if #activePlayers == 2 then player.playertype = "warrior" end
 				averageX = averageX + player.x
 				averageY = averageY + player.y
 			end
@@ -249,6 +247,7 @@ function love.joystickadded(joystick)
 		if joystick:isGamepad() then
 			local gamepad = input:getGamepad(joystick)
 			local player = Player(spawnPoint.x, spawnPoint.y, gamepad)
+			player.playertype = "warrior"
 			scene.rootNode:addChild(player)
 
 			-- add player to players table

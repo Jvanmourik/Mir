@@ -50,6 +50,8 @@ local function enemy(x, y)
   local target
   local players
   local timer = 0
+  local stuntimer = 1
+  local stunned = false
   local aggroDistance
   local minimumDistance
   local attackCooldown = 1500
@@ -84,40 +86,48 @@ local function enemy(x, y)
         end
       end
     end
+    if stunned == false then
+      if target and target.active then
+        local d = vector.length(target.x - self.x, target.y - self.y)
 
-    if target and target.active then
-      local d = vector.length(target.x - self.x, target.y - self.y)
-
-      -- if target in range
-      if d < aggroDistance then
-        -- move to target
-        if d > minimumDistance and not isAttacking then
-          self.agent:goToPoint(target.x, target.y)
-        elseif self.agent.state == "walk" then
-          self.agent:stop()
-        end
-
-        -- look at target if agent is idle
-        if not isAttacking and self.agent.state == "idle" then
-          self.body:lookAt(target.x, target.y)
-        end
-
-        -- attack
-          if d < minimumDistance and timer <= 0 then
-            isAttacking = true
-            self:attack(function()
-              isAttacking = false
-            end)
-            timer = attackCooldown
+        -- if target in range
+        if d < aggroDistance then
+          -- move to target
+          if d > minimumDistance and not isAttacking then
+            self.agent:goToPoint(target.x, target.y)
+          elseif self.agent.state == "walk" then
+            self.agent:stop()
           end
+
+          -- look at target if agent is idle
+          if not isAttacking and self.agent.state == "idle" then
+            self.body:lookAt(target.x, target.y)
+          end
+
+          -- attack
+            if d < minimumDistance and timer <= 0 then
+              isAttacking = true
+              self:attack(function()
+                isAttacking = false
+              end)
+              timer = attackCooldown
+            end
+        end
+
+        -- update timer
+        timer = timer - 1000 * dt
       end
-
-      -- update timer
-      timer = timer - 1000 * dt
     end
-
+    --stun
+    stuntimer = stuntimer - 1
+    if stuntimer <= 0 then stunned = false end
     -- call base update method
     base.update(self, dt)
+  end
+
+  function self:stun(stunTimer)
+    stuntimer = stunTimer
+    stunned = true
   end
 
   function self:attack(callback)

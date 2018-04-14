@@ -21,6 +21,7 @@ local function character(x, y, gamepad)
   local healamount = 0
 
   --cooldowns
+  local stunCDtimer = 0
   local healCDtimer = 0
 
   ----------------------------------------------
@@ -89,6 +90,13 @@ local function character(x, y, gamepad)
             scene.rootNode:addChild(healAura)
             healCDtimer = 1000
           end
+        elseif self.playertype == "stunner" then
+          if stunCDtimer <= 0 then
+            local dirX, dirY = self.body:getForwardVector()
+            local stunprojectile = Projectile(self.x, self.y, dirX, dirY, damage, "stunprojectile")
+            scene.rootNode:addChild(stunprojectile)
+            stunCDtimer = 300
+          end
         end
       end
 
@@ -106,6 +114,7 @@ local function character(x, y, gamepad)
     shootTimer = shootTimer - 1
     -- Reduce time until you can use skills again
     healCDtimer = healCDtimer - 1
+    stunCDtimer = stunCDtimer - 1
 
     --make players able to be healed
     if ishealing == true then
