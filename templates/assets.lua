@@ -620,6 +620,16 @@ local assets = {
       anchorY = 0.5
     }
   },
+  aura = {
+    atlas = image("assets/images/aura.png"),
+    healingaura = {
+      frames = {
+        quad(0, 0, 200, 200, 200, 200)
+      },
+      anchorX = 0.5,
+      anchorY = 0.5
+    }
+  },
   projectiles = {
     atlas = image("assets/images/projectiles.png"),
     arrow = {

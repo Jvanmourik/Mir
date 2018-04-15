@@ -68,6 +68,9 @@ function love.load()
 	-- create table to keep track of all players
 	players = {}
 
+	--something to set players
+	PlayersSet = 0
+
 	-- iterate through all spawn locations
 	for _, location in pairs(scene.rootNode:getChildrenByType("location")) do
 		-- set amount to spawn
@@ -103,7 +106,6 @@ function love.load()
 
 	-- create player
 	local player = Player(math.floor(spawnPoint.x + 0.5), math.floor(spawnPoint.y + 0.5))
-	player.playertype = "speedBuffer"
 	scene.rootNode:addChild(player)
 
 	-- add player to players table
@@ -176,6 +178,21 @@ function love.update(dt)
 			camera:move(math.floor(dx/10 + 0.5), math.floor(dy/10 + 0.5))
 		end
 
+		if PlayersSet < #players then
+			for _, player in pairs(players) do
+				PlayersSet = PlayersSet + 1
+				if PlayersSet == 1 then
+					player.playertype = PlayerOneType
+				elseif PlayersSet == 2 then
+					player.playertype = PlayerTwoType
+				elseif PlayersSet == 3 then
+					player.playertype = PlayerThreeType
+				elseif PlayersSet == 4 then
+					player.playertype = PlayerFourType
+				end
+			end
+		end
+
 		if deathBoolean then
 			deathTimer = deathTimer - 1000 * dt
 		end
@@ -206,7 +223,7 @@ function love.draw()
 	  -- draw scene
 		camera:attach()
 	  scene:draw()
-	  drawCollisionShapes()
+	  --drawCollisionShapes()
 		camera:detach()
 	end
 end
@@ -244,7 +261,6 @@ function love.joystickadded(joystick)
 		if joystick:isGamepad() then
 			local gamepad = input:getGamepad(joystick)
 			local player = Player(spawnPoint.x, spawnPoint.y, gamepad)
-			player.playertype = "warrior"
 			scene.rootNode:addChild(player)
 
 			-- add player to players table

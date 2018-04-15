@@ -8,6 +8,12 @@ local function healAura(x,y)
   local healtimer = 90
   self.existing = 900
   self.active = true
+  --Add aura sprite
+  self:addComponent("spriteRenderer", {
+    atlas = assets.aura.atlas,
+    asset = assets.aura.healingaura,
+    layer = -1
+  })
 --Add aura for healing
   self:addComponent("collider", {
     shapeType = "circle",

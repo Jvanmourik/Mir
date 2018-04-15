@@ -17,12 +17,14 @@ local function character(x, y, gamepad)
   self.playertype = ""
   self.health = 30
   self.maxhealth = 30
-  self.setAnimations = false
+  local setAnimations = false
   local shootTimer = 0
   local healtimer = 90
   local healamount = 0
   local speedbuffTimer = 0
   local speedbuff = false
+
+
 
   --cooldowns
   local stunCDtimer = 0
@@ -34,6 +36,51 @@ local function character(x, y, gamepad)
 
   -- update function called each frame, dt is time since last frame
   function self:update(dt)
+    --set the right color for every player
+    if setAnimations == false then
+      if self.playertype == "warrior" then
+        self.body:addComponent("spriteRenderer",
+        { atlas = assets.warrior.atlas,
+        asset = assets.warrior.sword_shield.idle,
+        layer = 1 })
+
+        self.body:addComponent("animator",
+        { animations = assets.warrior.animations })
+        self.body.animator:play("sword-shield-idle", 0)
+        setAnimations = true
+      elseif self.playertype == "speedBuffer" then
+        self.body:addComponent("spriteRenderer",
+        { atlas = assets.speedBuffer.atlas,
+        asset = assets.speedBuffer.sword_shield.idle,
+        layer = 1 })
+
+        self.body:addComponent("animator",
+        { animations = assets.speedBuffer.animations })
+        self.body.animator:play("sword-shield-idle", 0)
+        setAnimations = true
+      elseif self.playertype == "healer" then
+        self.body:addComponent("spriteRenderer",
+        { atlas = assets.healer.atlas,
+        asset = assets.healer.sword_shield.idle,
+        layer = 1 })
+
+        self.body:addComponent("animator",
+        { animations = assets.healer.animations })
+        self.body.animator:play("sword-shield-idle", 0)
+        setAnimations = true
+      elseif self.playertype == "stunner" then
+        self.body:addComponent("spriteRenderer",
+        { atlas = assets.stunner.atlas,
+        asset = assets.stunner.sword_shield.idle,
+        layer = 1 })
+
+        self.body:addComponent("animator",
+        { animations = assets.stunner.animations })
+        self.body.animator:play("sword-shield-idle", 0)
+        setAnimations = true
+      end
+    end
+
     if not self.isDashing then
       -- direction vector
       local dirX, dirY = 0, 0
@@ -87,7 +134,7 @@ local function character(x, y, gamepad)
       end
 
       -- character skill button
-      if not gamepad and input:isPressed('r') or gamepad and gamepad:isPressed('a') then
+      if not gamepad and input:isPressed('r') or gamepad and gamepad:isPressed('leftshoulder') then
         if self.playertype == "healer" then
           if healCDtimer <= 0 then
             local healAura = HealAura(self.x, self.y)
