@@ -7,6 +7,7 @@ local Boss = require "modules/boss"
 local function character(x, y, gamepad)
   local self = Character(x, y)
   local base = table.copy(self)
+  local assets = require "templates/assets"
 
   ----------------------------------------------
   -- attributes
@@ -16,6 +17,7 @@ local function character(x, y, gamepad)
   self.playertype = ""
   self.health = 30
   self.maxhealth = 30
+  self.setAnimations = false
   local shootTimer = 0
   local healtimer = 90
   local healamount = 0
@@ -97,7 +99,7 @@ local function character(x, y, gamepad)
             local dirX, dirY = self.body:getForwardVector()
             local stunprojectile = Projectile(self.x, self.y, dirX, dirY, damage, "stunprojectile")
             scene.rootNode:addChild(stunprojectile)
-            stunCDtimer = 300
+            stunCDtimer = 240
           end
         elseif self.playertype == "speedBuffer" then
           if speedCDtimer <= 0 then
@@ -131,9 +133,9 @@ local function character(x, y, gamepad)
     if speedbuff == true then
       if self.playertype == "speedBuffer" then
         for _, player in pairs(players) do
-          local d = vector.length(player.x - self.x, player.y - self.y)
-          if d <= 600 then
-            player.speed = 800
+          local dist = vector.length(player.x - self.x, player.y - self.y)
+          if dist <= 300 then
+            player.speed = 600
           end
         end
         speedbuff = false;

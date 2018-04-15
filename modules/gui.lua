@@ -54,7 +54,7 @@ local function gui()
     -- start game
     if gameState == 0 then
       if suit.Button("Start!", suit.layout:row(200 * scale, 30 * scale)).hit then
-        gameState = 1
+        gameState = 3
       end
     elseif gameState == 2 then
       if suit.Button("Continue!", suit.layout:row(200 * scale, 30 * scale)).hit then

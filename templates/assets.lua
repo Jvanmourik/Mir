@@ -104,6 +104,390 @@ local assets = {
     },
     animations = character
   },
+  warrior = {
+    atlas = image("assets/images/warrior.png"),
+    unarmed = {
+      idle = {
+        frames = {
+          quad(2, 2, 127, 76, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1},
+        interval = 0.25
+      },
+      dash = {
+        frames = {
+          quad(123, 359, 117, 139, 242, 2094),
+          quad(2, 500, 117, 139, 242, 2094),
+          quad(121, 500, 117, 139, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    bow = {
+      idle = {
+        frames = {
+          quad(2, 1926, 238, 166, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1},
+        interval = 0.25
+      }
+    },
+    sword_shield = {
+      idle = {
+        frames = {
+          quad(2, 1549, 231, 375, 242, 2094)
+        },
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1},
+        interval = 0.25
+      },
+      stab = {
+        frames = {
+          quad(2, 1549, 231, 375, 242, 2094),
+          quad(2, 1172, 231, 375, 242, 2094),
+          quad(2, 795, 231, 375, 242, 2094)
+        },
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1, 2, 2, 3, 3, 3, 3, 2, 1},
+        interval = 0.05
+      }
+    },
+    legs = {
+      idle = {
+        frames = {
+          quad(130, 121, 62, 117, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.5,
+        sequence = {1},
+        interval = 0.25
+      },
+      walk = {
+        frames = {
+          quad(130, 121, 62, 117, 242, 2094),
+          quad(2, 121, 62, 117, 242, 2094),
+          quad(66, 121, 62, 117, 242, 2094),
+          quad(131, 2, 62, 117, 242, 2094),
+          quad(2, 240, 62, 117, 242, 2094),
+          quad(66, 240, 62, 117, 242, 2094),
+          quad(130, 240, 62, 117, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.5,
+        sequence = {1, 2, 4, 6, 6, 4, 2, 1, 3, 5, 7, 7, 5, 3},
+        interval = 0.05
+      },
+      dash = {
+        frames = {
+          quad(74, 641, 70, 152, 242, 2094),
+          quad(146, 641, 70, 152, 242, 2094),
+          quad(2, 641, 70, 152, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    animations = character
+  },
+  speedBuffer = {
+    atlas = image("assets/images/speedBuffer.png"),
+    unarmed = {
+      idle = {
+        frames = {
+          quad(2, 2, 127, 76, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1},
+        interval = 0.25
+      },
+      dash = {
+        frames = {
+          quad(123, 359, 117, 139, 242, 2094),
+          quad(2, 500, 117, 139, 242, 2094),
+          quad(121, 500, 117, 139, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    bow = {
+      idle = {
+        frames = {
+          quad(2, 1926, 238, 166, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1},
+        interval = 0.25
+      }
+    },
+    sword_shield = {
+      idle = {
+        frames = {
+          quad(2, 1549, 231, 375, 242, 2094)
+        },
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1},
+        interval = 0.25
+      },
+      stab = {
+        frames = {
+          quad(2, 1549, 231, 375, 242, 2094),
+          quad(2, 1172, 231, 375, 242, 2094),
+          quad(2, 795, 231, 375, 242, 2094)
+        },
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1, 2, 2, 3, 3, 3, 3, 2, 1},
+        interval = 0.05
+      }
+    },
+    legs = {
+      idle = {
+        frames = {
+          quad(130, 121, 62, 117, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.5,
+        sequence = {1},
+        interval = 0.25
+      },
+      walk = {
+        frames = {
+          quad(130, 121, 62, 117, 242, 2094),
+          quad(2, 121, 62, 117, 242, 2094),
+          quad(66, 121, 62, 117, 242, 2094),
+          quad(131, 2, 62, 117, 242, 2094),
+          quad(2, 240, 62, 117, 242, 2094),
+          quad(66, 240, 62, 117, 242, 2094),
+          quad(130, 240, 62, 117, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.5,
+        sequence = {1, 2, 4, 6, 6, 4, 2, 1, 3, 5, 7, 7, 5, 3},
+        interval = 0.05
+      },
+      dash = {
+        frames = {
+          quad(74, 641, 70, 152, 242, 2094),
+          quad(146, 641, 70, 152, 242, 2094),
+          quad(2, 641, 70, 152, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    animations = character
+  },
+   stunner = {
+    atlas = image("assets/images/stunner.png"),
+    unarmed = {
+      idle = {
+        frames = {
+          quad(2, 2, 127, 76, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1},
+        interval = 0.25
+      },
+      dash = {
+        frames = {
+          quad(123, 359, 117, 139, 242, 2094),
+          quad(2, 500, 117, 139, 242, 2094),
+          quad(121, 500, 117, 139, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    bow = {
+      idle = {
+        frames = {
+          quad(2, 1926, 238, 166, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1},
+        interval = 0.25
+      }
+    },
+    sword_shield = {
+      idle = {
+        frames = {
+          quad(2, 1549, 231, 375, 242, 2094)
+        },
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1},
+        interval = 0.25
+      },
+      stab = {
+        frames = {
+          quad(2, 1549, 231, 375, 242, 2094),
+          quad(2, 1172, 231, 375, 242, 2094),
+          quad(2, 795, 231, 375, 242, 2094)
+        },
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1, 2, 2, 3, 3, 3, 3, 2, 1},
+        interval = 0.05
+      }
+    },
+    legs = {
+      idle = {
+        frames = {
+          quad(130, 121, 62, 117, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.5,
+        sequence = {1},
+        interval = 0.25
+      },
+      walk = {
+        frames = {
+          quad(130, 121, 62, 117, 242, 2094),
+          quad(2, 121, 62, 117, 242, 2094),
+          quad(66, 121, 62, 117, 242, 2094),
+          quad(131, 2, 62, 117, 242, 2094),
+          quad(2, 240, 62, 117, 242, 2094),
+          quad(66, 240, 62, 117, 242, 2094),
+          quad(130, 240, 62, 117, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.5,
+        sequence = {1, 2, 4, 6, 6, 4, 2, 1, 3, 5, 7, 7, 5, 3},
+        interval = 0.05
+      },
+      dash = {
+        frames = {
+          quad(74, 641, 70, 152, 242, 2094),
+          quad(146, 641, 70, 152, 242, 2094),
+          quad(2, 641, 70, 152, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    animations = character
+  },
+  healer = {
+    atlas = image("assets/images/healer.png"),
+    unarmed = {
+      idle = {
+        frames = {
+          quad(2, 2, 127, 76, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1},
+        interval = 0.25
+      },
+      dash = {
+        frames = {
+          quad(123, 359, 117, 139, 242, 2094),
+          quad(2, 500, 117, 139, 242, 2094),
+          quad(121, 500, 117, 139, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    bow = {
+      idle = {
+        frames = {
+          quad(2, 1926, 238, 166, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.4,
+        sequence = {1},
+        interval = 0.25
+      }
+    },
+    sword_shield = {
+      idle = {
+        frames = {
+          quad(2, 1549, 231, 375, 242, 2094)
+        },
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1},
+        interval = 0.25
+      },
+      stab = {
+        frames = {
+          quad(2, 1549, 231, 375, 242, 2094),
+          quad(2, 1172, 231, 375, 242, 2094),
+          quad(2, 795, 231, 375, 242, 2094)
+        },
+        anchorX = 0.49,
+        anchorY = 0.36,
+        sequence = {1, 2, 2, 3, 3, 3, 3, 2, 1},
+        interval = 0.05
+      }
+    },
+    legs = {
+      idle = {
+        frames = {
+          quad(130, 121, 62, 117, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.5,
+        sequence = {1},
+        interval = 0.25
+      },
+      walk = {
+        frames = {
+          quad(130, 121, 62, 117, 242, 2094),
+          quad(2, 121, 62, 117, 242, 2094),
+          quad(66, 121, 62, 117, 242, 2094),
+          quad(131, 2, 62, 117, 242, 2094),
+          quad(2, 240, 62, 117, 242, 2094),
+          quad(66, 240, 62, 117, 242, 2094),
+          quad(130, 240, 62, 117, 242, 2094)
+        },
+        anchorX = 0.5,
+        anchorY = 0.5,
+        sequence = {1, 2, 4, 6, 6, 4, 2, 1, 3, 5, 7, 7, 5, 3},
+        interval = 0.05
+      },
+      dash = {
+        frames = {
+          quad(74, 641, 70, 152, 242, 2094),
+          quad(146, 641, 70, 152, 242, 2094),
+          quad(2, 641, 70, 152, 242, 2094)
+        },
+        anchorX = 0.50,
+        anchorY = 0.46,
+        sequence = {1, 2, 3},
+        interval = 0.07
+      }
+    },
+    animations = character
+  },
   enemy = {
     atlas = image("assets/images/enemy.png"),
     bow = {

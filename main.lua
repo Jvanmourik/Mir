@@ -60,8 +60,6 @@ function love.load()
   -- create scene
   scene = Scene(0, 0)
 
-	--create scene for picking class
-	pickclassScene = Scene(0, 0)
 
 	-- create tilemap
 	map = Tilemap("overworld")
@@ -147,7 +145,6 @@ function love.update(dt)
     gui:update(dt)
   elseif gameState == 3 then
 		chooseclassgui:update(dt)
-		pickclassScene:update(dt)
 	elseif gameState == 1 then
 		-- update scene
 	  scene:update(dt)
@@ -202,7 +199,7 @@ function love.update(dt)
 end
 
 function love.draw()
-  if gameState == 0 or gameState == 2 or gamestate == 3 then
+  if gameState == 0 or gameState == 2 or gameState == 3 then
     -- draw GUI
     suit.draw()
   elseif gameState == 1 then
